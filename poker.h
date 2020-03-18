@@ -67,5 +67,42 @@ class Dealer
 	int Pot;
 	int CurrentTurn;
 	
-}        
+}   
+class Mainwindow : public Gtk::Window {
+    public:
+        Mainwindow();
+        virtual ~Mainwindow();
+	void Refresh();
+	void Display_Player_Hand();
+	void Balance_Visibility();
+	void Player_Status();
+	void Fold_Button_Pressed();
+	void Match_Button_Color();
+	void Match_Button_Label();
+	void Match_Button_Pressed();
+	void Add_Button_Pressed();
+	void Exchange_Button_Label();
+	void Exchange_Button_Pressed();
+	void Status_Label();
+	void Status_Color();
+	void Status_Opacity();
+	void Slider();
+	void SliderStatus();
+	void MinAdd();
+	void MaxAdd();
+	void Balance_Opacity();
+	void Timer();
+	void Reveal_Cards();
+	void SelectionBoxStatus();
+	void TurnPosition();
+	void PlayerCards();
+	void Pot();
+	void Timer();
+	void Id_Opacity();
+	
+
+    private:
+	
+}
+
 #endif
