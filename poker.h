@@ -51,5 +51,21 @@ class Player
 class Dealer
 {
     public:
-        
+	void CompareHands();
+	void GiveHand();
+	void Pot_Add();
+	void Pot_set();
+	void Exchange();
+	void GivePot();
+	void SplitPot();
+	void NextPlayer
+
+   private:
+	vector<int> StaticDeck;
+	vector<int> ShuffledDeck;
+	int PlayerSize;
+	int Pot;
+	int CurrentTurn;
+	
+}        
 #endif
