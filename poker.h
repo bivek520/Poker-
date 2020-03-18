@@ -8,7 +8,7 @@ using namespace std;
 class Player
 {
     public:
-        Player(int argv[1]);
+        Player(int playerIP, int portNumber);
         void Fold(); 
         void Check();
         void Call();
