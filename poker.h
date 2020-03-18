@@ -8,8 +8,8 @@ using namespace std;
 class Player
 {
     public:
-        Player(int argv[2]);
-        void Fold(); //call Fold_Button_Pressed() in MainWindow
+        Player(int argv[1]);
+        void Fold(); 
         void Check();
         void Call();
         void Raise();
