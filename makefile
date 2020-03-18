@@ -8,7 +8,7 @@ GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0  --cflags --libs`
 CFLAGS = -g -std=c++11
 
 
-all : $(EXE)
+all : $(EXE) 
 
  
 $(EXE): $(OBJ) 
@@ -20,3 +20,5 @@ $(OBJ) : $(SRC)
 
 	g++ -c $(CFLAGS) $(SRC) -o $(OBJ) $(GTKFLAGS)
 	
+clean:
+	-rm -f poker
