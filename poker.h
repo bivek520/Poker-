@@ -24,7 +24,7 @@ class Player
     private:
         vector<int> Hand;
         int PlayerID;
-        int PlayerIP;
+        char* PlayerIP;
         int Balance;
         int Bid;
 	vector<int> OrganizedHand;
@@ -46,6 +46,7 @@ class Dealer
 	void SplitPot();
 	void NextPlayer();
    private:
+	char* portNumber;
 	vector<int> StaticDeck;
 	vector<int> ShuffledDeck;
 	int PlayerSize;
