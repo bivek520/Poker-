@@ -8,7 +8,7 @@ using namespace std;
 class Player
 {
     public:
-        Player(int playerIP, int portNumber);
+        Player(char* playerIP, char* portNumber);
         void Fold(); 
         void Check();
         void Call();
@@ -16,9 +16,9 @@ class Player
         void Bet();
         void All_In();
         void Timer();
-        void TimeOut();
-        vector SuitHand(vector<int> hand);
-        vector ValueHand(vector<int> hand);
+        bool TimeOut();
+        vector<int> getSuitHand();
+        vector<int> getValueHand();
     private:
         vector<int> hand;
         int playerID;
@@ -32,7 +32,7 @@ class Player
 class Dealer
 {
     public:
-	Dealer(int portNumber);
+	Dealer(char* portNumber);
 	void CompareHands( );    //how do we pass in Player1.hand?
 	void GiveHand();
 	void Pot_Add();
