@@ -41,7 +41,7 @@ int main()
 	{
 		
 	}
-	vector<int> getHandOrganized()
+	vector<int> Player::getHandOrganized()
 	{
 		
 	}
@@ -53,7 +53,7 @@ int main()
 	{
 		
 	}
-	int* rankingHand()
+	int* Player::rankingHand()
 	{
 		
 	}
