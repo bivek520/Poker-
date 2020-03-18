@@ -1,9 +1,9 @@
 #ifndef POKER_H
 #define POKER_H
 #include <vector>
+#include <gtkmm.h>
 
 using namespace std;
-
 
 
 class card
@@ -36,8 +36,8 @@ class Player
         void All_In();
         void Timer();
         void TimeOut();
-        vector SuitHand(hand);
-        vector ValueHand(hand);
+        vector SuitHand(vector<int> hand);
+        vector ValueHand(vector<int> hand);
     private:
         vector<int> hand;
         int playerID;
@@ -51,24 +51,24 @@ class Player
 class Dealer
 {
     public:
-	void CompareHands();
-	void GiveHand();
-	void Pot_Add();
-	void Pot_set();
+	void CompareHands( );    //how do we pass in Player1.hand?
+	void GiveHand(vector<int> ShuffledDeck);
+	void Pot_Add(int *Pot);
+	void Pot_Set();
 	void Exchange();
 	void GivePot();
 	void SplitPot();
-	void NextPlayer
-
+	void NextPlayer();
    private:
 	vector<int> StaticDeck;
 	vector<int> ShuffledDeck;
 	int PlayerSize;
 	int Pot;
 	int CurrentTurn;
-	
-}   
-class Mainwindow : public Gtk::Window {
+};
+
+class Mainwindow : public Gtk::Window 
+{
     public:
         Mainwindow();
         virtual ~Mainwindow();
@@ -86,8 +86,8 @@ class Mainwindow : public Gtk::Window {
 	void Status_Label();
 	void Status_Color();
 	void Status_Opacity();
-	void Slider();
-	void SliderStatus();
+	void Slider(Gtk::Widget *Slider);
+	void SliderStatus(Gtk::Widget *Slider);
 	void MinAdd();
 	void MaxAdd();
 	void Balance_Opacity();
@@ -96,18 +96,18 @@ class Mainwindow : public Gtk::Window {
 	void SelectionBoxStatus();
 	void TurnPosition();
 	void PlayerCards();
-	void Pot();
+	void Pot(int Dealer.Pot);
 	void Timer();
 	void Id_Opacity();
 	
-
     private:
 	Gtk::Label* Label_Shape;
 	Gtk::Button* Button_Shape;
 	Gtk::Button* Add_Button;
 	Gtk::Button* Fold_Button;
 	Gtk::Button* Exchange_Button;
+	Gtk::Scale* Slider;
 	
-}
+};
 
 #endif
