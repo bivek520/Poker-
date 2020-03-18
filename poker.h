@@ -17,16 +17,20 @@ class Player
         void All_In();
         void Timer();
         bool TimeOut();
+	vector<int> getHandOrganized();
         vector<int> getSuitHand();
         vector<int> getValueHand();
+	int* rankingHand();
     private:
         vector<int> hand;
         int playerID;
         int playerIP;
         int balance;
         int bid;
+	vector<int> OrganizedHand;
         vector<int> SuitHand;
         vector<int> ValueHand;
+	int rankArray[2];
 };
 
 class Dealer
