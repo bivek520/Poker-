@@ -3,5 +3,205 @@
 //sd
 int main()
 {
+	//PLAYER
+	Player::Player(int argv[2])
+	{
+		//argv[2] has IP address of player used to connect to server, which is used to construct Player objects
+	}
+        void Player::Fold()
+	{
+		//call Fold_Button_Pressed() in MainWindow
+	}
+        void Player::Check()
+	{
+		
+	}
+        void Player::Call()
+	{
+		
+	}
+        void Player::Raise()
+	{
+		
+	}
+        void Player::Bet()
+	{
+		
+	}
+        void Player::All_In()
+	{
+		
+	}
+        void Player::Timer()
+	{
+		
+	}
+        void Player::TimeOut()
+	{
+		
+	}
+        vector Player::SuitHand(vector<int> hand)
+	{
+		
+	}
+        vector Player::ValueHand(vector<int> hand)
+	{
+		
+	}
+	
+	//DEALER
+	Dealer::Dealer(int argv[1])
+	{
+		//argv[1] has Dealer IP address used to construct Dealer object
+	}
+	void Dealer::CompareHands( )
+	{
+		
+	}
+	void Dealer::GiveHand(vector<int> ShuffledDeck)
+	{
+		
+	}
+	void Dealer::Pot_Add(int *Pot)
+	{
+		
+	}
+	void Dealer::Pot_Set()
+	{
+		
+	}
+	void Dealer::Exchange()
+	{
+		
+	}
+	void Dealer::GivePot()
+	{
+		
+	}
+	void Dealer::SplitPot()
+	{
+		
+	}
+	void Dealer::NextPlayer()
+	{
+		
+	}
+	
+	//UI
+	MainWindow::MainWindow()
+	{
+		
+	}
+	void Refresh()
+	{
+		
+	}
+	void Display_Player_Hand()
+	{
+	
+	}
+	void Balance_Visibility()
+	{
+		
+	}
+	void Player_Status()
+	{
+		
+	}
+	void Fold_Button_Pressed()
+	{
+		
+	}
+	void Match_Button_Color()
+	{
+		
+	}
+	void Match_Button_Label()
+	{
+		
+	}
+	void Match_Button_Pressed()
+	{
+		
+	}
+	void Add_Button_Pressed()
+	{
+		
+	}
+	void Exchange_Button_Label()
+	{
+		
+	}
+	void Exchange_Button_Pressed()
+	{
+		
+	}
+	void Status_Label()
+	{
+		
+	}
+	void Status_Color()
+	{
+		
+	}
+	void Status_Opacity()
+	{
+		
+	}
+	void Slider(Gtk::Scale *Slider)
+	{
+		
+	}
+	void SliderStatus(Gtk::Scale *Slider) //or Widget
+	{
+		
+	}
+	void MinAdd()
+	{
+		
+	}
+	void MaxAdd()
+	{
+		
+	}
+	void Balance_Opacity()
+	{
+		
+	}
+	void Timer()
+	{
+		
+	}
+	void Reveal_Cards()
+	{
+		
+	}
+	void SelectionBoxStatus()
+	{
+		
+	}
+	void TurnPosition()
+	{
+		
+	}
+	void PlayerCards()
+	{
+		
+	}
+	void Pot(int Dealer::Dealer.Pot)
+	{
+		
+	}
+	void Timer()
+	{
+		
+	}
+	void Id_Opacity()
+	{
+		
+	}
+	virtual ~Mainwindow()
+	{
+	}
 	return 0;
 }
