@@ -27,7 +27,7 @@ class deck
 class Player
 {
     public:
-        Player();
+        Player(int argv[2]);
         void Fold(); //call Fold_Button_Pressed() in MainWindow
         void Check();
         void Call();
@@ -51,6 +51,7 @@ class Player
 class Dealer
 {
     public:
+	Dealer(int argv[1]);
 	void CompareHands( );    //how do we pass in Player1.hand?
 	void GiveHand(vector<int> ShuffledDeck);
 	void Pot_Add(int *Pot);
