@@ -21,4 +21,4 @@ $(OBJ) : $(SRC)
 	g++ -c $(CFLAGS) $(SRC) -o $(OBJ) $(GTKFLAGS)
 	
 clean:
-	-rm -f *.o poker
+	-rm -f $(OBJ)
