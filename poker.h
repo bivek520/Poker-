@@ -86,8 +86,8 @@ class Mainwindow : public Gtk::Window
 	void Status_Label();
 	void Status_Color();
 	void Status_Opacity();
-	void Slider(Gtk::Widget *Slider);
-	void SliderStatus(Gtk::Widget *Slider);
+	void Slider(Gtk::Scale *Slider);
+	void SliderStatus(Gtk::Scale *Slider); //or Widget
 	void MinAdd();
 	void MaxAdd();
 	void Balance_Opacity();
@@ -96,7 +96,7 @@ class Mainwindow : public Gtk::Window
 	void SelectionBoxStatus();
 	void TurnPosition();
 	void PlayerCards();
-	void Pot(int Dealer.Pot);
+	void Pot(int Dealer::Dealer.Pot);
 	void Timer();
 	void Id_Opacity();
 	
@@ -106,7 +106,7 @@ class Mainwindow : public Gtk::Window
 	Gtk::Button* Add_Button;
 	Gtk::Button* Fold_Button;
 	Gtk::Button* Exchange_Button;
-	Gtk::Scale* Slider;
+	Gtk::Scale* Slider; //or Widget
 	
 };
 
