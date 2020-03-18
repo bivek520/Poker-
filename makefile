@@ -19,3 +19,4 @@ $(EXE): $(OBJ)
 $(OBJ) : $(SRC)
 
 	g++ -c $(CFLAGS) $(SRC) -o $(OBJ) $(GTKFLAGS)
+	
