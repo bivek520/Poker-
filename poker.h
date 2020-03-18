@@ -41,7 +41,7 @@ class Dealer
 	void GiveHand();
 	void Pot_Add();
 	void Pot_Set();
-	void Exchange();
+	void Exchange(vector<int> playerHand);
 	void GivePot();
 	void SplitPot();
 	void NextPlayer();
