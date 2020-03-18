@@ -5,25 +5,6 @@
 
 using namespace std;
 
-
-class card
-{
-public:
-    int value;
-    char suit;
-};
-
-class player
-{
-public:
-    vector<card> hand;
-};
-
-class deck
-{
-    vector<card> d;
-};
-
 class Player
 {
     public:
@@ -68,11 +49,11 @@ class Dealer
 	int CurrentTurn;
 };
 
-class Mainwindow : public Gtk::Window 
+class MainWindow : public Gtk::Window 
 {
     public:
-        Mainwindow();
-        virtual ~Mainwindow();
+        MainWindow();
+        virtual ~MainWindow();
 	void Refresh();
 	void Display_Player_Hand();
 	void Balance_Visibility();
@@ -100,7 +81,6 @@ class Mainwindow : public Gtk::Window
 	void Pot(int Dealer::Dealer.Pot);
 	void Timer();
 	void Id_Opacity();
-	
     private:
 	Gtk::Label* Label_Shape;
 	Gtk::Button* Button_Shape;
@@ -108,7 +88,6 @@ class Mainwindow : public Gtk::Window
 	Gtk::Button* Fold_Button;
 	Gtk::Button* Exchange_Button;
 	Gtk::Scale* Slider; //or Widget
-	
 };
 
 #endif
