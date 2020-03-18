@@ -63,15 +63,16 @@ int main()
 	{
 		//argv[2] has a port number used to construct Dealer object
 	}
-	void Dealer::CompareHands( )
+	void Dealer::CompareHands(vector<int> > playersRanks)
+	{
+		//playersRanks is a vector that will be created in main by pushing back Player1/2/3.RankedHand
+		//inside a for loop for(int i=0; i<playerSize; i++)
+	}
+	void Dealer::GiveHand()
 	{
 		
 	}
-	void Dealer::GiveHand(vector<int> ShuffledDeck)
-	{
-		
-	}
-	void Dealer::Pot_Add(int *Pot)
+	void Dealer::Pot_Add()
 	{
 		
 	}
