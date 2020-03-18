@@ -37,9 +37,9 @@ class Dealer
 {
     public:
 	Dealer(char* portNumber);
-	void CompareHands( );    //how do we pass in Player1.hand?
-	void GiveHand(vector<int> ShuffledDeck);
-	void Pot_Add(int *Pot);
+	void CompareHands(vector<int> > playersRanks);    
+	void GiveHand();
+	void Pot_Add();
 	void Pot_Set();
 	void Exchange();
 	void GivePot();
