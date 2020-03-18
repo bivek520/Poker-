@@ -20,17 +20,17 @@ class Player
 	vector<int> getHandOrganized();
         vector<int> getSuitHand();
         vector<int> getValueHand();
-	int* rankingHand();
+	vector<int> rankingHand();
     private:
-        vector<int> hand;
-        int playerID;
-        int playerIP;
-        int balance;
-        int bid;
+        vector<int> Hand;
+        int PlayerID;
+        int PlayerIP;
+        int Balance;
+        int Bid;
 	vector<int> OrganizedHand;
         vector<int> SuitHand;
         vector<int> ValueHand;
-	int rankArray[2];
+	vector<int> Rankings;
 };
 
 class Dealer
