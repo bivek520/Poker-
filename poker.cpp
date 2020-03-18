@@ -41,11 +41,19 @@ int main()
 	{
 		
 	}
+	vector<int> getHandOrganized()
+	{
+		
+	}
         vector<int> Player::getSuitHand()
 	{
 		
 	}
         vector<int> Player::getValueHand()
+	{
+		
+	}
+	int* rankingHand()
 	{
 		
 	}
