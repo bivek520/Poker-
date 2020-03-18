@@ -1,6 +1,6 @@
 #include <iostream>
 #include "poker.h"
-//sd
+
 int main()
 {
 	//PLAYER
