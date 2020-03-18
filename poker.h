@@ -32,7 +32,7 @@ class Player
 class Dealer
 {
     public:
-	Dealer(int argv[1]);
+	Dealer(int portNumber);
 	void CompareHands( );    //how do we pass in Player1.hand?
 	void GiveHand(vector<int> ShuffledDeck);
 	void Pot_Add(int *Pot);
