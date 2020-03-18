@@ -4,9 +4,10 @@
 int main()
 {
 	//PLAYER
-	Player::Player(int argv[2])
+	Player::Player(char* playerIP, char* portNumber)
 	{
-		//argv[2] has IP address of player used to connect to server, which is used to construct Player objects
+		//argv[1] has IP address of player used to connect to server,
+		//argv[2] has port number of server
 	}
         void Player::Fold()
 	{
@@ -36,23 +37,23 @@ int main()
 	{
 		
 	}
-        void Player::TimeOut()
+        bool Player::TimeOut()
 	{
 		
 	}
-        vector Player::SuitHand(vector<int> hand)
+        vector<int> Player::getSuitHand()
 	{
 		
 	}
-        vector Player::ValueHand(vector<int> hand)
+        vector<int> Player::getValueHand()
 	{
 		
 	}
 	
 	//DEALER
-	Dealer::Dealer(int argv[1])
+	Dealer::Dealer(char* portNumber)
 	{
-		//argv[1] has Dealer IP address used to construct Dealer object
+		//argv[2] has a port number used to construct Dealer object
 	}
 	void Dealer::CompareHands( )
 	{
