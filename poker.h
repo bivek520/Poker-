@@ -102,6 +102,11 @@ class Mainwindow : public Gtk::Window {
 	
 
     private:
+	Gtk::Label* Label_Shape;
+	Gtk::Button* Button_Shape;
+	Gtk::Button* Add_Button;
+	Gtk::Button* Fold_Button;
+	Gtk::Button* Exchange_Button;
 	
 }
 
