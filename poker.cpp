@@ -53,7 +53,7 @@ int main()
 	{
 		
 	}
-	int* Player::rankingHand()
+	vector<int> Player::rankingHand()
 	{
 		
 	}
