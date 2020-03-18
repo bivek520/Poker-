@@ -5,7 +5,7 @@ OBJ = $(SRC:.cpp=.o)
 EXE = $(SRC:.cpp=.e)
 
 GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0  --cflags --libs`
-CFLAGS = -g -std=c++11
+CFLAGS = -Wall -O0 -g -std=c++11
 
 
 all : $(EXE) 
