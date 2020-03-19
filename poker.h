@@ -78,7 +78,6 @@ class MainWindow : public Gtk::Window
 	void MinAdd();
 	void MaxAdd();
 	void Balance_Opacity();
-	void Timer();
 	void Reveal_Cards();
 	void SelectionBoxStatus();
 	void TurnPosition();
