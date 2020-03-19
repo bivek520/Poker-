@@ -21,4 +21,5 @@ $(OBJ) : $(SRC)
 	g++ -c $(CFLAGS) $(SRC) -o $(OBJ) $(GTKFLAGS)
 	
 clean:
-	-rm -f $(EXE) $(OBJ)
+	-rm -f $(OBJ)
+	-rm -f $(EXE)
