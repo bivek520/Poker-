@@ -73,8 +73,8 @@ class MainWindow : public Gtk::Window
 	void Status_Label();
 	void Status_Color();
 	void Status_Opacity();
-	void Slider(Gtk::Scale *Slider);
-	void SliderStatus(Gtk::Scale *Slider); //or Widget
+	void Slider();
+	void SliderStatus(); 
 	void MinAdd();
 	void MaxAdd();
 	void Balance_Opacity();
