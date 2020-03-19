@@ -70,7 +70,7 @@ int main()
 	}
 	void Dealer::GiveHand()
 	{
-		
+		//using json 
 	}
 	void Dealer::Pot_Add()
 	{
@@ -80,7 +80,7 @@ int main()
 	{
 		
 	}
-	void Dealer::Exchange()
+	void Dealer::Exchange(vector<int> playerHand)
 	{
 		
 	}
