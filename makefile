@@ -22,3 +22,4 @@ $(OBJ) : $(SRC)
 	
 clean:
 	-rm -f $(OBJ)
+	-rm -f $(EXE)
