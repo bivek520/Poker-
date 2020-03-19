@@ -210,3 +210,4 @@ MainWindow::~MainWindow()
 {
 }
 
+int main(){return 0;}
