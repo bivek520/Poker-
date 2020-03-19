@@ -37,7 +37,7 @@ class Dealer
 {
     public:
 	Dealer(char* portNumber);
-	void CompareHands(vector<int> > playersRanks);    
+	void CompareHands(vector<int> playersRanks);
 	void GiveHand();
 	void Pot_Add();
 	void Pot_Set();
@@ -73,12 +73,11 @@ class MainWindow : public Gtk::Window
 	void Status_Label();
 	void Status_Color();
 	void Status_Opacity();
-	void Slider();
+	void Slider_();
 	void SliderStatus(); 
 	void MinAdd();
 	void MaxAdd();
 	void Balance_Opacity();
-	void Timer();
 	void Reveal_Cards();
 	void SelectionBoxStatus();
 	void TurnPosition();

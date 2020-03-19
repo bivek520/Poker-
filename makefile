@@ -22,3 +22,14 @@ $(OBJ) : $(SRC)
 	
 clean:
 	-rm -f $(OBJ)
+
+
+
+CXXFLAGS= -std=c++11
+GTKFLAGS= `pkg-config gtkmm-3.0 --cflags --libs`
+
+ex: poker.cpp
+	$(CXX) $(CXXFLAGS) poker.cpp $(GTKFLAGS)
+	./a.out
+clean:
+	rm -rf *.o
