@@ -1,7 +1,6 @@
 #ifndef DEALER_H
 #define DEALER_H
 #include <vector>
-#include <gtkmm.h>
 
 using namespace std;
 
