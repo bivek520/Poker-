@@ -42,7 +42,7 @@ $(OBJ3) : $(SRC3) $(HFILES3)
 	g++ -c $(CFLAGS) $(SRC3) -o $(OBJ3) $(GTKFLAGS)
   
 
-$(OBJ4) : $(SRC4)
+$(OBJ4) : $(SRC4) $(HFILES1) $(HFILES2) $(HFILES3)
 
 	g++ -c $(CFLAGS) $(SRC4) -o $(OBJ4) $(GTKFLAGS)
 
