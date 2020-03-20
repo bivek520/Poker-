@@ -14,7 +14,8 @@ HFLIES1 = ../include/player.h
 HFLIES2 = ../include/dealer.h
 HFLIES3 = ../include/MainWindow.h
 
-all : src/player src/dealer src/MainWindow src/main
+#all : src/player src/dealer src/MainWindow src/main
+all: $(EXE)
 
 #GTKFLAGS = $(shell pkg-config --cflags --libs gtk+-3.0)
 
