@@ -8,7 +8,7 @@ OBJ2 = $(SRC2:.cpp=.o)
 OBJ3 = $(SRC3:.cpp=.o)
 OBJ4 = $(SRC4:.cpp=.o)
 
-EXE = poker.e
+EXE = $(SRC1:.cpp=.e)
 
 HFLIES1 = ../include/player.h
 HFLIES2 = ../include/dealer.h
