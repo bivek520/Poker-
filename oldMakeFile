@@ -1,18 +1,44 @@
-#SRC = poker.cpp
+SRC1 = src/player.cpp
+SRC2 = src/dealer.cpp
+SRC3 = src/MainWindow.cpp
+SRC4 = src/main.cpp
 
-#OBJ = $(SRC:.cpp=.o)
+OBJ1 = $(SRC1:.cpp=.o)
+OBJ2 = $(SRC2:.cpp=.o)
+OBJ3 = $(SRC3:.cpp=.o)
+OBJ4 = $(SRC4:.cpp=.o)
 
-#EXE = $(SRC:.cpp=.e)
+EXE = $(SRC4:.cpp=.e)
 
-#GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0  --cflags --libs`
-#CFLAGS = -Wall -O0 -g -std=c++11
+HFLIES = src/include
+
+gtkmm-3.24.2:
+        tar xzf gtkmm-3.24.2.tar.xz
+
+GTKFLAGS = `gtkmm-3.24.2 --cflags --libs`
+CFLAGS = -Wall -O0 -g -std=c++11
+
+$(EXE): $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4)
+
+	g++ $(CFLAGS) $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) -o $(EXE) $(GTKFLAGS)
 
 
-#$(EXE): $(OBJ) 
+$(OBJ1) : $(SRC1)
 
-#	g++ $(CFLAGS) $(OBJ) -o $(EXE) $(GTKFLAGS)
+	g++ -c $(CFLAGS) $(SRC1) -o $(OBJ1) $(GTKFLAGS)
+  
 
+$(OBJ2) : $(SRC2)
 
-#$(OBJ) : $(SRC)
+	g++ -c $(CFLAGS) $(SRC2) -o $(OBJ2) $(GTKFLAGS)
+  
 
-#	g++ -c $(CFLAGS) $(SRC) -o $(OBJ) $(GTKFLAGS)
+$(OBJ3) : $(SRC3)
+
+	g++ -c $(CFLAGS) $(SRC3) -o $(OBJ3) $(GTKFLAGS)
+  
+
+$(OBJ4) : $(SRC4)
+
+	g++ -c $(CFLAGS) $(SRC4) -o $(OBJ4) $(GTKFLAGS)
+
