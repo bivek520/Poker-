@@ -1,5 +1,7 @@
 #include <iostream>
-#include "poker.h"
+#include "player.h"
+#include "dealer.h"
+#include "MainWindow.h"
 
 
 //PLAYER
