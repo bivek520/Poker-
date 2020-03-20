@@ -10,9 +10,9 @@ OBJ4 = $(SRC4:.cpp=.o)
 
 EXE = $(SRC4:.cpp=.e)
 
-HFLIES1 = ../include/player.h
-HFLIES2 = ../include/dealer.h
-HFLIES3 = ../include/MainWindow.h
+HFILES1 = ../include/player.h
+HFILES2 = ../include/dealer.h
+HFILES3 = ../include/MainWindow.h
 
 #all : src/player src/dealer src/MainWindow src/main
 all: $(EXE)
