@@ -1,4 +1,4 @@
-all : gtkmm-3.24.2 src/player src/dealer src/MainWindow 
+all : gtkmm-3.24.2 src/player src/dealer src/MainWindow src/main
 
 gtkmm-3.24.2:
 	tar xzf gtkmm-3.24.2.tar.xz
@@ -12,6 +12,7 @@ clean:
 	-rm -f src/player
 	-rm -f src/dealer
 	-rm -f src/MainWindow
+	-rm -f src/main
 
 #SRC = poker.cpp
 
