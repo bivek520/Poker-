@@ -38,3 +38,8 @@ void Dealer::NextPlayer()
 {
     
 }
+
+int main()
+{
+    return 0;
+}
