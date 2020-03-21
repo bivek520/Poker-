@@ -6,6 +6,7 @@ CPPFLAGS+= -I./include -I.`/usr/bin/pkg-config gtkmm-3.0  --cflags --libs`
 #LDLIBS = $(shell pkg-config --cflags --libs gtk+-3.0)
 LDLIBS+= `/usr/bin/pkg-config gtkmm-3.0  --cflags --libs`
 
+
 clean:
         -rm -f src/player
         -rm -f src/dealer
