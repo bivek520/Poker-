@@ -54,3 +54,8 @@ vector<int> Player::rankingHand()
 {
     
 }
+
+int main()
+{
+    return 0;
+}
