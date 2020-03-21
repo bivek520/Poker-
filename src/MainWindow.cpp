@@ -113,3 +113,8 @@ void MainWindow::Id_Opacity()
 MainWindow::~MainWindow()
 {
 }
+
+int main()
+{
+    return 0;
+}
