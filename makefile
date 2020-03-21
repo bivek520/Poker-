@@ -1,4 +1,4 @@
-all : src/player src/dealer src/MainWindow src/main
+all : src/player src/dealer src/MainWindow 
 
 CXXFLAGS+= -Wall -O0 -g -std=c++11
 CPPFLAGS+= -I./include `/usr/bin/pkg-config gtk+-3.0 --cflags`
