@@ -1,7 +1,7 @@
 all : src/player src/dealer src/MainWindow src/main
 
 CXXFLAGS+= -Wall -O0 -g -std=c++11
-CPPFLAGS+= -I./include 
+CPPFLAGS+= -I./include `/usr/bin/pkg-config gtk+-3.0 --cflags`
 LDLIBS+= `/usr/bin/pkg-config gtk+-3.0 --cflags --libs`
 #LDLIBS = $(shell pkg-config --cflags --libs gtk+-3.0)
 
