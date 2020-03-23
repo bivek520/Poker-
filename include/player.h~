@@ -23,8 +23,7 @@ class Player
     private:
         vector<int> Hand;
         int PlayerID;
-        char* _playerIP;
-	char* _portNumber;
+        char* PlayerIP;
         int Balance;
         int Bid;
 	vector<int> OrganizedHand;

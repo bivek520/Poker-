@@ -1,10 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <vector>
-#include <gtkmm.h>
-#include <sstream>
-#include <fstream>
 #include "player.h"
+#include <gtkmm.h>
+
 const std::string APP_TITLE{"PokerPlus"};
 const std::string APP_NAME{"edu.uta.cse1325.mass.v0_1_0"};
 const std::string VERSION{"0.1.0"};
