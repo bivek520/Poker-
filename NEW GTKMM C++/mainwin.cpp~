@@ -211,7 +211,7 @@ Mainwin::Mainwin() : exchange("Exchange"), fold("          F O L D          "), 
   	raise.show();
 	//playHbox.pack_start(sep4);
 	playHbox.pack_start(HScale);
-	HScale.set_range(5, 175);
+	HScale.set_range(0, 175);
 	HScale.set_increments(1.0, 1.0);
 	vbox->pack_start(image21);  
 

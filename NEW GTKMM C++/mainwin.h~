@@ -23,7 +23,7 @@ class Mainwin : public Gtk::Window {
 	void on_exchange_click();
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;
-	Gtk::HBox actionHbox,balanceHbox,publicCardHbox,indicatorHbox, potHbox,privateCardHbox,cardSelectionHbox,exchangeHbox,playHbox;
+	Gtk::HBox actionHbox,balanceHbox,publicCardHbox,potHbox,privateCardHbox,cardSelectionHbox,exchangeHbox,playHbox;
 	  Gtk::Grid m_Grid;
 	Gtk::Frame Frame_Horizontal, Frame_Vertical;
 	Gtk::CheckButton RB1, RB2, RB3, RB4, RB5;
