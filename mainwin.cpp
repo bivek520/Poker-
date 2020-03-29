@@ -240,6 +240,7 @@ Mainwin::Mainwin()
 Mainwin::~Mainwin() { }
 
 void Mainwin::on_fold_click() {
+reset=true;
 action1.set_text("\nFolded");
 
 std::cout << "Player Folded!" << std::endl;
@@ -247,12 +248,14 @@ shiftIndicator();
 }
 
 void Mainwin::on_check_click() {
+reset=true;
 action1.set_text("\nChecked");
 std::cout << "Player Checked!" << std::endl;
 shiftIndicator();
 }
 
 void Mainwin::on_bet_click() {
+reset=true;
 int sp = HScale.get_value();
 TESTVAL = sp;
 std::string to_call_button = "CALL $" + std::to_string(TESTVAL);
@@ -276,6 +279,7 @@ pot.set_text("\nPOT: $" +std::to_string(potVal));
 }
 
 void Mainwin::on_call_click() {
+reset=true;
 action1.set_text("\nCalled $" + std::to_string(TESTVAL));
 std::cout << "Player Called $" + std::to_string(TESTVAL) + "!"<< std::endl;
 shiftIndicator();
@@ -286,6 +290,7 @@ pot.set_text("\nPOT: $" +std::to_string(potVal));
 }
 
 void Mainwin::on_raise_click() {
+reset=true;
 int sp = HScale.get_value();
 action1.set_text("\nRaised $" + std::to_string(sp));
 std::cout << "Player Raised $" + std::to_string(sp) + "!"<< std::endl;
@@ -350,6 +355,8 @@ RB5.set_active(false);
 }
 
 void Mainwin::shiftIndicator(){
+reset=false;
+seconds=30;
 m_Grid.remove(*indicator);
 m_Grid.attach(*indicator, TESTTURN, 4, 1, 1);
 TESTTURN += 1;
@@ -366,12 +373,11 @@ bool Mainwin::on_my_timeout()
                 Mainwin::on_fold_click();
                 seconds=30;
         }
-/*      if (reset==true)
+      if (reset==true)
         {
-                Mainwin::shiftIndicator();
-                seconds=30;
+              reset=false;  
+	      Mainwin::shiftIndicator();
         }
-*/
         return true;
 }
 
