@@ -50,6 +50,7 @@ class Mainwin : public Gtk::Window {
 	Gtk::Label balance1, balance2, balance3, balance4, balance5;		//Player's current balance, Available amount 
 	Gtk::Label indicator1, indicator2, indicator3, indicator4, indicator5;   //Indicates whose turn.
 	Gtk::Label pot;
+	Gtk::Label timer;
 	Gtk::Label image11, image12, image13, image14, image15;          //player1 hands
 	Gtk::Label image21, image22, image23, image24, image25;	//player2 hands
 	Gtk::Label image31, image32, image33, image34, image35;	//player3 hands
