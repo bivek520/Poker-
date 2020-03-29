@@ -24,6 +24,9 @@ class Mainwin : public Gtk::Window {
 	void on_raise_click();
 	void on_exchange_click();
 	void on_HScale_value_changed();
+	bool on_my_timeout();
+        int seconds=30;
+        bool reset=false;
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;
 	Gtk::HBox actionHbox,balanceHbox,publicCardHbox,indicatorHbox, potHbox,privateCardHbox,cardSelectionHbox,exchangeHbox,playHbox;
