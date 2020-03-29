@@ -155,6 +155,11 @@ Mainwin::Mainwin()
 	pot.set_text("\nPOT: $" +std::to_string(potVal));
 	//pot.override_foreground_color(Gdk::RGBA{"gold"});
 	m_Grid.attach(pot, 2, 5, 1, 1);
+	
+	timer.set_text("Elapsed time: ");
+        m_Grid.attach(timer, 4, 5, 1, 1);
+        Glib::signal_timeout().connect( sigc::mem_fun(*this, &Mainwin::on_my_timeout), 1000 );
+	
 	bh1 =Gtk::manage(new Gtk::Image{big(21)});
 	bh2 =Gtk::manage(new Gtk::Image{big(121)});
 	bh3 =Gtk::manage(new Gtk::Image{big(113)});
@@ -240,11 +245,13 @@ action1.set_text("\nFolded");
 std::cout << "Player Folded!" << std::endl;
 shiftIndicator();
 }
+
 void Mainwin::on_check_click() {
 action1.set_text("\nChecked");
 std::cout << "Player Checked!" << std::endl;
 shiftIndicator();
 }
+
 void Mainwin::on_bet_click() {
 int sp = HScale.get_value();
 TESTVAL = sp;
@@ -267,6 +274,7 @@ shiftIndicator();
 potVal = potVal + TESTVAL;
 pot.set_text("\nPOT: $" +std::to_string(potVal));
 }
+
 void Mainwin::on_call_click() {
 action1.set_text("\nCalled $" + std::to_string(TESTVAL));
 std::cout << "Player Called $" + std::to_string(TESTVAL) + "!"<< std::endl;
@@ -276,6 +284,7 @@ balance1.set_text("\n$" + std::to_string(balance));
 potVal = potVal + TESTVAL;
 pot.set_text("\nPOT: $" +std::to_string(potVal));
 }
+
 void Mainwin::on_raise_click() {
 int sp = HScale.get_value();
 action1.set_text("\nRaised $" + std::to_string(sp));
@@ -289,6 +298,7 @@ balance1.set_text("\n$" + std::to_string(balance));
 potVal = potVal + TESTVAL;
 pot.set_text("\nPOT: $" +std::to_string(potVal));
 }
+
 void Mainwin::on_HScale_value_changed() {
 int sp = HScale.get_value();
 std::string to_bet_button = "BET $" + std::to_string(sp);
@@ -338,6 +348,7 @@ RB3.set_active(false);
 RB4.set_active(false);
 RB5.set_active(false);
 }
+
 void Mainwin::shiftIndicator(){
 m_Grid.remove(*indicator);
 m_Grid.attach(*indicator, TESTTURN, 4, 1, 1);
@@ -345,6 +356,24 @@ TESTTURN += 1;
 if (TESTTURN == 5) TESTTURN = 0;
 }
 
+bool Mainwin::on_my_timeout()
+{
+        char Text[50];
+        sprintf (Text,"Elapsed time: %d s",--seconds);
+        timer.set_text(Text);
+        if (seconds==0)
+        {
+                Mainwin::on_fold_click();
+                seconds=30;
+        }
+/*      if (reset==true)
+        {
+                Mainwin::shiftIndicator();
+                seconds=30;
+        }
+*/
+        return true;
+}
 
 
 
