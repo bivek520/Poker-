@@ -20,7 +20,7 @@ Mainwin::Mainwin()
 	Gtk::Box *vbox = Gtk::manage(new Gtk::VBox);
         add(*vbox);
 	
-	vbox->override_background_color(Gdk::RGBA{"white"}); //changes background color of the vbox
+	vbox->override_background_color(Gdk::RGBA{"green"}); //changes background color of the vbox
 
 	//hbox.pack_start(vbox);
 	//action1.set_text("Calls $175");
