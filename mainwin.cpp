@@ -91,29 +91,29 @@ Mainwin::Mainwin()
 	h4 =Gtk::manage(new Gtk::Image{sml(122)});
 	h5 =Gtk::manage(new Gtk::Image{sml(123)});
 
-	h6 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h7 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h8 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h9 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h10 =Gtk::manage(new Gtk::Image{"back.jpg"});
+	h6 =Gtk::manage(new Gtk::Image{sml(11)});
+	h7 =Gtk::manage(new Gtk::Image{sml(11)});
+	h8 =Gtk::manage(new Gtk::Image{sml(11)});
+	h9 =Gtk::manage(new Gtk::Image{sml(11)});
+	h10 =Gtk::manage(new Gtk::Image{sml(11)});
 
-	h11 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h12 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h13 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h14 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h15 =Gtk::manage(new Gtk::Image{"back.jpg"});
+	h11 =Gtk::manage(new Gtk::Image{sml(11)});
+	h12 =Gtk::manage(new Gtk::Image{sml(11)});
+	h13 =Gtk::manage(new Gtk::Image{sml(11)});
+	h14 =Gtk::manage(new Gtk::Image{sml(11)});
+	h15 =Gtk::manage(new Gtk::Image{sml(11)});
 
-	h16 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h17 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h18 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h19 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h20 =Gtk::manage(new Gtk::Image{"back.jpg"});
+	h16 =Gtk::manage(new Gtk::Image{sml(11)});
+	h17 =Gtk::manage(new Gtk::Image{sml(11)});
+	h18 =Gtk::manage(new Gtk::Image{sml(11)});
+	h19 =Gtk::manage(new Gtk::Image{sml(11)});
+	h20 =Gtk::manage(new Gtk::Image{sml(11)});
 
-	h21 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h22 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h23 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h24 =Gtk::manage(new Gtk::Image{"back.jpg"});
-	h25 =Gtk::manage(new Gtk::Image{"back.jpg"});
+	h21 =Gtk::manage(new Gtk::Image{sml(11)});
+	h22 =Gtk::manage(new Gtk::Image{sml(11)});
+	h23 =Gtk::manage(new Gtk::Image{sml(11)});
+	h24 =Gtk::manage(new Gtk::Image{sml(11)});
+	h25 =Gtk::manage(new Gtk::Image{sml(11)});
 
 
 	small_card_grid1.attach(*h1, 0, 0, 1, 1);
