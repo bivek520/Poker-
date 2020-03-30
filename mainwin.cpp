@@ -19,19 +19,24 @@ Mainwin::Mainwin()
 
 	Gtk::Box *vbox = Gtk::manage(new Gtk::VBox);
         add(*vbox);
-	
-	vbox->override_background_color(Gdk::RGBA{"green"}); //changes background color of the vbox
+	vbox->override_background_color(Gdk::RGBA{"green"});
 
 	//hbox.pack_start(vbox);
 	//action1.set_text("Calls $175");
 	//vbox.pack_start(hbox);
 	//vbox.pack_start(action1);
 
-	p1.set_text("player 1");
-	p2.set_text("player 2");
-	p3.set_text("player 3");
-	p4.set_text("player 4");
-	p5.set_text("player 5");
+	p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
+	p2.set_markup("<span size='16000' color ='black' weight='bold'>Player 2 </span>");
+	p3.set_markup("<span size='16000' color ='black' weight='bold'>Player 3 </span>");
+	p4.set_markup("<span size='16000' color ='black' weight='bold'>Player 4 </span>");
+	p5.set_markup("<span size='16000' color ='black' weight='bold'>Player 5 </span>");
+
+	//p1.set_text("player 1");
+//	p2.set_text("player 2");
+//	p3.set_text("player 3");
+//	p4.set_text("player 4");
+//	p5.set_text("player 5");
 
     	vbox->pack_start(m_Grid, Gtk::PACK_SHRINK, 10);
     	m_Grid.set_row_homogeneous(true);
@@ -49,11 +54,16 @@ Mainwin::Mainwin()
 	p4.override_background_color(Gdk::RGBA{"cyan"});
 	p5.override_background_color(Gdk::RGBA{"orange"});
 
-	action1.set_text("\nP1 Action");
-	action2.set_text("\nP2 Action");
-	action3.set_text("\nP3 Action");
-	action4.set_text("\nP4 Action");
-	action5.set_text("\nP5 Action");
+	action1.set_markup("<span size='16000' color ='black' >Action </span>");
+	action2.set_markup("<span size='16000' color ='black' >Action </span>");
+	action3.set_markup("<span size='16000' color ='black' >Action </span>");
+	action4.set_markup("<span size='16000' color ='black' >Action </span>");
+	action5.set_markup("<span size='16000' color ='black' >Action </span>");
+//	action1.set_text("\nP1 Action");
+//	action2.set_text("\nP2 Action");
+//	action3.set_text("\nP3 Action");
+//	action4.set_text("\nP4 Action");
+//	action5.set_text("\nP5 Action");
 
 	m_Grid.attach(action1, 0, 1, 1, 1);
     	m_Grid.attach(action2, 1, 1, 1, 1);
@@ -61,11 +71,21 @@ Mainwin::Mainwin()
     	m_Grid.attach(action4, 3, 1, 1, 1);
     	m_Grid.attach(action5, 4, 1, 1, 1);
 
-	balance1.set_text("\n$" + std::to_string(balance));
-	balance2.set_text("\n$175");
-	balance3.set_text("\n$175");
-	balance4.set_text("\n$175");
-	balance5.set_text("\n$175");
+	balance1.set_markup("<span size='14000' color ='black' >$  " 
+              +  std::to_string(balance) + "</span>");
+	balance2.set_markup("<span size='14000' color ='black' >$  " 
+              +  std::to_string(balance) + "</span>");
+	balance3.set_markup("<span size='14000' color ='black' >$  " 
+              +  std::to_string(balance) + "</span>");
+	balance4.set_markup("<span size='14000' color ='black' >$  " 
+              +  std::to_string(balance) + "</span>");
+	balance5.set_markup("<span size='14000' color ='black' >$  " 
+              +  std::to_string(balance) + "</span>");
+	//balance1.set_text("\n$" + std::to_string(balance));
+//	balance2.set_text("\n$175");
+//	balance3.set_text("\n$175");
+//	balance4.set_text("\n$175");
+//	balance5.set_text("\n$175");
 
 	//add(balanceHbox);
 	m_Grid.attach(balance1, 0, 2, 1, 1);
@@ -156,11 +176,14 @@ Mainwin::Mainwin()
     
         shiftIndicator();
 
-	pot.set_text("\nPOT: $" +std::to_string(potVal));
+	pot.set_markup("<span size='16000' color ='red' weight='bold'>$  " 
+              +  std::to_string(potVal) + "</span>");
+	//pot.set_text("\nPOT: $" +std::to_string(potVal));
 	//pot.override_foreground_color(Gdk::RGBA{"gold"});
 	m_Grid.attach(pot, 2, 5, 1, 1);
-	
-	timer.set_text("Timer time: ");
+
+	timer.set_markup("<span size='16000' color ='white' >Timer time: </span>");
+	//timer.set_text("Timer time: ");
         m_Grid.attach(timer, 4, 5, 1, 1);
         Glib::signal_timeout().connect( sigc::mem_fun(*this, &Mainwin::on_my_timeout), 1000 );
 	
@@ -189,11 +212,12 @@ Mainwin::Mainwin()
 	cardSelectionHbox.pack_start(RB4,Gtk::PACK_END, 0);
 	cardSelectionHbox.pack_start(RB5,Gtk::PACK_END, 0);
 
+	//vbox->pack_start(sep2);
 	vbox->pack_start(exchangeHbox);    
 	exchangeHbox.pack_start(exchange ,Gtk::PACK_END, 0);
   	exchange.signal_clicked().connect([this] {this->on_exchange_click();});
   	exchange.show();
- 	vbox->pack_start(sep3);
+ 	//vbox->pack_start(sep3);
 
 	image21.set_text(" \n");
 	//playHbox.pack_start(image21);
@@ -204,9 +228,9 @@ Mainwin::Mainwin()
 
 	//cvbox.pack_start(image21);  
 	vbox->pack_start(playHbox); 
-	playHbox.pack_start(fold ,Gtk::PACK_END, 0);
-	playHbox.pack_start(check ,Gtk::PACK_END, 0);
-	playHbox.pack_start(bet ,Gtk::PACK_END, 0);
+	playHbox.pack_start(fold ,Gtk::PACK_SHRINK, 20);
+	playHbox.pack_start(check ,Gtk::PACK_SHRINK, 20);
+	playHbox.pack_start(bet ,Gtk::PACK_SHRINK, 20);
 	fold.set_size_request(250,30);
 	check.set_size_request(250,30);
 	bet.set_size_request(250,30);
@@ -245,7 +269,8 @@ Mainwin::~Mainwin() { }
 
 void Mainwin::on_fold_click() {
 reset=true;
-action1.set_text("\nFolded");
+//action1.set_text("\nFolded");
+action1.set_markup("<span size='16000' color ='black' weight='bold'>Folded </span>");
 
 std::cout << "Player Folded!" << std::endl;
 shiftIndicator();
@@ -253,7 +278,8 @@ shiftIndicator();
 
 void Mainwin::on_check_click() {
 reset=true;
-action1.set_text("\nChecked");
+//action1.set_text("\nChecked");
+action1.set_markup("<span size='16000' color ='black weight='bold'>Checked </span>");
 std::cout << "Player Checked!" << std::endl;
 shiftIndicator();
 }
@@ -263,8 +289,10 @@ reset=true;
 int sp = HScale.get_value();
 TESTVAL = sp;
 std::string to_call_button = "CALL $" + std::to_string(TESTVAL);
+//call.set_markup("<span size='16000' color ='black' >CALL $" + std::to_string(TESTVAL) + "</span>");
 call.set_label(to_call_button);
-action1.set_text("\nBet $" + std::to_string(sp));
+action1.set_markup("<span size='16000' color ='black' >BET $" + std::to_string(sp) + "</span>");
+//action1.set_text("\nBet $" + std::to_string(sp));
 std::cout << "Player Bet $" + std::to_string(sp) + "!"<< std::endl;
 check.hide();
 bet.hide();
@@ -276,15 +304,18 @@ call.show();
 raise.signal_clicked().connect([this] {this->on_raise_click();});
 raise.show();
 balance = balance - TESTVAL;
-balance1.set_text("\n$" + std::to_string(balance));
+//balance1.set_text("\n$" + std::to_string(balance));
+balance1.set_markup("<span size='16000' color ='black' >$" + std::to_string(balance) + "</span>");
 shiftIndicator();
 potVal = potVal + TESTVAL;
-pot.set_text("\nPOT: $" +std::to_string(potVal));
+//pot.set_text("\nPOT: $" +std::to_string(potVal));
+pot.set_markup("<span size='16000' color ='black' >POT $" + std::to_string(potVal) + "</span>");
 }
 
 void Mainwin::on_call_click() {
 reset=true;
-action1.set_text("\nCalled $" + std::to_string(TESTVAL));
+action1.set_markup("<span size='16000' color ='black' >CALLED $" + std::to_string(TESTVAL) + "</span>");
+//action1.set_text("\nCalled $" + std::to_string(TESTVAL));
 std::cout << "Player Called $" + std::to_string(TESTVAL) + "!"<< std::endl;
 shiftIndicator();
 balance = balance - TESTVAL;
@@ -296,7 +327,8 @@ pot.set_text("\nPOT: $" +std::to_string(potVal));
 void Mainwin::on_raise_click() {
 reset=true;
 int sp = HScale.get_value();
-action1.set_text("\nRaised $" + std::to_string(sp));
+action1.set_markup("<span size='16000' color ='black' >Raised $" + std::to_string(sp)+ "</span>");
+//action1.set_text("\nRaised $" + std::to_string(sp));
 std::cout << "Player Raised $" + std::to_string(sp) + "!"<< std::endl;
 TESTVAL += sp;
 std::string to_call_button = "CALL $" + std::to_string(TESTVAL);
@@ -371,15 +403,20 @@ bool Mainwin::on_my_timeout()
 {
         char Text[50];
         sprintf (Text,"Timer: %d s",--seconds);
+	//std::to_string(Text);
+	//timer.set_markup("<span size='16000' color ='white' >" + Text + "</span>");
+//action1.set_markup("<span size='16000' color ='black' >Raised $" + std::to_string(sp)+ "</span>");
         timer.set_text(Text);
 	if (seconds==5)
 	{
 		system("canberra-gtk-play  -f tick.wav &");
+		//timer.set_markup("<span size='16000' color ='red' >" + Text + "</span>");
 		std::cout<<"sound need to be played here"<<std::endl;
 	}
         if (seconds==0)
         {
 		system("canberra-gtk-play  -f buzzer.wav &");
+		//timer.set_markup("<span size='16000' color ='black' >" + Text + "</span>");
 		std::cout<<"sound need to be played here"<<std::endl;
 
                 Mainwin::on_fold_click();
@@ -392,7 +429,6 @@ bool Mainwin::on_my_timeout()
         }
         return true;
 }
-
 
 
 
