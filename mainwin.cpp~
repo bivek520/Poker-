@@ -370,11 +370,6 @@ bool Mainwin::on_my_timeout()
         char Text[50];
         sprintf (Text,"Timer: %d s",--seconds);
         timer.set_text(Text);
-	if (seconds==5)
-	{
-		system("canberra-gtk-play  -f tick.wav &");
-		std::cout<<"sound need to be played here"<<std::endl;
-	}
         if (seconds==0)
         {
 		system("canberra-gtk-play  -f buzzer.wav &");
