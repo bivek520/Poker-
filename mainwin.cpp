@@ -1,4 +1,6 @@
 #include "mainwin.h"
+#include <cstdlib>
+
 std::string big(int card)
 {
 std::string sCard = "LargeCards/" + std::to_string(card) + ".jpg";
@@ -370,6 +372,9 @@ bool Mainwin::on_my_timeout()
         timer.set_text(Text);
         if (seconds==0)
         {
+		system("canberra-gtk-play  -f buzzer.wav &");
+		std::cout<<"sound need to be played here"<<std::endl;
+
                 Mainwin::on_fold_click();
                 seconds=30;
         }
