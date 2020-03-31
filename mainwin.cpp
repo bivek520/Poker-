@@ -229,17 +229,17 @@ Mainwin::Mainwin()
 	
 	fold.set_size_request(30,30);
 	fold.show();
-	Gtk::Image* folding = Gtk::manage(new Gtk::Image{"20fold.jpg"});
+	Gtk::Image* folding = Gtk::manage(new Gtk::Image{"fold.jpg"});
 	fold.set_image(*folding);
 	folding->show();
 
 	check.set_size_request(30,30);
-	Gtk::Image* checking = Gtk::manage(new Gtk::Image{"20check.jpg"});
+	Gtk::Image* checking = Gtk::manage(new Gtk::Image{"check.jpg"});
         check.set_image(*checking);
         checking->show();
 
 	bet.set_size_request(30,30);
-	Gtk::Image* beting = Gtk::manage(new Gtk::Image{"20bet.jpg"});
+	Gtk::Image* beting = Gtk::manage(new Gtk::Image{"bet.jpg"});
         bet.set_image(*beting);
         beting->show();
 	
@@ -337,7 +337,7 @@ playHbox.pack_start(call ,Gtk::PACK_END, 0);
 playHbox.pack_start(raise ,Gtk::PACK_END, 0);
 HScale.set_value(5);
 
-Gtk::Image* calling = Gtk::manage(new Gtk::Image{"20call.jpg"});
+Gtk::Image* calling = Gtk::manage(new Gtk::Image{"call.jpg"});
 call.set_image(*calling);
 calling->show();
 /*if (TESTTURN!=0)
@@ -346,7 +346,7 @@ else*/
 	call.signal_clicked().connect([this] {this->on_call_click();});
 call.show();
 
-Gtk::Image* raising = Gtk::manage(new Gtk::Image{"20raise.jpg"});
+Gtk::Image* raising = Gtk::manage(new Gtk::Image{"raise.jpg"});
 raise.set_image(*raising);
 raising->show();
 /*if (TESTTURN!=0)
@@ -371,7 +371,7 @@ reset=true;
 //action1.set_text("\nCalled $" + std::to_string(TESTVAL));
 std::string to_call_button = "$" + std::to_string(TESTVAL);
 call.set_label(to_call_button);
-Gtk::Image* calling = Gtk::manage(new Gtk::Image{"20call.jpg"});
+Gtk::Image* calling = Gtk::manage(new Gtk::Image{"call.jpg"});
 call.set_image(*calling);
 calling->show();
 
@@ -405,7 +405,7 @@ std::cout << "Player Raised $" + std::to_string(sp) + "!"<< std::endl;
 TESTVAL += sp;
 std::string to_call_button = "$" + std::to_string(TESTVAL);
 call.set_label(to_call_button);
-Gtk::Image* calling = Gtk::manage(new Gtk::Image{"20call.jpg"});
+Gtk::Image* calling = Gtk::manage(new Gtk::Image{"call.jpg"});
 call.set_image(*calling);
 calling->show();
 
@@ -432,11 +432,11 @@ to_raise_button = "ALL IN $" + std::to_string(sp) + "!";
 raise.set_label(to_raise_button);
 bet.set_label(to_bet_button);
 
-Gtk::Image* beting = Gtk::manage(new Gtk::Image{"20bet.jpg"});
+Gtk::Image* beting = Gtk::manage(new Gtk::Image{"bet.jpg"});
 bet.set_image(*beting);
 beting->show();
 
-Gtk::Image* raising = Gtk::manage(new Gtk::Image{"20raise.jpg"});
+Gtk::Image* raising = Gtk::manage(new Gtk::Image{"raise.jpg"});
 raise.set_image(*raising);
 raising->show();
 }
