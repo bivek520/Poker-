@@ -25,7 +25,7 @@ class Server {
 	int minRaise();
 	int maxRaise();
 	void gameWin(std::string playerID);
-	void bidReset(int bidAmount);
+	void bidReset(bool BPhase2,int bidAmount);
 
 
     private:
