@@ -12,13 +12,14 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-
+#include <assert.h>
 #include <cstdlib>
 #include <deque>
 #include <iostream>
 #include <thread>
 #include "asio.hpp"
 #include "chat_message.hpp"
+#include "json.hpp"
 
 
 using asio::ip::tcp;
@@ -33,17 +34,17 @@ public:
     : io_context_(io_context),
     socket_(io_context)
     {
-        //cout<<"before connecting to server at constructor"<<endl<<endl;
+        
         do_connect(endpoints);
     }
     
     void write(const chat_message& msg)
     {
-        //cout<<"write"<<endl<<endl;
         
         asio::post(io_context_,
                    [this, msg]()
                    {
+            cout<<"this is the write"<<endl;
             bool write_in_progress = !write_msgs_.empty();
             write_msgs_.push_back(msg);
             if (!write_in_progress)
@@ -62,7 +63,7 @@ public:
 private:
     void do_connect(const tcp::resolver::results_type& endpoints)
     {
-        //cout<<"connecting to server at do_connect"<<endl<<endl;
+        
         // CSE3310 connection is established with the server
         asio::async_connect(socket_, endpoints,
                             [this](std::error_code ec, tcp::endpoint)
@@ -76,7 +77,7 @@ private:
     
     void do_read_header()
     {
-        //cout<<"after connecting to server at do_read_header"<<endl<<endl;
+        
         asio::async_read(socket_,
                          asio::buffer(read_msg_.data(), chat_message::header_length),
                          [this](std::error_code ec, std::size_t /*length*/)
@@ -95,7 +96,7 @@ private:
     
     void do_read_body()
     {
-        //cout<<"at do_read_body"<<endl<<endl;
+        
         //CSE 3310 message body is received from the server
         asio::async_read(socket_,
                          asio::buffer(read_msg_.body(), read_msg_.body_length()),
@@ -103,9 +104,9 @@ private:
                          {
             if (!ec)
             {
-                //Kipcout<<read_msg_.body()<<endl;
+                 std::cout << "From the dealer " << std::endl;
                 std::cout.write(read_msg_.body(), read_msg_.body_length());
-                //cout<<"this where thing get echoed to the other client"<<endl;
+                
                 
                 std::cout << "\n";
                 
@@ -135,13 +136,11 @@ private:
                 //cout<<"do_write->async_write->if brace"<<std::endl;
                 if (!write_msgs_.empty())
                 {
-                    std::cout<<"do_write->async_write->if->if (!write_msgs_.empty()) brace"<<std::endl;
                     do_write();
                 }
             }
             else
             {
-                std::cout<<"do_write->async_write->else brace"<<std::endl;
                 
                 socket_.close();
             }
@@ -154,7 +153,7 @@ private:
     chat_message read_msg_;
     chat_message_queue write_msgs_;
 };
-
+chat_client *c;
 
 std::string big(int card)
 {
@@ -445,14 +444,14 @@ Mainwin::Mainwin()
     
     tcp::resolver resolver(io_context);
     auto endpoints = resolver.resolve("127.0.0.1", "8000");
-    chat_client c(io_context, endpoints);
-    
+    c = new chat_client(io_context, endpoints);
+     assert(c);
     std::thread t([&io_context](){ io_context.run(); });
     
     
     
     char line[chat_message::max_body_length + 1];               //input from the client is stored here
-    c.close();
+    c->close();
     t.join();
     
     
@@ -473,6 +472,29 @@ void Mainwin::on_fold_click() {
     
     std::cout << "Player Folded!" << std::endl;
     shiftIndicator();
+    
+    
+    chat_message msg;
+    nlohmann::json to_dealer;
+    to_dealer["from"] = { {"uuid","3f96b414-9ac9-40b5-8007-90d0e771f0d0"} , {"name","Bivek"} };
+    to_dealer["event"] = "fold";        // "stand","hit","fold","raise","join","request_cards"
+    to_dealer["cards_requested"] = 0;    // optional, number of cards requested, 1 to 5
+    to_dealer["current_bet"] = 0.00;
+    to_dealer["total_bet"] = 0.00;
+    
+    //std::cout << "to dealer:" << std::endl;
+    //std::cout << to_dealer.dump(2) << std::endl;
+
+    std::string t = to_dealer.dump();
+    msg.body_length(t.size());
+    std::memcpy(msg.body(), t.c_str() , msg.body_length());
+    
+
+    msg.encode_header();
+    
+    assert ( c );
+    c->write(msg);
+    
 }
 
 void Mainwin::on_check_click() {
