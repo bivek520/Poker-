@@ -1,0 +1,239 @@
+void printHand(int hand[])
+{
+std::cout << "Hand: ";
+for (int x=0;x<5;x++)
+{
+	std::cout << " " + std::to_string(hand[x]);
+}
+std::cout << std::endl;
+
+}
+int organizeAndRank(int * const hand, int * const rankHand)
+{
+
+	int suitHand[5];
+	int valueHand[5];
+	int lowHand[] = {14, 5, 4, 3, 2};
+	bool pass1 = true;
+	bool pass2 = true;
+	int temp;
+	std::sort(hand, hand + 5, std::greater<int>());
+	rankHand[0]=10;
+	for(int x=0;x<5;x++)
+	{
+		valueHand[x] = hand[x] / 10;
+		suitHand[x] = hand[x] % 10;
+	}
+	printHand(valueHand);
+	printHand(suitHand);
+	for (int x=0;x<5;x++)
+	{
+		if(suitHand[x]!=suitHand[x+1]){rankHand[0]=1;}//not a flush -> set rankHand[0] to something other than 10, 9, 6
+	}
+	if (rankHand[0] == 10)//is a flush
+	{
+		if(valueHand == lowHand){rankHand[0]=9;rankHand[1]=5; return 0;}//use ace as low card for straight flush
+		for(int x=0; x<5; x++)//straight flush?
+		{
+			if(valueHand[x]!=valueHand[x+1]-1){pass1 = false;}
+		}
+		if(pass1)//if stright flush
+		{
+			if(valueHand[0]==14){return 0;}//if royal flush
+			rankHand[0]=9;
+			for(int x=0;x<5;x++)
+			{
+				for(int x=0;x<5;x++){rankHand[x+1]=valueHand[x];}//fill rest of handRank
+				return 0;
+			}
+
+		}
+		else//at this point it is a flush but not a straight flush or royal flush
+		{
+			rankHand[0]=6;
+			for(int x=0;x<5;x++){rankHand[x+1]=valueHand[x];}//fill rest of handRank
+			return 0;
+		}
+	}
+	int num1 = 0;
+	int num2 = 0;
+	int freq1 = 1;
+	int freq2 = 1;
+	for(int x=0;x<5;x++)
+	{	
+		if(freq1==1){num1 = valueHand[x];}
+		else if(freq2==1 && valueHand[x] != num1){num2 = valueHand[x];}
+		for(int y=x+1;y<5;y++)
+		{
+			if(valueHand[y]==num1 && pass1){num1=valueHand[y]; freq1++;}//first "kind" is found and is ready to be checked for 3 of a kind
+			if(valueHand[y]==num2 && pass2){num2=valueHand[y]; freq2++;}//second "kind" is found and is ready to be checked for 3 of a kind
+		}
+		if(freq1 != 1){pass1 = false;}//stop incrementing for kinds if found
+		if(freq2 != 1){pass2 = false;}
+
+	}
+std::cout << "num1: " + std::to_string(num1) + "  num2: " + std::to_string(num1) + "   freq1: " + std::to_string(freq1) + "  frq2: " + std::to_string(freq2);
+	if(freq1 == 4)//4 of a kind
+	{
+		if(valueHand[0]!=num1)
+		{
+		temp = hand[4];
+		hand[4]=hand[0];
+		hand[0]=temp;
+		}
+		rankHand[0]=8;
+		rankHand[1]=num1;
+		rankHand[2]=valueHand[4];
+		return 0;
+	}
+	if(freq1 == 3 || freq2 == 3)//at least one 3 of a kind
+	{
+		if(freq1 == 2 || freq2 == 2)//full house
+		{
+			if(valueHand[2] == num1 && valueHand[4] == num1)//check middle (three of a kind) and see if it's at the front. ie check for swap
+			{
+			temp = hand[0];
+			hand[0] = hand[4];
+			hand[4] = temp;
+			temp = hand[1];
+			hand[1] = hand[3];
+			hand[3] = temp;
+			}
+			rankHand[0] = 7;
+			rankHand[1] = num1;
+			rankHand[2] = num2;
+			return 0;
+		}
+		if(valueHand[0]==num1)//only one three of a kind
+		{}
+		else if(valueHand[1]==num1)
+		{
+			temp=hand[0];
+			hand[0]=hand[3];
+			hand[3]=temp;
+		}
+		else
+		{
+			temp=hand[0];
+			hand[0]=hand[3];
+			hand[3]=hand[0];
+			temp=hand[1];
+			hand[1]=hand[4];
+			hand[4]=temp;
+		}
+		rankHand[0]=4;
+		rankHand[1]=valueHand[3];
+		rankHand[2]=valueHand[4];
+		return 0;
+		}
+	}	
+	if(freq1 == 2 || freq2 == 2)//at least one pair
+	{	
+		if{freq1 == 2 && freq2 == 2}//two pair
+		{
+			for(int x=0;x<5;x++)
+			{	
+				if(valueHand[x]!=num1 && valueHand[x]!=num2)
+				{
+					if(x==0)
+					{
+						temp=hand[0];
+						hand[0]=hand[2];
+						hand[2]=temp;
+						temp=hand[4];
+						hand[4]=hand[2];
+						hand[2]=temp;		
+					}
+					else if(x==2)
+					{
+						temp=hand[4];
+						hand[4]=hand[2];
+						hand[2]=temp;	
+					}
+					rankHand[0]=3;
+					rankHand[1]=num1;
+					rankHand[2]=num2;
+					rankHand[3]=valueHand[4];
+					return 0;
+				}
+			}
+		}
+		if(valueHand[0]==num1)//only one pair
+		{}
+		else if(valueHand[1]==num1)
+		{
+			temp=hand[2];
+			hand[2]=hand[0];
+			hand[0]=temp;
+		}
+		else if(valueHand[2]==num1)
+		{
+			temp=hand[2];
+			hand[2]=hand[0];
+			hand[0]=temp;
+			temp=hand[3];
+			hand[3]=hand[1]
+			hand[1]=temp;
+		}
+		else
+		{
+			temp=hand[3];
+			hand[3]=hand[0];
+			hand[0]=temp;
+			temp=hand[4];
+			hand[4]=hand[1]
+			hand[1]=temp;			
+		}
+		rankHand[0]=[2];
+		rankHand[1]=num1;
+		rankHand[2]=valueHand[2];
+		rankHand[3]=valueHand[3];
+		rankHand[4]=valueHand[4];
+		return 0;
+	}
+	if(valueHand==lowHand)//test for straight with ace low card
+	{
+		rankHand[0]=5;
+		rankHand[1]=5;
+		return 0;
+	}
+	for(int x=0;x<5;x++)
+	{
+		if(valueHand[x]!=valueHand[x+1]+1;){pass1=false;}
+	}
+	if(pass)//high card or "junk"
+	{
+		rankHand[0]=1;
+		for(int x=0;x<5;x++)
+		{
+		rankHand[x+1]=valueHand[x];
+		}
+		return 0;
+	}
+	else//straight
+	{
+		rankHand[0]=5;
+		rankHand[1]=valueHand[0];
+		return 0;	
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
