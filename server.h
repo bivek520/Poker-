@@ -12,8 +12,8 @@ class Server {
 	
 	//please check if it's correct
 	int setBalance();
-	void exchange(bool exchanged, int hands[]);
-	void givePot(int winner);
+	void exchange(bool EPhase, int hands[]);
+	void givePot(std::string playerID);
 	void splitPot(int player);
 	void fold(int player, std::string playerAction);
 	void call(int potValue, int playerBalance, std::string playerAction);
@@ -31,11 +31,17 @@ class Server {
     private:
 	int potVal;
 	int betAmount;
+	int bidAmount;
+	int playerBalance;
+	std::string playerID;
+	std::string playerAction;
+	int hands[];
 	bool EPhase;
 	bool BPhase1;
 	bool BPhase2;
 	bool potSettled
 	bool fold;
+	std::string playerID
 };
 #endif 
 
