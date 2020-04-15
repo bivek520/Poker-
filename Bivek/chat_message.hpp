@@ -19,7 +19,7 @@ class chat_message
 {
 public:
   enum { header_length = 4 };
-  enum { max_body_length = 512 };      // CSE3310 maximum size of chat message body is defined
+  enum { max_body_length = 4096 };      // CSE3310 maximum size of chat message body is defined
 
   chat_message()
     : body_length_(0)
