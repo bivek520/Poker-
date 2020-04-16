@@ -1,9 +1,6 @@
+  
 #include "mainwin.h"
 #include <cstdlib>
-
-
-
-//
 // chat_client.cpp
 // ~~~~~~~~~~~~~~~
 //
@@ -165,6 +162,7 @@ std::string sml(int card)
     std::string sCard = "SmallCards/" + std::to_string(card) + ".jpg";
     return sCard;
 }
+
 Mainwin::Mainwin()
 {
     Gtk::Box *vbox = Gtk::manage(new Gtk::VBox);
@@ -440,19 +438,19 @@ Mainwin::Mainwin()
     set_default_size(800, 600);   //default size of application window
     m_Grid.set_column_spacing(20);
     
-    asio::io_context io_context;
+    static asio::io_context io_context;
     
-    tcp::resolver resolver(io_context);
-    auto endpoints = resolver.resolve("127.0.0.1", "8000");
+    static tcp::resolver resolver(io_context);
+    static auto endpoints = resolver.resolve("127.0.0.1", "8000");
     c = new chat_client(io_context, endpoints);
      assert(c);
-    std::thread t([&io_context](){ io_context.run(); });
+    static std::thread t([&io_context](){ io_context.run(); });
     
     
     
-    char line[chat_message::max_body_length + 1];               //input from the client is stored here
-    c->close();
-    t.join();
+    //char line[chat_message::max_body_length + 1];               //input from the client is stored here
+    //c->close();
+    //t.join();
     
     
 }
@@ -708,12 +706,3 @@ bool Mainwin::on_my_timeout()
     }
     return true;
 }
-
-
-
-
-
-
-
-
-
