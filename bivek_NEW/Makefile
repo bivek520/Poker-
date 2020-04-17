@@ -3,7 +3,10 @@ CPPFLAGS+=-I./include -I./asio-1.12.2/include
 LDLIBS+= -lpthread
 GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0 --cflags --libs`
 
-all: mainwindow server
+all: asio-1.12.2 mainwindow server
+
+asio-1.12.2:
+	tar xzf asio-1.12.2.tar.gz
 
 server: server.o *.h
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) server.o $(GTKFLAGS) -o dealer
