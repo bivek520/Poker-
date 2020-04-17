@@ -21,6 +21,6 @@ mainwin.o: mainwin.cpp *.h
 server.o: server.cpp *.h
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c server.cpp $(GTKFLAGS) -o server.o
 clean:
-	rm -f *.o *.gch mainwindow
+	rm -f *.o *.gch mainwindow dealer
 
 
