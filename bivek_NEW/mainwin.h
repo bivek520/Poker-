@@ -23,6 +23,7 @@ class Mainwin : public Gtk::Window {
 	void on_call_click();
 	void on_raise_click();
 	void on_exchange_click();
+	void on_ready_click();
 	void on_HScale_value_changed();
 	bool on_my_timeout();
         int seconds=30;
