@@ -145,6 +145,7 @@ private:
           {
             if (!ec)
             {
+                /*
                 nlohmann::json to_dealer = nlohmann::json::parse(std::string(read_msg_.body()));
                 nlohmann::json to_player;  // represents the entire game state.  sent to all players
                 to_player["turn"] = "3f96b414-9ac9-40b5-8007-90d0e771f0d0";   // UUID of the current player.
@@ -168,6 +169,8 @@ private:
                     sending.encode_header();
                     room_.deliver(sending);
                 }
+                 */
+                room_.deliver(read_msg_);
                 do_read_header();
             }
             else
