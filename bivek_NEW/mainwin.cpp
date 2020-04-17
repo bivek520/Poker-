@@ -357,9 +357,14 @@ Mainwin::Mainwin()
     cardSelectionHbox.pack_start(RB5,Gtk::PACK_END, 0);
     
     vbox->pack_start(exchangeHbox);
-    exchangeHbox.pack_start(exchange ,Gtk::PACK_END, 0);
-    exchange.signal_clicked().connect([this] {this->on_exchange_click();});
-    exchange.show();
+
+    if (readyBool==false)
+    {
+            exchangeHbox.pack_start(ready ,Gtk::PACK_END, 0);
+            ready.signal_clicked().connect([this] {this->on_ready_click();});
+            ready.show();
+    }
+  
     vbox->pack_start(sep3);
     image21.set_text(" \n");
     vbox->pack_start(image21);
@@ -670,6 +675,18 @@ void Mainwin::on_exchange_click(){
     RB3.set_active(false);
     RB4.set_active(false);
     RB5.set_active(false);
+}
+
+void Mainwin::on_ready_click()
+{
+        ready.hide();
+        exchangeHbox.pack_start(exchange ,Gtk::PACK_END, 0);
+        exchange.signal_clicked().connect([this] {this->on_exchange_click();});
+        exchange.show();
+        action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+    action1.override_background_color(Gdk::RGBA{"green"});
+    p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
+    p1.override_background_color(Gdk::RGBA{"white"});
 }
 
 void Mainwin::shiftIndicator(){
