@@ -1,160 +1,6 @@
 #include "mainwin.h"
 #include <cstdlib>
 
-
-#if MOVED_TO_ITS_OWN_FILE
-//
-// chat_client.cpp
-// ~~~~~~~~~~~~~~~
-//
-// Copyright (c) 2003-2018 Christopher M. Kohlhoff (chris at kohlhoff dot com)
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-#include <assert.h>
-#include <cstdlib>
-#include <deque>
-#include <iostream>
-#include <thread>
-#include "asio.hpp"
-#include "chat_message.hpp"
-#include "json.hpp"
-#include <string>
-
-using asio::ip::tcp;
-using namespace std;
-typedef std::deque<chat_message> chat_message_queue;
-
-class chat_client
-{
-public:
-    chat_client(asio::io_context& io_context,
-                const tcp::resolver::results_type& endpoints)
-    : io_context_(io_context),
-    socket_(io_context)
-    {
-        
-        do_connect(endpoints);
-    }
-    
-    void write(const chat_message& msg)
-    {
-        
-        asio::post(io_context_,
-                   [this, msg]()
-                   {
-            cout<<"this is the write"<<endl;
-            bool write_in_progress = !write_msgs_.empty();
-            write_msgs_.push_back(msg);
-            if (!write_in_progress)
-            {
-                
-                do_write();
-            }
-        });
-    }
-    
-    void close()
-    {
-        asio::post(io_context_, [this]() { socket_.close(); });
-    }
-    
-private:
-    void do_connect(const tcp::resolver::results_type& endpoints)
-    {
-        
-        // CSE3310 connection is established with the server
-        asio::async_connect(socket_, endpoints,
-                            [this](std::error_code ec, tcp::endpoint)
-                            {
-            if (!ec)
-            {
-                do_read_header();
-            }
-        });
-    }
-    
-    void do_read_header()
-    {
-        
-        asio::async_read(socket_,
-                         asio::buffer(read_msg_.data(), chat_message::header_length),
-                         [this](std::error_code ec, std::size_t /*length*/)
-                         {
-            if (!ec && read_msg_.decode_header())
-            {
-                
-                do_read_body();
-            }
-            else
-            {
-                socket_.close();
-            }
-        });
-    }
-    
-    void do_read_body()
-    {
-        
-        //CSE 3310 message body is received from the server
-        asio::async_read(socket_,
-                         asio::buffer(read_msg_.body(), read_msg_.body_length()),
-                         [this](std::error_code ec, std::size_t /*length*/)
-                         {
-            if (!ec)
-            {
-                 std::cout << "From the dealer " << std::endl;
-                std::cout.write(read_msg_.body(), read_msg_.body_length());
-                
-                
-                std::cout << "\n";
-                
-                do_read_header();
-            }
-            else
-            {
-                socket_.close();
-            }
-        });
-    }
-    
-    void do_write()
-    {
-        //cout<<"at do_write"<<endl<<endl;
-        //CSE 3310 message is sent to the chat server.
-        asio::async_write(socket_,
-                          asio::buffer(write_msgs_.front().data(),
-                                       write_msgs_.front().length()),
-                          [this](std::error_code ec, std::size_t /*length*/)
-                          {
-            //cout<<"do_write inside async_write"<<endl<<endl;
-            
-            if (!ec)
-            {
-                write_msgs_.pop_front();
-                //cout<<"do_write->async_write->if brace"<<std::endl;
-                if (!write_msgs_.empty())
-                {
-                    do_write();
-                }
-            }
-            else
-            {
-                
-                socket_.close();
-            }
-        });
-    }
-    
-private:
-    asio::io_context& io_context_;
-    tcp::socket socket_;
-    chat_message read_msg_;
-    chat_message_queue write_msgs_;
-};
-#endif
-
 std::string big(int card)
 {
     std::string sCard = "LargeCards/" + std::to_string(card) + ".jpg";
@@ -165,21 +11,14 @@ std::string sml(int card)
     std::string sCard = "SmallCards/" + std::to_string(card) + ".jpg";
     return sCard;
 }
+
 Mainwin::Mainwin(chat_client *c_)
 {
     // save away the pointer to the chat_client
     c=c_;
 
-
     Gtk::Box *vbox = Gtk::manage(new Gtk::VBox);
     add(*vbox);
-    
-    //    vbox->override_background_color(Gdk::RGBA{"green"}); //changes background color of the vbox
-    
-    //hbox.pack_start(vbox);
-    //action1.set_text("Calls $175");
-    //vbox.pack_start(hbox);
-    //vbox.pack_start(action1);
     
     p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
     p2.set_markup("<span size='16000' color ='black' weight='bold'>Player 2 </span>");
@@ -237,7 +76,6 @@ Mainwin::Mainwin(chat_client *c_)
     balance4.override_background_color(Gdk::RGBA{"white"});
     balance5.override_background_color(Gdk::RGBA{"white"});
     
-    //add(balanceHbox);
     m_Grid.attach(balance1, 0, 2, 1, 1);
     m_Grid.attach(balance2, 1, 2, 1, 1);
     m_Grid.attach(balance3, 2, 2, 1, 1);
@@ -248,14 +86,6 @@ Mainwin::Mainwin(chat_client *c_)
     image12.set_text(" | ");
     image13.set_text(" | ");
     image14.set_text(" | ");
-    
-    
-    //    cvbox.pack_start(publicCardHbox);
-    //    publicCardHbox.pack_start(image11, Gtk::PACK_END, 0);
-    //    publicCardHbox.pack_start(image12, Gtk::PACK_END, 0);
-    //    publicCardHbox.pack_start(image13, Gtk::PACK_END, 0);
-    //    publicCardHbox.pack_start(image14,Gtk::PACK_END, 0);
-    //    publicCardHbox.pack_start(image15,Gtk::PACK_END, 0);
     
     h1 =Gtk::manage(new Gtk::Image{sml(21)});
     h2 =Gtk::manage(new Gtk::Image{sml(121)});
@@ -325,15 +155,12 @@ Mainwin::Mainwin(chat_client *c_)
     m_Grid.attach(small_card_grid5, 4, 3, 1, 1);
     
     shiftIndicator();
-    
-    //pot.set_text("\nPOT: $" +std::to_string(potVal));
+	
     pot.set_markup("<span size='20000' color ='red' weight='bold'>$  "
                    +  std::to_string(potVal) + "</span>");
-    //pot.override_foreground_color(Gdk::RGBA{"gold"});
     m_Grid.attach(pot, 2, 5, 1, 1);
     
     timer.set_markup("<span size='16000' color ='white' >Timer time: </span>");
-    //timer.set_text("Timer time: ");
     m_Grid.attach(timer, 4, 5, 1, 1);
     Glib::signal_timeout().connect( sigc::mem_fun(*this, &Mainwin::on_my_timeout), 1000 );
     
@@ -343,12 +170,9 @@ Mainwin::Mainwin(chat_client *c_)
     bh4 =Gtk::manage(new Gtk::Image{big(122)});
     bh5 =Gtk::manage(new Gtk::Image{big(123)});
     
-    
-    //image21.override_background_color(Gdk::RGBA{"black"});
     vbox->pack_start(sep2);
     vbox->pack_start(privateCardHbox);
-    //image21.set_text(" \n");
-    //privateCardHbox.pack_start(image21);
+	
     privateCardHbox.pack_start(*bh1);
     privateCardHbox.pack_start(*bh2);
     privateCardHbox.pack_start(*bh3);
@@ -374,7 +198,6 @@ Mainwin::Mainwin(chat_client *c_)
     HScale.set_value_pos(Gtk::POS_TOP);
     HScale.set_draw_value();
     
-    //cvbox.pack_start(image21);
     vbox->pack_start(playHbox);
     playHbox.pack_start(fold ,Gtk::PACK_END, 0);
     playHbox.pack_start(check ,Gtk::PACK_END, 0);
@@ -398,75 +221,33 @@ Mainwin::Mainwin(chat_client *c_)
     
     call.set_size_request(30,30);
     raise.set_size_request(30,30);
-    
-    /*    if (TESTTURN!=1)
-     {
-     fold.set_sensitive(false);
-     check.set_sensitive(false);
-     call.set_sensitive(false);
-     bet.set_sensitive(false);
-     raise.set_sensitive(false);
-     }
-     else*/
-    {
-        fold.signal_clicked().connect([this] {this->on_fold_click();});
-        check.signal_clicked().connect([this] {this->on_check_click();});
-        bet.signal_clicked().connect([this] {this->on_bet_click();});
-    }
-    
+ 
+    fold.signal_clicked().connect([this] {this->on_fold_click();});
+    check.signal_clicked().connect([this] {this->on_check_click();});
+    bet.signal_clicked().connect([this] {this->on_bet_click();});
+   
     bet.show();
     check.show();
     
-    //playHbox.pack_start(sep4);
     playHbox.pack_end(HScale);
     HScale.set_range(5, 175);
     HScale.set_increments(1, 1);
     HScale.signal_value_changed().connect([this] {this->on_HScale_value_changed();});
-    //vbox->pack_start(image21);
+	
     image22.set_text(" \n");
     vbox->pack_start(image22);
-    //RB1.set_active();
-    //RB2.set_active();
-    //nhbox.show_all();
-    //hbox.show_all();
     add(hbox);
-    
     vbox->show_all();
-    
     show_all_children();
-    
-    
-    
-    
-    
     set_title(APP_TITLE);    //Application Title
     set_default_size(800, 600);   //default size of application window
     m_Grid.set_column_spacing(20);
-   
-#ifdef MOVED_TO_MAIN 
-    asio::io_context io_context;
-    
-    tcp::resolver resolver(io_context);
-    auto endpoints = resolver.resolve("127.0.0.1", "8000");
-    c = new chat_client(io_context, endpoints);
-     assert(c);
-    std::thread t([&io_context](){ io_context.run(); });
-    
-    
-    char line[chat_message::max_body_length + 1];               //input from the client is stored here
-    c->close();
-    t.join();
-    
-   
-#endif
-   std::cout << "end of mainwin constructor" << std::endl; 
 }
 
 Mainwin::~Mainwin() { }
 
 void Mainwin::on_fold_click() {
     reset=true;
-    //action1.set_text("\nFolded");
     action1.set_markup("<span size='16000' color ='white' weight='bold'>Folded </span>");
     action1.override_background_color(Gdk::RGBA{"black"});
     p1.set_markup("<span size='16000' color ='white' weight='bold'>Player 1 </span>");
@@ -477,42 +258,29 @@ void Mainwin::on_fold_click() {
     
     std::cout << "Player Folded!" << std::endl;
     shiftIndicator();
-    
-
     char line[chat_message::max_body_length + 1];
-//    while (std::cin.getline(line, chat_message::max_body_length + 1))
-//    if (c==NULL)
-//	    cout<<"null chat_Client"<<endl;
     cout<<"chat_client c is "<< c <<endl;
-  //  else
     {
       chat_message msg;
-
-cout<<"chat_client c is "<< c <<endl;
       nlohmann::json to_dealer;
-      to_dealer["from"] = { {"uuid","3f96b414-9ac9-40b5-8007-90d0e771f0d0"} , {"name","T"} };
+      to_dealer["from"] = { {"uuid","3f96b414-9ac9-40b5-8007-90d0e771f0d0"} , {"name","abc"} };
       to_dealer["event"] = "stand";        // "stand","hit","fold","raise","join","request_cards"
       to_dealer["cards_requested"] = 3;    // optional, number of cards requested, 1 to 5
       to_dealer["current_bet"] = 1.00;
       to_dealer["total_bet"] = 5.00;
       to_dealer["chat"] = std::string(line);
-      //std::cout << "to dealer:" << std::endl;
-      //std::cout << to_dealer.dump(2) << std::endl;
 
       std::string t = to_dealer.dump();
-	cout<<"string length is "<<t.length()<<endl;
       msg.body_length(t.size());
       std::memcpy(msg.body(), t.c_str() , msg.body_length());
       msg.encode_header();
       c->write(msg);
     }
-//	c->close();
-    
 }
 
-void Mainwin::on_check_click() {
+void Mainwin::on_check_click() 
+{
     reset=true;
-    //action1.set_text("\nChecked");
     action1.set_markup("<span size='16000' color ='black' weight='bold'>Checked </span>");
     action1.override_background_color(Gdk::RGBA{"yellow"});
     p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
@@ -525,14 +293,13 @@ void Mainwin::on_check_click() {
     shiftIndicator();
 }
 
-void Mainwin::on_bet_click() {
+void Mainwin::on_bet_click() 
+{
     reset=true;
     int sp = HScale.get_value();
     TESTVAL = sp;
     std::string to_call_button = "$" + std::to_string(TESTVAL);
     call.set_label(to_call_button);
-    
-    //action1.set_text("\nBet $" + std::to_string(sp));
     action1.set_markup("<span size='16000' color ='white' weight='bold'>Bet $" + std::to_string(sp)+" </span>");
     action1.override_background_color(Gdk::RGBA{"red"});
     p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
@@ -548,23 +315,16 @@ void Mainwin::on_bet_click() {
     Gtk::Image* calling = Gtk::manage(new Gtk::Image{"Icons/call.jpg"});
     call.set_image(*calling);
     calling->show();
-    /*if (TESTTURN!=0)
-     call.set_sensitive(false);
-     else*/
     call.signal_clicked().connect([this] {this->on_call_click();});
     call.show();
     
     Gtk::Image* raising = Gtk::manage(new Gtk::Image{"Icons/raise.jpg"});
     raise.set_image(*raising);
     raising->show();
-    /*if (TESTTURN!=0)
-     raise.set_sensitive(false);
-     else*/
     raise.signal_clicked().connect([this] {this->on_raise_click();});
     raise.show();
     
     balance = balance - TESTVAL;
-    //balance1.set_text("\n$" + std::to_string(balance));
     balance1.set_markup("<span size='14000' color ='black' >$  "
                         +  std::to_string(balance) + "</span>");
     balance1.override_background_color(Gdk::RGBA{"white"});
@@ -574,9 +334,9 @@ void Mainwin::on_bet_click() {
     pot.set_text("\nPOT: $" +std::to_string(potVal));
 }
 
-void Mainwin::on_call_click() {
+void Mainwin::on_call_click() 
+{
     reset=true;
-    //action1.set_text("\nCalled $" + std::to_string(TESTVAL));
     std::string to_call_button = "$" + std::to_string(TESTVAL);
     call.set_label(to_call_button);
     Gtk::Image* calling = Gtk::manage(new Gtk::Image{"Icons/call.jpg"});
@@ -591,7 +351,6 @@ void Mainwin::on_call_click() {
     std::cout << "Player Called $" + std::to_string(TESTVAL) + "!"<< std::endl;
     shiftIndicator();
     balance = balance - TESTVAL;
-    //balance1.set_text("\n$" + std::to_string(balance));
     balance1.set_markup("<span size='14000' color ='black' >$  "
                         +  std::to_string(balance) + "</span>");
     balance1.override_background_color(Gdk::RGBA{"white"});
@@ -600,10 +359,10 @@ void Mainwin::on_call_click() {
     pot.set_text("\nPOT: $" +std::to_string(potVal));
 }
 
-void Mainwin::on_raise_click() {
+void Mainwin::on_raise_click() 
+{
     reset=true;
     int sp = HScale.get_value();
-    //action1.set_text("\nRaised $" + std::to_string(sp));
     action1.set_markup("<span size='16000' color ='white' weight='bold'>Raised $" + std::to_string(sp)+" </span>");
     action1.override_background_color(Gdk::RGBA{"red"});
     p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
@@ -619,7 +378,6 @@ void Mainwin::on_raise_click() {
     
     shiftIndicator();
     balance = balance - TESTVAL;
-    //balance1.set_text("\n$" + std::to_string(balance));
     balance1.set_markup("<span size='14000' color ='black' >$  "
                         +  std::to_string(balance) + "</span>");
     balance1.override_background_color(Gdk::RGBA{"white"});
