@@ -65,7 +65,8 @@ class Mainwin : public Gtk::Window {
 	Gtk::Button call;//{"CALL"};
 	Gtk::Button raise;//{"RAISE $5"};
 	Gtk::Button exchange{"EXCHANGE"};  
-
+	Gtk::Button ready{"READY"};  
+	
 	Gtk::Image *bh1, *bh2, *bh3, *bh4, *bh5; //big cards
 	Gtk::Image *h1, *h2, *h3, *h4, *h5,	 //sml cards
 		   *h6, *h7, *h8, *h9, *h10,
@@ -75,6 +76,7 @@ class Mainwin : public Gtk::Window {
 
 	int TESTVAL;
 	int TESTTURN = 0;
+	bool readyBool = false;
 };
 #endif 
 
