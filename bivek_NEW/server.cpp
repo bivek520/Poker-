@@ -18,6 +18,9 @@
 #include "asio.hpp"
 #include "chat_message.hpp"
 #include "json.hpp"
+#include <string>
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 using namespace std;
 using asio::ip::tcp;
@@ -94,6 +97,15 @@ public:
     room_(room)
     {
         //cout<<"poker_player constructor"<<endl;
+	    boost::uuids::basic_random_generator<boost::mt19937> g;
+	    boost::uuids::uuid u=g();
+
+	    string playerID;
+	    stringstream ss;
+	    ss<<u;
+	    playerID=ss.str();
+	    uuid = playerID;
+	    cout << "uuid is " << uuid << endl;
     }
     
     void start()
@@ -207,6 +219,7 @@ private:
     poker_table& room_;
     chat_message read_msg_;
     chat_message_queue write_msgs_;
+    string uuid;
 };
 
 //----------------------------------------------------------------------
