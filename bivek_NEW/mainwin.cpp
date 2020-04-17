@@ -363,6 +363,9 @@ Mainwin::Mainwin()
             exchangeHbox.pack_start(ready ,Gtk::PACK_END, 0);
             ready.signal_clicked().connect([this] {this->on_ready_click();});
             ready.show();
+    	    fold.set_sensitive(false);
+     	    check.set_sensitive(false);
+     	    bet.set_sensitive(false);
     }
   
     vbox->pack_start(sep3);
