@@ -329,7 +329,8 @@ Mainwin::Mainwin()
     timer.set_markup("<span size='16000' color ='white' >Timer time: </span>");
     //timer.set_text("Timer time: ");
     m_Grid.attach(timer, 4, 5, 1, 1);
-    Glib::signal_timeout().connect( sigc::mem_fun(*this, &Mainwin::on_my_timeout), 1000 );
+    if (timerBool == true)
+    	Glib::signal_timeout().connect( sigc::mem_fun(*this, &Mainwin::on_my_timeout), 1000 );
     
     bh1 =Gtk::manage(new Gtk::Image{big(21)});
     bh2 =Gtk::manage(new Gtk::Image{big(121)});
@@ -682,14 +683,18 @@ void Mainwin::on_exchange_click(){
 
 void Mainwin::on_ready_click()
 {
-        ready.hide();
-        exchangeHbox.pack_start(exchange ,Gtk::PACK_END, 0);
-        exchange.signal_clicked().connect([this] {this->on_exchange_click();});
-        exchange.show();
-        action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+    ready.hide();
+    exchangeHbox.pack_start(exchange ,Gtk::PACK_END, 0);
+    exchange.signal_clicked().connect([this] {this->on_exchange_click();});
+    exchange.show();
+    action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
     action1.override_background_color(Gdk::RGBA{"green"});
     p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
     p1.override_background_color(Gdk::RGBA{"white"});
+    timerBool=true;
+    fold.set_sensitive();
+    check.set_sensitive();
+    bet.set_sensitive();
 }
 
 void Mainwin::shiftIndicator(){
@@ -703,6 +708,7 @@ void Mainwin::shiftIndicator(){
 
 bool Mainwin::on_my_timeout()
 {
+    timerBool=true;
     char Text[50];
     sprintf (Text,"Timer: %d s",--seconds);
     timer.set_text(Text);

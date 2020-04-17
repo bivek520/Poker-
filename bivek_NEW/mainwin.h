@@ -78,6 +78,7 @@ class Mainwin : public Gtk::Window {
 	int TESTVAL;
 	int TESTTURN = 0;
 	bool readyBool = false;
+	bool timerBool = false;
 };
 #endif 
 
