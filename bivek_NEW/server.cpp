@@ -36,20 +36,35 @@ class player
 public:
     virtual ~player() {}
     virtual void deliver(const chat_message& msg) = 0;
+    string uuid;
+    int turn;
 };
 
 typedef std::shared_ptr<player> player_ptr;
 
 //----------------------------------------------------------------------
-
+int player_turn = 1;
 class poker_table
 {
 public:
     void join(player_ptr participant)
     {
         cout<<"New Player has joined the room"<<endl;
+            
+	    boost::uuids::basic_random_generator<boost::mt19937> g;
+            boost::uuids::uuid u=g();
+
+            string playerID;
+            stringstream ss;
+            ss<<u;
+            playerID=ss.str();
+            participant->uuid = playerID;
+	    participant->turn = player_turn;
+            cout << "uuid is " << participant->uuid <<" turn number is "<< participant->turn << endl;
         
         participants_.insert(participant);
+	player_turn++;
+
         for (auto msg: recent_msgs_)                    //CSE3310 (server)  previous chat messages are sent to a client
         {
             participant->deliver(msg);
@@ -96,17 +111,9 @@ public:
     : socket_(std::move(socket)),
     room_(room)
     {
-        //cout<<"poker_player constructor"<<endl;
-	    boost::uuids::basic_random_generator<boost::mt19937> g;
-	    boost::uuids::uuid u=g();
-
-	    string playerID;
-	    stringstream ss;
-	    ss<<u;
-	    playerID=ss.str();
-	    uuid = playerID;
-	    cout << "uuid is " << uuid << endl;
-    }
+	    /*boost::uuids::basic_random_generator<boost::mt19937> g;
+    	    */
+	    }
     
     void start()
     {
@@ -129,7 +136,6 @@ public:
         }
     }
     
-private:
     void do_read_header()
     {
       auto self(shared_from_this());
@@ -158,29 +164,7 @@ private:
             if (!ec)
             {
                 /*
-                nlohmann::json to_dealer = nlohmann::json::parse(std::string(read_msg_.body()));
-                nlohmann::json to_player;  // represents the entire game state.  sent to all players
-                to_player["turn"] = "3f96b414-9ac9-40b5-8007-90d0e771f0d0";   // UUID of the current player.
-                to_player["chat"] = to_dealer["chat"];
-                to_player["dealer_comment"] = "fred has raised and received 2 new cards";
-                to_player["recommended_play"] = "you should fold";
-                to_player["hand"] = {
-                    {{"bet",1},{"current_bet",10}, {"uuid","3f96b414-9ac9-40b5-8007-90d0e771f0d0"} , {"name","Bud"} ,{"cards",{"acespades","10hearts","9clubs","2diamonds","kinghearts"}}},
-                    {{"bet",2},{"current_bet",1}, {"uuid","3f96b414-9ac9-40b5-8007-20d0e771f0d0"} , {"name","Donald"} ,{"cards",{"acehearts","10spades","9clubs","2clubs","jackhearts"}}},
-                    {{"bet",5},{"current_bet",5}, {"uuid","3f96b414-9ac9-40b5-8007-30d0e771f0d0"} , {"name","Ann"} ,{"cards",{"aceclubs","10diamonds","9clubs","2hearts","queenhearts"}}},
-                    {{"bet",10},{"current_bet",0}, {"uuid","3f96b414-9ac9-40b5-8007-40d0e771f0d0"} , {"name","Melania"} ,{"cards",{"acediamonds","10clubs","9clubs","2spades","kinghearts"}}}
-                };
-                
-                std::string t = to_player.dump();
-                chat_message sending;
-                if (t.size() < chat_message::max_body_length)
-                {
-                    std::cout << "the size string being sent is " << t.size() << std::endl;
-                    memcpy( sending.body(), t.c_str(), t.size() );
-                    sending.body_length(t.size());
-                    sending.encode_header();
-                    room_.deliver(sending);
-                }
+                 json stuff was here
                  */
                 room_.deliver(read_msg_);
                 do_read_header();
@@ -287,3 +271,4 @@ int main(int argc, char* argv[])
     
     return 0;
 }
+//
