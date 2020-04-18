@@ -34,38 +34,16 @@ typedef std::deque<chat_message> chat_message_queue;
 class player
 {
 public:
-    player()
-    {
-        boost::uuids::basic_random_generator<boost::mt19937> g;
-        id=g();
-        
-        string playerID;
-        stringstream ss;
-        ss<<id;
-        playerID=ss.str();
-        
-        cout << "uuid is " << playerID << endl;
-    }
     virtual ~player() {}
     virtual void deliver(const chat_message& msg) = 0;
-<<<<<<< HEAD
     string uuid;
     int turn;
-=======
-    boost::uuids::uuid id;                                  //holds user id of each player
-    int turn;                                               //hold turn # of eacch player
-    bool ready=false;
->>>>>>> bba2745d170b7057c7c447fd787e20309c88b628
 };
 
 typedef std::shared_ptr<player> player_ptr;
 
 //----------------------------------------------------------------------
-<<<<<<< HEAD
 int player_turn = 1;
-=======
-int player_turn=1;
->>>>>>> bba2745d170b7057c7c447fd787e20309c88b628
 class poker_table
 {
 public:
@@ -83,9 +61,6 @@ public:
             participant->uuid = playerID;
 	    participant->turn = player_turn;
             cout << "uuid is " << participant->uuid <<" turn number is "<< participant->turn << endl;
-        
-        participant->turn=player_turn;                          //gives turn # to each player
-        player_turn++;
         
         participants_.insert(participant);
 	player_turn++;
