@@ -41,7 +41,7 @@ public:
         asio::post(io_context_,
                    [this, msg]()
                    {
-            cout<<"this is the write"<<endl;
+            
             bool write_in_progress = !write_msgs_.empty();
             write_msgs_.push_back(msg);
             if (!write_in_progress)
@@ -695,6 +695,24 @@ void Mainwin::on_ready_click()
     fold.set_sensitive();
     check.set_sensitive();
     bet.set_sensitive();
+    
+    
+    chat_message msg;
+       nlohmann::json to_dealer;
+    to_dealer["ready"] = true;
+       
+       //std::cout << "to dealer:" << std::endl;
+       //std::cout << to_dealer.dump(2) << std::endl;
+
+       std::string t = to_dealer.dump();
+       msg.body_length(t.size());
+       std::memcpy(msg.body(), t.c_str() , msg.body_length());
+       
+
+       msg.encode_header();
+       
+       assert ( c );
+       c->write(msg);
 }
 
 void Mainwin::shiftIndicator(){
