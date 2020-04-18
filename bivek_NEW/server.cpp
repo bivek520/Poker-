@@ -34,20 +34,38 @@ typedef std::deque<chat_message> chat_message_queue;
 class player
 {
 public:
+    player()
+    {
+        boost::uuids::basic_random_generator<boost::mt19937> g;
+        id=g();
+        
+        string playerID;
+        stringstream ss;
+        ss<<id;
+        playerID=ss.str();
+        
+        cout << "uuid is " << playerID << endl;
+    }
     virtual ~player() {}
     virtual void deliver(const chat_message& msg) = 0;
+    boost::uuids::uuid id;                                  //holds user id of each player
+    int turn;                                               //hold turn # of eacch player
+    bool ready=false;
 };
 
 typedef std::shared_ptr<player> player_ptr;
 
 //----------------------------------------------------------------------
-
+int player_turn=1;
 class poker_table
 {
 public:
     void join(player_ptr participant)
     {
         cout<<"New Player has joined the room"<<endl;
+        
+        participant->turn=player_turn;                          //gives turn # to each player
+        player_turn++;
         
         participants_.insert(participant);
         for (auto msg: recent_msgs_)                    //CSE3310 (server)  previous chat messages are sent to a client
@@ -79,6 +97,50 @@ public:
         }
     }
     
+    
+    
+    void deliver_to(const chat_message& msg,int deli_to)
+    {      //cout<<"poker_table deliver()"<<endl;
+        
+        recent_msgs_.push_back(msg);
+        while (recent_msgs_.size() > max_recent_msgs)
+            recent_msgs_.pop_front();
+        
+        for (auto participant: participants_)       //CSE3310 (server)  messages are sent to all connected clients
+        {
+
+            if(participant->turn==deli_to)
+                participant->deliver(msg);
+            //cout<<"sending to individual clients"<<endl;
+        }
+    }
+    void set_ready(bool status,int deli_to)
+    {
+        for (auto participant: participants_)       //CSE3310 (server)  messages are sent to all connected clients
+        {
+
+            if(participant->turn==deli_to)
+            {
+                participant->ready=status;
+                cout<<"This is the set_ready function\nplayer: "<<deli_to<<" status: "<<status<<endl;
+            }
+        }
+    }
+    bool allReady()                                 //checks if all the player in the servers are ready for the game
+    {
+        bool all_ready = true;
+        for (auto participant: participants_)       //set all_ready to false if all players aren't ready
+        {
+            
+            if(participant->ready==false)
+            {
+                all_ready=false;
+            }
+        }
+        cout<<"All ready is accessed and this is the result:"<<all_ready<<endl;
+        return all_ready;
+    }
+    
 private:
     std::set<player_ptr> participants_;
     enum { max_recent_msgs = 100 };           //CSE3310 (server) maximum number of messages are stored
@@ -97,15 +159,7 @@ public:
     room_(room)
     {
         //cout<<"poker_player constructor"<<endl;
-	    boost::uuids::basic_random_generator<boost::mt19937> g;
-	    boost::uuids::uuid u=g();
-
-	    string playerID;
-	    stringstream ss;
-	    ss<<u;
-	    playerID=ss.str();
-	    uuid = playerID;
-	    cout << "uuid is " << uuid << endl;
+        
     }
     
     void start()
@@ -182,8 +236,30 @@ private:
                     room_.deliver(sending);
                 }
                  */
-                room_.deliver(read_msg_);
-                do_read_header();
+                
+                    if(room_.allReady())                                //this gets accessed if all the players are ready in the server
+                    {
+                        cout<<"Game is starting"<<endl;
+                        cout<<"this is the players turn who sent the msg "<<shared_from_this()->turn<<endl;
+                        
+                        room_.deliver_to(read_msg_,shared_from_this()->turn);           //sends msg to individual player
+                        room_.deliver(read_msg_);                                    //sends msg to all the player
+                        do_read_header();
+                        
+                    }
+                    else                                            //this gets accessed if all the player aren't ready
+                    {
+                        cout<<"this is the else part in server"<<endl;
+                        
+                        nlohmann::json to_dealer = nlohmann::json::parse(std::string(read_msg_.body()));
+                        room_.set_ready(to_dealer["ready"],shared_from_this()->turn);
+                        
+                        room_.allReady();
+                        cout<<endl<<endl;
+                        do_read_header();
+                    }
+            
+                
             }
             else
             {
@@ -219,7 +295,6 @@ private:
     poker_table& room_;
     chat_message read_msg_;
     chat_message_queue write_msgs_;
-    string uuid;
 };
 
 //----------------------------------------------------------------------
