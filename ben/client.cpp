@@ -1,11 +1,11 @@
 #include "client.h"
-#include "mainwin.h"
+#include <gtkmm.h>
+Mainwin *win = nullptr;
 using asio::ip::tcp;
 using namespace std;
 typedef std::deque<chat_message> chat_message_queue;
 
-chat_client::chat_client(asio::io_context& io_context, const tcp::resolver::results_type& endpoints) : io_context_(io_context),
-    socket_(io_context)
+chat_client::chat_client(asio::io_context& io_context, const tcp::resolver::results_type& endpoints) : io_context_(io_context), socket_(io_context)
     {
         do_connect(endpoints);
     }
@@ -116,6 +116,5 @@ chat_client::chat_client(asio::io_context& io_context, const tcp::resolver::resu
             }
         });
     }
-chat_client::~chat_client() { }
 
 

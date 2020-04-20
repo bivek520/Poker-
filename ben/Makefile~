@@ -11,13 +11,15 @@ asio-1.12.2:
 server: server.o *.h
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) server.o $(GTKFLAGS) -o dealer
 
-mainwindow: main.o mainwin.o *.h
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) main.o mainwin.o $(GTKFLAGS) -o pokerplus
+mainwindow: main.o mainwin.o client.o *.h
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) main.o mainwin.o client.o $(GTKFLAGS) -o pokerplus
 
 main.o: main.cpp *.h
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c main.cpp $(GTKFLAGS) -o main.o
 mainwin.o: mainwin.cpp *.h
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c mainwin.cpp $(GTKFLAGS) -o mainwin.o
+client.o: client.cpp *.h
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c client.cpp $(GTKFLAGS) -o client.o
 server.o: server_new.cpp *.h
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c server_new.cpp $(GTKFLAGS) -o server.o
 clean:

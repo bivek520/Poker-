@@ -21,6 +21,7 @@
 #include <gtkmm.h>
 #include <fstream>
 #include <iostream>
+#include "client.h"
 const std::string APP_TITLE{"POKER ++"};
 const std::string APP_NAME{"edu.uta.cse1325.mass.v0_1_0"};
 const std::string VERSION{"0.1.0"};
@@ -30,9 +31,8 @@ const std::string COOKIE{"M⅍S1"};
 
 class Mainwin : public Gtk::Window {
     public:
-        Mainwin();
+        Mainwin(chat_client*);
         virtual ~Mainwin();
-	
     protected:
 	void on_fold_click();
 	void on_check_click();
@@ -60,7 +60,7 @@ class Mainwin : public Gtk::Window {
 /*        void on_about_click();              // new window displaying game rules and info*/
 	void shiftIndicator();
 	Gtk::Image *indicator =Gtk::manage(new Gtk::Image{"Icons/indicator.png"});
-
+ 	friend class chat_client;	
     private:
 	int balance = 175;
 	int potVal = 200;
