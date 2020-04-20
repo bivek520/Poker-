@@ -76,7 +76,7 @@ chat_client::chat_client(asio::io_context& io_context, const tcp::resolver::resu
 		bool allReady = jstring["ready"];
 		if(allReady)
 		{ 
-			
+			win->on_fold_click();
 		}
 		else
 		{
