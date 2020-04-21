@@ -1,6 +1,6 @@
 #include "client.h"
-#include <gtkmm.h>
-Mainwin *win = nullptr;
+
+extern Mainwin *win = nullptr;
 using asio::ip::tcp;
 using namespace std;
 typedef std::deque<chat_message> chat_message_queue;
@@ -73,14 +73,6 @@ chat_client::chat_client(asio::io_context& io_context, const tcp::resolver::resu
 		std::cout << "\n";
 		assert(win);
 		win->process_data_from_dealer(std::string(read_msg_.body()));
-		bool allReady = jstring["ready"];
-		if(allReady)
-		{ 
-			
-		}
-		else
-		{
-		}
                 do_read_header();
             }
             else

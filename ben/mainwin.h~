@@ -46,6 +46,7 @@ class Mainwin : public Gtk::Window {
 	bool on_my_timeout();
         int seconds=30;
         bool reset=false;
+	void process_data_from_dealer(std::string);
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;
 	Gtk::HBox actionHbox,balanceHbox,publicCardHbox,indicatorHbox, potHbox,privateCardHbox,cardSelectionHbox,exchangeHbox,playHbox;

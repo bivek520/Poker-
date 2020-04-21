@@ -10,7 +10,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 #pragma once
-
+#include <gtkmm.h>
 #include <assert.h>
 #include <cstdlib>
 #include <deque>
@@ -35,7 +35,7 @@ public:
     void close();
     
 private:
-	friend class chat_client Mainwin;
+	friend class Mainwin;
     void do_connect(const tcp::resolver::results_type& endpoints);
     void do_read_header();
     void do_read_body();

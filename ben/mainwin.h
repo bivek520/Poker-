@@ -98,5 +98,6 @@ class Mainwin : public Gtk::Window {
 	bool timerBool = false;
 	   chat_client *c;
 };
+extern Mainwin *win;
 #endif 
 
