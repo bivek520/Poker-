@@ -1,0 +1,162 @@
+#include "mainwin.h"
+#include "ch_header.h"
+#include <assert.h>
+#include <cstdlib>
+#include <deque>
+#include <iostream>
+#include <thread>
+#include "asio.hpp"
+#include "chat_message.hpp"
+#include "json.hpp"
+#include <string>
+
+Mainwin *win;
+    chat_client::chat_client(asio::io_context& io_context,
+                const tcp::resolver::results_type& endpoints)
+    : io_context_(io_context),
+    socket_(io_context)
+    {
+        
+        do_connect(endpoints);
+    }
+    
+    void chat_client::write(const chat_message& msg)
+    {
+        
+        asio::post(io_context_,
+                   [this, msg]()
+                   {
+            cout<<"this is the write"<<endl;
+            bool write_in_progress = !write_msgs_.empty();
+            write_msgs_.push_back(msg);
+            if (!write_in_progress)
+            {
+                
+                do_write();
+            }
+        });
+    }
+    
+    void chat_client::close()
+    {
+        asio::post(io_context_, [this]() { socket_.close(); });
+    }
+    
+    void chat_client::do_connect(const tcp::resolver::results_type& endpoints)
+    {
+        
+        // CSE3310 connection is established with the server
+        asio::async_connect(socket_, endpoints,
+                            [this](std::error_code ec, tcp::endpoint)
+                            {
+            if (!ec)
+            {
+                do_read_header();
+            }
+        });
+    }
+    
+    void chat_client::do_read_header()
+    {
+        
+        asio::async_read(socket_,
+                         asio::buffer(read_msg_.data(), chat_message::header_length),
+                         [this](std::error_code ec, std::size_t /*length*/)
+                         {
+            if (!ec && read_msg_.decode_header())
+            {
+                
+                do_read_body();
+            }
+            else
+            {
+                socket_.close();
+            }
+        });
+    }
+    
+    void chat_client::do_read_body()
+    {
+        
+        //CSE 3310 message body is received from the server
+        asio::async_read(socket_,
+                         asio::buffer(read_msg_.body(), read_msg_.body_length()),
+                         [this](std::error_code ec, std::size_t /*length*/)
+                         {
+            if (!ec)
+            {
+		
+                std::stringstream ss;
+		ss.write(read_msg_.body(), read_msg_.body_length());//
+		nlohmann::json to_player;
+		ss >> to_player;
+		ss.str("");
+                win->shiftIndicator();
+		cout<<"1"<<endl;
+		//int action = to_player["action"];
+		
+		win->Mainwin::unlockAll();
+		}
+		do_read_header();
+            }
+            else
+            {
+                socket_.close();
+            }
+        });
+    }
+    
+    void chat_client::do_write()
+    {
+        //cout<<"at do_write"<<endl<<endl;
+        //CSE 3310 message is sent to the chat server.
+        asio::async_write(socket_,
+                          asio::buffer(write_msgs_.front().data(),
+                                       write_msgs_.front().length()),
+                          [this](std::error_code ec, std::size_t /*length*/)
+                          {
+            //cout<<"do_write inside async_write"<<endl<<endl;
+            
+            if (!ec)
+            {
+                write_msgs_.pop_front();
+                //cout<<"do_write->async_write->if brace"<<std::endl;
+                if (!write_msgs_.empty())
+                {
+                    do_write();
+                }
+            }
+            else
+            {
+                
+                socket_.close();
+            }
+        });
+    }
+
+int main(int argc, char* argv[]){
+
+   auto app = Gtk::Application::create(argc,argv,"Nirakar.test");
+
+   asio::io_context io_context;
+
+   tcp::resolver resolver(io_context);
+   auto endpoints = resolver.resolve("127.0.0.1", "8000");
+   chat_client *c = new chat_client(io_context, endpoints);
+   assert(c);
+   std::thread t([&io_context](){ io_context.run(); });
+
+
+    Gtk::Main kit(argc, argv);
+    win = new Mainwin(c);
+    win->show();
+    kit.run();
+
+    std::cout << "before close of the connection" << std::endl;
+    c->close();
+    std::cout << "after close of the connection" << std::endl;
+    t.join();
+    //app->run(*win);
+
+
+}

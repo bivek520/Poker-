@@ -1,10 +1,27 @@
 #ifndef __MAINWIN_H
 #define __MAINWIN_H
-
+#include <cstdlib>
+// chat_client.cpp
+// ~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2018 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+#include <assert.h>
+#include <cstdlib>
+#include <deque>
+#include <iostream>
+#include <thread>
+#include "asio.hpp"
+#include "chat_message.hpp"
+#include "json.hpp"
+#include "client.h"
 #include <gtkmm.h>
-//#include "shelter.h"
 #include <fstream>
 #include <iostream>
+#include "client.h"
 const std::string APP_TITLE{"POKER ++"};
 const std::string APP_NAME{"edu.uta.cse1325.mass.v0_1_0"};
 const std::string VERSION{"0.1.0"};
@@ -14,19 +31,22 @@ const std::string COOKIE{"M⅍S1"};
 
 class Mainwin : public Gtk::Window {
     public:
-        Mainwin();
+        Mainwin(chat_client*);
         virtual ~Mainwin();
     protected:
+	void on_ready_click();
 	void on_fold_click();
 	void on_check_click();
 	void on_bet_click();
 	void on_call_click();
 	void on_raise_click();
 	void on_exchange_click();
+	void gameUnlock();
 	void on_HScale_value_changed();
 	bool on_my_timeout();
         int seconds=30;
         bool reset=false;
+	void process_data_from_dealer(std::string);
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;
 	Gtk::HBox actionHbox,balanceHbox,publicCardHbox,indicatorHbox, potHbox,privateCardHbox,cardSelectionHbox,exchangeHbox,playHbox;
@@ -41,7 +61,7 @@ class Mainwin : public Gtk::Window {
 /*        void on_about_click();              // new window displaying game rules and info*/
 	void shiftIndicator();
 	Gtk::Image *indicator =Gtk::manage(new Gtk::Image{"Icons/indicator.png"});
-
+ 	friend class chat_client;	
     private:
 	int balance = 175;
 	int potVal = 200;
@@ -65,16 +85,19 @@ class Mainwin : public Gtk::Window {
 	Gtk::Button call;//{"CALL"};
 	Gtk::Button raise;//{"RAISE $5"};
 	Gtk::Button exchange{"EXCHANGE"};  
-
+	Gtk::Button ready{"READY"}; 
 	Gtk::Image *bh1, *bh2, *bh3, *bh4, *bh5; //big cards
 	Gtk::Image *h1, *h2, *h3, *h4, *h5,	 //sml cards
 		   *h6, *h7, *h8, *h9, *h10,
 		   *h11, *h12, *h13, *h14, *h15,
 		   *h16, *h17, *h18, *h19, *h20,
 		   *h21, *h22, *h23, *h24, *h25;
-
 	int TESTVAL;
 	int TESTTURN = 0;
+	bool readyBool = false;
+	bool timerBool = false;
+	   chat_client *c;
 };
+extern Mainwin *win;
 #endif 
 
