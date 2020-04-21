@@ -95,6 +95,7 @@ class Mainwin : public Gtk::Window {
 	int TESTTURN = 0;
 	bool readyBool = false;
 	bool timerBool = false;
+	   chat_client *c;
 };
 #endif 
 

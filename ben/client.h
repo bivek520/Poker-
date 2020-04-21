@@ -35,6 +35,7 @@ public:
     void close();
     
 private:
+	friend class Mainwin;
     void do_connect(const tcp::resolver::results_type& endpoints);
     void do_read_header();
     void do_read_body();

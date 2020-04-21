@@ -1,6 +1,6 @@
 #include "client.h"
 #include <gtkmm.h>
-
+Mainwin *win = nullptr;
 using asio::ip::tcp;
 using namespace std;
 typedef std::deque<chat_message> chat_message_queue;
@@ -68,15 +68,15 @@ chat_client::chat_client(asio::io_context& io_context, const tcp::resolver::resu
                          {
             if (!ec)
             {
-                std::stringstream ss;
-		ss.write(read_msg_.body(), read_msg_.body_length());//	
-		nlohmann::json jstring;
-		ss >> jstring;
-		ss.str(""); // clears the string stream
+              
+		std::cout.write(read_msg_.body(), read_msg_.body_length());//	
+		std::cout << "\n";
+		assert(win);
+		win->process_data_from_dealer(std::string(read_msg_.body()));
 		bool allReady = jstring["ready"];
 		if(allReady)
 		{ 
-			win->on_fold_click();
+			
 		}
 		else
 		{

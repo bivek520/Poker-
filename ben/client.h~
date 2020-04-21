@@ -10,6 +10,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 #pragma once
+
 #include <assert.h>
 #include <cstdlib>
 #include <deque>
@@ -18,7 +19,7 @@
 #include "asio.hpp"
 #include "chat_message.hpp"
 #include "json.hpp"
-#include "mainwin.h"
+#include <string>
 
 using asio::ip::tcp;
 using namespace std;
@@ -34,6 +35,7 @@ public:
     void close();
     
 private:
+	friend class chat_client Mainwin;
     void do_connect(const tcp::resolver::results_type& endpoints);
     void do_read_header();
     void do_read_body();

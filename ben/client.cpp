@@ -68,19 +68,11 @@ chat_client::chat_client(asio::io_context& io_context, const tcp::resolver::resu
                          {
             if (!ec)
             {
-                std::stringstream ss;
-		ss.write(read_msg_.body(), read_msg_.body_length());//	
-		nlohmann::json jstring;
-		ss >> jstring;
-		ss.str(""); // clears the string stream
-		bool allReady = jstring["ready"];
-		if(allReady)
-		{ 
-			win->on_fold_click();
-		}
-		else
-		{
-		}
+              
+		std::cout.write(read_msg_.body(), read_msg_.body_length());//	
+		std::cout << "\n";
+		assert(win);
+		win->process_data_from_dealer(std::string(read_msg_.body()));
                 do_read_header();
             }
             else
