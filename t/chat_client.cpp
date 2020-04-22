@@ -111,6 +111,18 @@ typedef std::deque<chat_message> chat_message_queue;
                         turn = from_dealer["turn"];
                 if (from_dealer["uuid"].empty() == false)
                         uuid = from_dealer["uuid"];
+		
+		//cards stuff
+		if (from_dealer["card1"].empty() == false)
+			card1 = from_dealer["card1"];
+		if (from_dealer["card2"].empty() == false)
+                        card2 = from_dealer["card2"];
+		if (from_dealer["card3"].empty() == false)
+                        card3 = from_dealer["card3"];
+		if (from_dealer["card4"].empty() == false)
+                        card4 = from_dealer["card4"];
+		if (from_dealer["card5"].empty() == false)
+                        card5 = from_dealer["card5"];
 
                 if (turn>0 && playerNo>0 && turn==playerNo)
 		       win->updateButton();	

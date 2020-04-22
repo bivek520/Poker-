@@ -108,11 +108,11 @@ Mainwin::Mainwin(chat_client *c_)
     //    publicCardHbox.pack_start(image14,Gtk::PACK_END, 0);
     //    publicCardHbox.pack_start(image15,Gtk::PACK_END, 0);
     
-    h1 =Gtk::manage(new Gtk::Image{sml(21)});
-    h2 =Gtk::manage(new Gtk::Image{sml(121)});
-    h3 =Gtk::manage(new Gtk::Image{sml(113)});
-    h4 =Gtk::manage(new Gtk::Image{sml(122)});
-    h5 =Gtk::manage(new Gtk::Image{sml(123)});
+    h1 =Gtk::manage(new Gtk::Image{sml(c->getCard1())});
+    h2 =Gtk::manage(new Gtk::Image{sml(c->getCard2())});
+    h3 =Gtk::manage(new Gtk::Image{sml(c->getCard3())});
+    h4 =Gtk::manage(new Gtk::Image{sml(c->getCard4())});
+    h5 =Gtk::manage(new Gtk::Image{sml(c->getCard5())});
     
     h6 =Gtk::manage(new Gtk::Image{sml(11)});
     h7 =Gtk::manage(new Gtk::Image{sml(11)});
@@ -189,11 +189,11 @@ Mainwin::Mainwin(chat_client *c_)
     if (timerBool == true)
     	Glib::signal_timeout().connect( sigc::mem_fun(*this, &Mainwin::on_my_timeout), 1000 );
     
-    bh1 =Gtk::manage(new Gtk::Image{big(21)});
-    bh2 =Gtk::manage(new Gtk::Image{big(121)});
-    bh3 =Gtk::manage(new Gtk::Image{big(113)});
-    bh4 =Gtk::manage(new Gtk::Image{big(122)});
-    bh5 =Gtk::manage(new Gtk::Image{big(123)});
+    bh1 =Gtk::manage(new Gtk::Image{big(c->getCard1())});
+    bh2 =Gtk::manage(new Gtk::Image{big(c->getCard2())});
+    bh3 =Gtk::manage(new Gtk::Image{big(c->getCard3())});
+    bh4 =Gtk::manage(new Gtk::Image{big(c->getCard4())});
+    bh5 =Gtk::manage(new Gtk::Image{big(c->getCard5())});
     
     
     //image21.override_background_color(Gdk::RGBA{"black"});
