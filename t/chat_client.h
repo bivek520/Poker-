@@ -35,6 +35,11 @@ public:
     int playerNo=0;
     string uuid;
     bool start;     
+    int getCard1();
+    int getCard2();
+    int getCard3();
+    int getCard4();
+    int getCard5();
 private:
     friend class Mainwin;
     void do_connect(const tcp::resolver::results_type& endpoints);
@@ -45,6 +50,7 @@ private:
     tcp::socket socket_;
     chat_message read_msg_;
     chat_message_queue write_msgs_;	
+    int card1, card2, card3, card4, card5;
 };
 #endif 
 

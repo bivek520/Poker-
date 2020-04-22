@@ -4,13 +4,10 @@ dealer::dealer()
 {
 }
 
-/*int dealer::myrandom (int i) 
-{ 
-   return std::rand()%i;
-}*/
-
 void dealer::createDeck()
 {
+//this function creates a Deck and shuffled it up
+
    int i;
     //push cards on cards vector
     //first 2 digits are value, last is face
@@ -45,10 +42,7 @@ void dealer::createDeck()
         Deck.push_back(i);
     for ( i=91; i<=94; i++)
         Deck.push_back(i);
-//}
-
-//void dealer::shuffleDeck()
-//{
+  
   std::srand ( unsigned ( std::time(0) ) );
   // using built-in random generator:
   std::random_shuffle ( Deck.begin(), Deck.end() );

@@ -26,8 +26,8 @@ using namespace std;
 using asio::ip::tcp;
 
 dealer Dealer;
-Dealer.createDeck();
-vector<int>Deck = Dealer.getDeck();
+//Dealer.createDeck();
+//vector<int>Deck = Dealer.getDeck();
 int card1, card2, card3, card4,card5;
 
 //----------------------------------------------------------------------
@@ -70,10 +70,22 @@ public:
 	participant->turn=player_turn;                          //gives turn # to each player
         player_turn++;
         playerNum++;*/
-
+	    Dealer.createDeck();
+	    vector<int>Deck = Dealer.getDeck();
+	    card1 = Deck.back();
+            Deck.pop_back();
+	    card2 = Deck.back();
+	    Deck.pop_back();
+            card3 = Deck.back();
+	    Deck.pop_back();
+            card4 = Deck.back();
+	    Deck.pop_back();
+            card5 = Deck.back();
+	    Deck.pop_back();
+	    
 	    boost::uuids::basic_random_generator<boost::mt19937> g;
             boost::uuids::uuid u=g();
-
+	    
             string playerID;
             stringstream ss;
             ss<<u;
@@ -82,14 +94,18 @@ public:
 //            participant->turn = player_turn;
             participant->playerNo = playerNumber;
             cout << "Player number " << participant->playerNo << "uuid is " << participant->uuid << endl;
-
+	    cout << "cards are "<< card1 <<", " << card2 <<", " << card3 <<", " << card4 << ", "<<card5<<endl;
             participants_.insert(participant);
             
 	    //send client their uuid and turn
             nlohmann::json to_player;
                     to_player["playerNo"] = participant->playerNo;
                     to_player["uuid"] = participant->uuid;
-
+		    to_player["card1"]=card1;
+                    to_player["card2"]=card2;
+                    to_player["card3"]=card3;
+                    to_player["card4"]=card4;
+                    to_player["card5"]=card5;		
                     string t = to_player.dump();
                     chat_message sending;
                     if (t.size() < chat_message::max_body_length)
