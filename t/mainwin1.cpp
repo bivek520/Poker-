@@ -107,7 +107,6 @@ Mainwin::Mainwin(chat_client *c_)
     //    publicCardHbox.pack_start(image13, Gtk::PACK_END, 0);
     //    publicCardHbox.pack_start(image14,Gtk::PACK_END, 0);
     //    publicCardHbox.pack_start(image15,Gtk::PACK_END, 0);
-    
     h1 =Gtk::manage(new Gtk::Image{sml(c->getCard1())});
     h2 =Gtk::manage(new Gtk::Image{sml(c->getCard2())});
     h3 =Gtk::manage(new Gtk::Image{sml(c->getCard3())});
@@ -193,8 +192,7 @@ Mainwin::Mainwin(chat_client *c_)
     bh2 =Gtk::manage(new Gtk::Image{big(c->getCard2())});
     bh3 =Gtk::manage(new Gtk::Image{big(c->getCard3())});
     bh4 =Gtk::manage(new Gtk::Image{big(c->getCard4())});
-    bh5 =Gtk::manage(new Gtk::Image{big(c->getCard5())});
-    
+    bh5 =Gtk::manage(new Gtk::Image{big(c->getCard5())});    
     
     //image21.override_background_color(Gdk::RGBA{"black"});
     vbox->pack_start(sep2);
@@ -558,10 +556,18 @@ void Mainwin::on_ready_click()
     p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
     p1.override_background_color(Gdk::RGBA{"white"});
     timerBool=true;
-//    fold.set_sensitive();
-//    check.set_sensitive();
-//    bet.set_sensitive();
-   
+  
+    h1 =Gtk::manage(new Gtk::Image{sml(c->getCard1())});
+    h2 =Gtk::manage(new Gtk::Image{sml(c->getCard2())});
+    h3 =Gtk::manage(new Gtk::Image{sml(c->getCard3())});
+    h4 =Gtk::manage(new Gtk::Image{sml(c->getCard4())});
+    h5 =Gtk::manage(new Gtk::Image{sml(c->getCard5())});
+
+    bh1 =Gtk::manage(new Gtk::Image{big(c->getCard1())});
+    bh2 =Gtk::manage(new Gtk::Image{big(c->getCard2())});
+    bh3 =Gtk::manage(new Gtk::Image{big(c->getCard3())});
+    bh4 =Gtk::manage(new Gtk::Image{big(c->getCard4())});
+    bh5 =Gtk::manage(new Gtk::Image{big(c->getCard5())}); 
     
     chat_message msg;
        nlohmann::json to_dealer;

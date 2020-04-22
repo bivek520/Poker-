@@ -125,12 +125,25 @@ typedef std::deque<chat_message> chat_message_queue;
                         card5 = from_dealer["card5"];
 
                 if (turn>0 && playerNo>0 && turn==playerNo)
-		       win->updateButton();	
+		{
+			gdk_threads_enter(); 
+			win->updateButton();
+			gdk_threads_leave();	
+		
+		}
 		if (turn>0 && playerNo>0 && turn!=playerNo)
-		       win->grayOutButton();
+		{
+			gdk_threads_enter(); 
+			win->grayOutButton();
+			gdk_threads_leave();
+		}
 		if (turn>=2)
-			win->shiftIndicator();		
-                std::cout << "\n";
+		{
+			gdk_threads_enter();
+			win->shiftIndicator();
+			gdk_threads_leave();		
+		}
+		std::cout << "\n";
 //                win->shiftIndicator();
 
                 do_read_header();
