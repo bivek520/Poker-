@@ -7,7 +7,7 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-
+#include "dealer.h"
 #include <cstdlib>
 #include <deque>
 #include <iostream>
@@ -24,6 +24,11 @@
 
 using namespace std;
 using asio::ip::tcp;
+
+dealer Dealer;
+Dealer.createDeck();
+vector<int>Deck = Dealer.getDeck();
+int card1, card2, card3, card4,card5;
 
 //----------------------------------------------------------------------
 
@@ -49,6 +54,11 @@ int turn=0;
 int playerNumber=1;
 int start;
 
+/*dealer Dealer;
+Dealer.createDeck();
+vector<int>Deck = Dealer.getDeck();
+int card1, card2, card3, card4,card5;
+*/
 class poker_table
 {
 public:
@@ -250,8 +260,32 @@ private:
 		if (turn==0)
 		{	
 		   nlohmann::json to_dealer = nlohmann::json::parse(std::string(read_msg_.body()));
-                   room_.set_ready(to_dealer["ready"],shared_from_this()->playerNo);
-                   if (room_.allReady()==false)
+		   room_.set_ready(to_dealer["ready"],shared_from_this()->playerNo);
+                   	//if player is ready, send them cards
+/*		        if(to_dealer["ready"]==true)
+			{
+			   card1 = Deck.back();
+			   card2 = Deck.back();
+			   card3 = Deck.back();
+			   card4 = Deck.back();
+	 		   card5 = Deck.back();
+			   nlohmann::json to_player1;
+                           to_player1["card1"]=card1;
+			   to_player1["card2"]=card2;
+                           to_player1["card3"]=card3;
+                           to_player1["card4"]=card4;
+			   to_player1["card5"]=card5;
+			   string t=to_player1.dump();
+                           chat_message sending;
+                           if (t.size() < chat_message::max_body_length)
+                           {
+                              memcpy( sending.body(), t.c_str(), t.size() );
+                              sending.body_length(t.size());
+                              sending.encode_header();
+                              room_.deliver(sending);
+                           }	
+		        }*/
+		   if (room_.allReady()==false)
 		   {
 			cout<<"cant start game"<<endl;
 			nlohmann::json to_player1;
@@ -283,6 +317,8 @@ private:
                         }
 		   }
 		}
+	  
+		//if turn not 0
 		else
 		{
 			turn++;

@@ -158,30 +158,28 @@ typedef std::deque<chat_message> chat_message_queue;
         });
     }
 
-/*int main(int argc, char* argv[]){
+    int chat_client::getCard1()
+    {
+	return card1;
+    }
 
-   auto app = Gtk::Application::create(argc,argv,"Nirakar.test");
+    int chat_client::getCard2()
+    {
+        return card2;
+    }
 
-   asio::io_context io_context;
+    int chat_client::getCard3()
+    {
+        return card3;
+    }
 
-   tcp::resolver resolver(io_context);
-   auto endpoints = resolver.resolve("127.0.0.1", "8000");
-   chat_client *c = new chat_client(io_context, endpoints);
-   assert(c);
-   std::thread t([&io_context](){ io_context.run(); });
+    int chat_client::getCard4()
+    {
+        return card4;
+    }
 
-
-    Gtk::Main kit(argc, argv);
-    win = new Mainwin(c);
-    win->show();
-    kit.run();
-
-    std::cout << "before close of the connection" << std::endl;
-    c->close();
-    std::cout << "after close of the connection" << std::endl;
-    t.join();
-    //app->run(*win);
-
-
-}*/
+    int chat_client::getCard5()
+    {
+        return card5;
+    }
 

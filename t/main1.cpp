@@ -1,5 +1,7 @@
 #include "mainwin.h"
 #include "chat_client.h"
+#include "dealer.h"
+
 Mainwin *win = nullptr;
 
 int main(int argc, char* argv[]){
