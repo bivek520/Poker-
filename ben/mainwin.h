@@ -37,7 +37,8 @@ class Mainwin : public Gtk::Window {
 	void grayOutButton();
 	void on_HScale_value_changed();
 	bool on_my_timeout();
-        int seconds=30;
+        void updateReadyBoxes(int participant);
+	int seconds=30;
         bool reset=false;
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;

@@ -569,10 +569,10 @@ void Mainwin::on_ready_click()
         //set small images
 	if(c->playerNo == 1)
 	{
-	action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
-        action1.override_background_color(Gdk::RGBA{"green"});
-        p1.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
-        p1.override_background_color(Gdk::RGBA{"white"});
+//	action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+//        action1.override_background_color(Gdk::RGBA{"green"});
+//        p1.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
+//        p1.override_background_color(Gdk::RGBA{"white"});
 	h1->set(sml(c->getHand(0)));
     	h2->set(sml(c->getHand(1)));
 	h3->set(sml(c->getHand(2)));
@@ -581,10 +581,10 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 2)
 	{
-	action2.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+/*	action2.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
         action2.override_background_color(Gdk::RGBA{"green"});
         p2.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
-	h6->set(sml(c->getHand(0)));
+*/	h6->set(sml(c->getHand(0)));
     	h7->set(sml(c->getHand(1)));
 	h8->set(sml(c->getHand(2)));
 	h9->set(sml(c->getHand(3)));
@@ -592,10 +592,10 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 3)
 	{
-        action3.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+/*      action3.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
         action3.override_background_color(Gdk::RGBA{"green"});
         p3.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");	
-	h11->set(sml(c->getHand(0)));
+*/	h11->set(sml(c->getHand(0)));
     	h12->set(sml(c->getHand(1)));
 	h13->set(sml(c->getHand(2)));
 	h14->set(sml(c->getHand(3)));
@@ -603,10 +603,10 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 4)
 	{
-        action4.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+/*        action4.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
         action4.override_background_color(Gdk::RGBA{"green"});
         p4.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");	
-	h16->set(sml(c->getHand(0)));
+*/	h16->set(sml(c->getHand(0)));
     	h17->set(sml(c->getHand(1)));
 	h18->set(sml(c->getHand(2)));
 	h19->set(sml(c->getHand(3)));
@@ -614,10 +614,10 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 5)
 	{
-        action5.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+/*        action5.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
         action5.override_background_color(Gdk::RGBA{"green"});
         p5.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");	
-	h21->set(sml(c->getHand(0)));
+*/	h21->set(sml(c->getHand(0)));
     	h22->set(sml(c->getHand(1)));
 	h23->set(sml(c->getHand(2)));
 	h24->set(sml(c->getHand(3)));
@@ -701,4 +701,47 @@ void Mainwin::grayOutButton()
      fold.set_sensitive(false);
      check.set_sensitive(false);
      bet.set_sensitive(false);
+}
+
+void Mainwin::updateReadyBoxes(int participant)
+{
+	if (participant==1)
+	{
+	   action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+           action1.override_background_color(Gdk::RGBA{"green"});
+           //p1.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
+	   p1.override_background_color(Gdk::RGBA{"white"});
+	}
+
+        if (participant==2)
+        {
+           action2.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+           action2.override_background_color(Gdk::RGBA{"green"});
+           //p1.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
+           p2.override_background_color(Gdk::RGBA{"white"});
+        }
+
+	if (participant==3)
+        {
+           action3.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+           action3.override_background_color(Gdk::RGBA{"green"});
+           //p.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
+           p3.override_background_color(Gdk::RGBA{"white"});
+        }
+
+        if (participant==4)
+        {
+           action4.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+           action4.override_background_color(Gdk::RGBA{"green"});
+           //p1.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
+           p4.override_background_color(Gdk::RGBA{"white"});
+        }
+
+        if (participant==5)
+        {
+           action5.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+           action5.override_background_color(Gdk::RGBA{"green"});
+           //p5.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
+           p5.override_background_color(Gdk::RGBA{"white"});
+        }
 }

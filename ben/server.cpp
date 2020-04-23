@@ -300,31 +300,24 @@ private:
 		{	
 		   nlohmann::json to_dealer = nlohmann::json::parse(std::string(read_msg_.body()));
 		   room_.set_ready(to_dealer["ready"],shared_from_this()->playerNo);
-                   	//if player is ready, send them cards
-/*		        if(to_dealer["ready"]==true)
-			{
-			   card1 = Deck.back();
-			   card2 = Deck.back();
-			   card3 = Deck.back();
-			   card4 = Deck.back();
-	 		   card5 = Deck.back();
-			   nlohmann::json to_player1;
-                           to_player1["card1"]=card1;
-			   to_player1["card2"]=card2;
-                           to_player1["card3"]=card3;
-                           to_player1["card4"]=card4;
-			   to_player1["card5"]=card5;
-			   string t=to_player1.dump();
-                           chat_message sending;
-                           if (t.size() < chat_message::max_body_length)
-                           {
-                              memcpy( sending.body(), t.c_str(), t.size() );
-                              sending.body_length(t.size());
-                              sending.encode_header();
-                              room_.deliver(sending);
-                           }	
-		        }*/
-			
+		
+	           //send out ready status to all players
+		   if (shared_from_this()->ready==true)
+		   {
+			nlohmann::json to_player;
+	     		to_player["participant"]=shared_from_this()->playerNo;
+			to_player["ready"]=true;
+                        string t=to_player.dump();
+                        chat_message sending;
+                        if (t.size() < chat_message::max_body_length)
+                        {
+                           memcpy( sending.body(), t.c_str(), t.size() );
+                           sending.body_length(t.size());
+                           sending.encode_header();
+                           room_.deliver(sending);
+                        }
+		   }	
+
 		   if (room_.allReady()==false)
 		   {
 			cout<<"cant start game"<<endl;

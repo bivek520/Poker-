@@ -112,6 +112,16 @@ typedef std::deque<chat_message> chat_message_queue;
                         turn = from_dealer["turn"];
                 if (from_dealer["uuid"].empty() == false)
                         uuid = from_dealer["uuid"];
+		
+		//get ready status from dealer and resetaction box
+		if (from_dealer["participant"].empty()==false &&
+		    from_dealer["ready"].empty()==false)
+		{
+				gdk_threads_enter();
+				win->updateReadyBoxes(from_dealer["participant"]);
+				gdk_threads_leave();
+		}
+
 		if (from_dealer["hand["+ to_string(playerNo) +"][0]"].empty() == false)
 			hand[0] = from_dealer["hand["+ to_string(playerNo) +"][0]"];
 		if (from_dealer["hand["+ to_string(playerNo) +"][1]"].empty() == false)

@@ -35,12 +35,13 @@ public:
     int playerNo=0;
     string uuid;
     bool start;     
+    int participant=0;
     int getCard1();
     int getCard2();
     int getCard3();
     int getCard4();
     int getCard5();
-	int getHand(int card);
+    int getHand(int card);
 private:
     friend class Mainwin;
     void do_connect(const tcp::resolver::results_type& endpoints);
