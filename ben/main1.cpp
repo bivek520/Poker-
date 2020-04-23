@@ -1,11 +1,13 @@
 #include "mainwin.h"
 #include "chat_client.h"
 #include "dealer.h"
+#include <X11/Xlib.h>
 
 Mainwin *win = nullptr;
 
 int main(int argc, char* argv[]){
     
+    XInitThreads();
     auto app = Gtk::Application::create(argc,argv,"Nirakar.test");
     Gtk::Main kit(argc, argv);
 
