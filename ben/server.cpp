@@ -355,6 +355,8 @@ private:
 		else
 		{
 			turn++;
+			if (turn==6)
+				turn=1;
                         nlohmann::json to_player2;
                         to_player2["start"]=true;
                         to_player2["turn"]=turn;
