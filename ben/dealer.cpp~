@@ -16,11 +16,11 @@ void dealer::createDeck()
     //3 is hearts
     //4 is spades
     //2 for 2, 3 for 3...,11 for Jack, 12 for Queen, 13 for King, 14 for Ace
-for(i = 2; i<=14; i++)
+for(int x = 2; x<=14; x++)
 {
 	for(int y=1;y<=4;y++)
 	{
-	Deck.push_back(i * 10 + y);
+	Deck.push_back(x * 10 + y);
 	}
 }
   

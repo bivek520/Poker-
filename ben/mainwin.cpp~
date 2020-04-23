@@ -17,9 +17,6 @@ void Mainwin::toGui(std::string s, int participant)
 	}else if(s == "shift")
 	{
 	shiftIndicator();
-	}else if(s == "updateFoldAction")
-	{
-	updateFoldAction(participant);
 	}
 }
 std::string big(int card)

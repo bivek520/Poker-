@@ -146,19 +146,19 @@ typedef std::deque<chat_message> chat_message_queue;
 		if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
 		{
 			 //gdk_threads_enter();
-			win->toGui("updateButton",0);//gdk_threads_leave();
-			win->toGui("shift",0);
+			win->toGui("updateButton");//gdk_threads_leave();
+			win->toGui("shift");
 			
 		}
 		if (turn>0 && playerNo>0 && turn!=playerNo && !skipStatus)
 		{//gdk_threads_enter();
-			win->toGui("grayOutButton",0);//gdk_threads_leave();
-			win->toGui("shift",0);
+			win->toGui("grayOutButton");//gdk_threads_leave();
+			win->toGui("shift");
 		}
 		if (turn>=2)
 		{
 			//gdk_threads_enter();
-			win->toGui("shift",0);
+			win->toGui("shift");
 			//gdk_threads_leave();		
 		}
 		/*

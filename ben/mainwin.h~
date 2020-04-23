@@ -39,7 +39,7 @@ class Mainwin : public Gtk::Window {
 	bool on_my_timeout();
         void updateReadyBoxes(int participant);
 	void updateFoldAction(int participant);
-	void toGui(std::string, int);
+	void toGui(std::string);
 	int seconds=30;
         bool reset=false;
 	Gtk::VBox cvbox;

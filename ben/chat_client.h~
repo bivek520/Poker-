@@ -42,7 +42,7 @@ public:
     int getCard4();
     int getCard5();
     int getHand(int card);
-	bool skipStatus = false;
+	bool skipStatus = false;;
 private:
     friend class Mainwin;
     void do_connect(const tcp::resolver::results_type& endpoints);
