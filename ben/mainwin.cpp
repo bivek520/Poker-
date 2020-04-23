@@ -324,18 +324,14 @@ void Mainwin::on_fold_click() {
     std::cout << "Player Folded!" << std::endl;
     shiftIndicator();
     
-    
+    //send dealer player folded
     chat_message msg;
     nlohmann::json to_dealer;
-    to_dealer["action"] = "folded";     
-
+    to_dealer["action"] = "folded";    
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
     std::memcpy(msg.body(), t.c_str() , msg.body_length());
-    
-
-    msg.encode_header();
-    
+    msg.encode_header();   
     assert ( c );
     c->write(msg);
     
@@ -354,6 +350,17 @@ void Mainwin::on_check_click() {
     
     std::cout << "Player Checked!" << std::endl;
     shiftIndicator();
+
+    //send dealer player checked
+    chat_message msg;
+    nlohmann::json to_dealer;
+    to_dealer["action"] = "checked";     
+    std::string t = to_dealer.dump();
+    msg.body_length(t.size());
+    std::memcpy(msg.body(), t.c_str() , msg.body_length());
+    msg.encode_header();    
+    assert ( c );
+    c->write(msg);
 }
 
 void Mainwin::on_bet_click() {
@@ -396,6 +403,20 @@ void Mainwin::on_bet_click() {
     shiftIndicator();
     potVal = potVal + TESTVAL;
     pot.set_text("\nPOT: $" +std::to_string(potVal));
+
+    //send dealer player bet, amount bet, player's balance and pot value after betting 
+    chat_message msg;
+    nlohmann::json to_dealer;
+    to_dealer["action"] = "bet";
+    to_dealer["amount"] = TESTVAL;
+    to_dealer["balance"] = balance;
+    to_dealer["pot"] = potVal;
+    std::string t = to_dealer.dump();
+    msg.body_length(t.size());
+    std::memcpy(msg.body(), t.c_str() , msg.body_length());
+    msg.encode_header();  
+    assert ( c );
+    c->write(msg);
 }
 
 void Mainwin::on_call_click() {
@@ -422,6 +443,20 @@ void Mainwin::on_call_click() {
     
     potVal = potVal + TESTVAL;
     pot.set_text("\nPOT: $" +std::to_string(potVal));
+	
+    //send dealer player called, amount called, player's balance and pot value after calling 
+    chat_message msg;
+    nlohmann::json to_dealer;
+    to_dealer["action"] = "called";
+    to_dealer["amount"] = TESTVAL;
+    to_dealer["balance"] = balance;
+    to_dealer["pot"] = potVal;
+    std::string t = to_dealer.dump();
+    msg.body_length(t.size());
+    std::memcpy(msg.body(), t.c_str() , msg.body_length());
+    msg.encode_header();  
+    assert ( c );
+    c->write(msg);
 }
 
 void Mainwin::on_raise_click() {
@@ -450,6 +485,21 @@ void Mainwin::on_raise_click() {
     
     potVal = potVal + TESTVAL;
     pot.set_text("\nPOT: $" +std::to_string(potVal));
+	
+    //send dealer player raised, by how much, total amount after raised, player's balance and pot value after raising 
+    chat_message msg;
+    nlohmann::json to_dealer;
+    to_dealer["action"] = "raised";
+    to_dealer["raised_by"] = sp;
+    to_dealer["amount"] = TESTVAL;
+    to_dealer["balance"] = balance;
+    to_dealer["pot"] = potVal;
+    std::string t = to_dealer.dump();
+    msg.body_length(t.size());
+    std::memcpy(msg.body(), t.c_str() , msg.body_length());
+    msg.encode_header();  
+    assert ( c );
+    c->write(msg);
 }
 
 void Mainwin::on_HScale_value_changed() {
