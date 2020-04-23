@@ -1,7 +1,7 @@
 CXXFLAGS +=  -DASIO_STANDALONE -Wall -O0 --std=c++11
 CPPFLAGS+=-I./include -I./asio-1.12.2/include
 LDLIBS+= -lpthread
-GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0 --cflags --libs`
+GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0 --cflags --libs x11`
 
 all: asio-1.12.2 mainwindow server
 
