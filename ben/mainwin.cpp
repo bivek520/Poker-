@@ -244,15 +244,7 @@ Mainwin::Mainwin(chat_client *c_)
     fold.set_sensitive(false);
     check.set_sensitive(false);
     bet.set_sensitive(false);
-    
-  
-/*    if (start==true && playerNo==turn)
-    {
-	    fold.set_sensitive(true);
-            check.set_sensitive(true);
-            bet.set_sensitive(true);
-    }
-*/
+
     vbox->pack_start(sep3);
     image21.set_text(" \n");
     vbox->pack_start(image21);
@@ -285,21 +277,10 @@ Mainwin::Mainwin(chat_client *c_)
     
     call.set_size_request(30,30);
     raise.set_size_request(30,30);
-    
-    /*    if (TESTTURN!=1)
-     {
-     fold.set_sensitive(false);
-     check.set_sensitive(false);
-     call.set_sensitive(false);
-     bet.set_sensitive(false);
-     raise.set_sensitive(false);
-     }
-     else*/
-    {
-        fold.signal_clicked().connect([this] {this->on_fold_click();});
-        check.signal_clicked().connect([this] {this->on_check_click();});
-        bet.signal_clicked().connect([this] {this->on_bet_click();});
-    }
+
+    fold.signal_clicked().connect([this] {this->on_fold_click();});
+    check.signal_clicked().connect([this] {this->on_check_click();});
+    bet.signal_clicked().connect([this] {this->on_bet_click();});
     
     bet.show();
     check.show();
@@ -324,23 +305,7 @@ Mainwin::Mainwin(chat_client *c_)
     
     set_title(APP_TITLE);    //Application Title
     set_default_size(800, 600);   //default size of application window
-    m_Grid.set_column_spacing(20);
-    
-/*    static asio::io_context io_context;
-    
-    static tcp::resolver resolver(io_context);
-    static auto endpoints = resolver.resolve("127.0.0.1", "8000");
-    c = new chat_client(io_context, endpoints);
-     assert(c);
-    static std::thread t([&io_context](){ io_context.run(); });
-*/  
-    
-    
-    //char line[chat_message::max_body_length + 1];               //input from the client is stored here
-    //c->close();
-    //t.join();
-    
-    
+    m_Grid.set_column_spacing(20);   
 }
 
 Mainwin::~Mainwin() { }
@@ -362,14 +327,7 @@ void Mainwin::on_fold_click() {
     
     chat_message msg;
     nlohmann::json to_dealer;
-    to_dealer["from"] = { {"uuid","3f96b414-9ac9-40b5-8007-90d0e771f0d0"} , {"name","Bivek"} };
-    to_dealer["event"] = "fold";        // "stand","hit","fold","raise","join","request_cards"
-    to_dealer["cards_requested"] = 0;    // optional, number of cards requested, 1 to 5
-    to_dealer["current_bet"] = 0.00;
-    to_dealer["total_bet"] = 0.00;
-    
-    //std::cout << "to dealer:" << std::endl;
-    //std::cout << to_dealer.dump(2) << std::endl;
+    to_dealer["action"] = "folded";     
 
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
@@ -559,20 +517,11 @@ void Mainwin::on_ready_click()
     exchangeHbox.pack_start(exchange ,Gtk::PACK_END, 0);
     exchange.signal_clicked().connect([this] {this->on_exchange_click();});
     exchange.show();
-    /*action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
-    action1.override_background_color(Gdk::RGBA{"green"});
-    p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
-    p1.override_background_color(Gdk::RGBA{"white"});
-    */
     timerBool=true;
 
         //set small images
 	if(c->playerNo == 1)
 	{
-//	action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
-//        action1.override_background_color(Gdk::RGBA{"green"});
-//        p1.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
-//        p1.override_background_color(Gdk::RGBA{"white"});
 	h1->set(sml(c->getHand(0)));
     	h2->set(sml(c->getHand(1)));
 	h3->set(sml(c->getHand(2)));
@@ -581,10 +530,7 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 2)
 	{
-/*	action2.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
-        action2.override_background_color(Gdk::RGBA{"green"});
-        p2.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
-*/	h6->set(sml(c->getHand(0)));
+	h6->set(sml(c->getHand(0)));
     	h7->set(sml(c->getHand(1)));
 	h8->set(sml(c->getHand(2)));
 	h9->set(sml(c->getHand(3)));
@@ -592,10 +538,7 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 3)
 	{
-/*      action3.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
-        action3.override_background_color(Gdk::RGBA{"green"});
-        p3.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");	
-*/	h11->set(sml(c->getHand(0)));
+	h11->set(sml(c->getHand(0)));
     	h12->set(sml(c->getHand(1)));
 	h13->set(sml(c->getHand(2)));
 	h14->set(sml(c->getHand(3)));
@@ -603,10 +546,7 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 4)
 	{
-/*        action4.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
-        action4.override_background_color(Gdk::RGBA{"green"});
-        p4.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");	
-*/	h16->set(sml(c->getHand(0)));
+	h16->set(sml(c->getHand(0)));
     	h17->set(sml(c->getHand(1)));
 	h18->set(sml(c->getHand(2)));
 	h19->set(sml(c->getHand(3)));
@@ -614,10 +554,7 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 5)
 	{
-/*        action5.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
-        action5.override_background_color(Gdk::RGBA{"green"});
-        p5.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");	
-*/	h21->set(sml(c->getHand(0)));
+	h21->set(sml(c->getHand(0)));
     	h22->set(sml(c->getHand(1)));
 	h23->set(sml(c->getHand(2)));
 	h24->set(sml(c->getHand(3)));
@@ -635,10 +572,7 @@ void Mainwin::on_ready_click()
        nlohmann::json to_dealer;
     
        to_dealer["ready"] = true;
-       to_dealer["p"+ to_string(c->playerNo)+" ready"] = true;
-       
-       //std::cout << "to dealer:" << std::endl;
-       //std::cout << to_dealer.dump(2) << std::endl;
+       //to_dealer["p"+ to_string(c->playerNo)+" ready"] = true;
 
        std::string t = to_dealer.dump();
        msg.body_length(t.size());
@@ -709,7 +643,6 @@ void Mainwin::updateReadyBoxes(int participant)
 	{
 	   action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
            action1.override_background_color(Gdk::RGBA{"green"});
-           //p1.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
 	   p1.override_background_color(Gdk::RGBA{"white"});
 	}
 
@@ -717,7 +650,6 @@ void Mainwin::updateReadyBoxes(int participant)
         {
            action2.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
            action2.override_background_color(Gdk::RGBA{"green"});
-           //p1.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
            p2.override_background_color(Gdk::RGBA{"white"});
         }
 
@@ -725,7 +657,6 @@ void Mainwin::updateReadyBoxes(int participant)
         {
            action3.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
            action3.override_background_color(Gdk::RGBA{"green"});
-           //p.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
            p3.override_background_color(Gdk::RGBA{"white"});
         }
 
@@ -733,7 +664,6 @@ void Mainwin::updateReadyBoxes(int participant)
         {
            action4.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
            action4.override_background_color(Gdk::RGBA{"green"});
-           //p1.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
            p4.override_background_color(Gdk::RGBA{"white"});
         }
 
@@ -741,7 +671,6 @@ void Mainwin::updateReadyBoxes(int participant)
         {
            action5.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
            action5.override_background_color(Gdk::RGBA{"green"});
-           //p5.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
            p5.override_background_color(Gdk::RGBA{"white"});
         }
 }
