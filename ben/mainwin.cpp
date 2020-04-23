@@ -421,23 +421,16 @@ void Mainwin::on_bet_click() {
     Gtk::Image* calling = Gtk::manage(new Gtk::Image{"Icons/call.jpg"});
     call.set_image(*calling);
     calling->show();
-    /*if (TESTTURN!=0)
-     call.set_sensitive(false);
-     else*/
     call.signal_clicked().connect([this] {this->on_call_click();});
     call.show();
     
     Gtk::Image* raising = Gtk::manage(new Gtk::Image{"Icons/raise.jpg"});
     raise.set_image(*raising);
     raising->show();
-    /*if (TESTTURN!=0)
-     raise.set_sensitive(false);
-     else*/
     raise.signal_clicked().connect([this] {this->on_raise_click();});
     raise.show();
     
     balance = balance - TESTVAL;
-    //balance1.set_text("\n$" + std::to_string(balance));
     balance1.set_markup("<span size='14000' color ='black' >$  "
                         +  std::to_string(balance) + "</span>");
     balance1.override_background_color(Gdk::RGBA{"white"});
@@ -566,13 +559,20 @@ void Mainwin::on_ready_click()
     exchangeHbox.pack_start(exchange ,Gtk::PACK_END, 0);
     exchange.signal_clicked().connect([this] {this->on_exchange_click();});
     exchange.show();
-    action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+    /*action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
     action1.override_background_color(Gdk::RGBA{"green"});
     p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
     p1.override_background_color(Gdk::RGBA{"white"});
+    */
     timerBool=true;
+
+        //set small images
 	if(c->playerNo == 1)
 	{
+	action1.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+        action1.override_background_color(Gdk::RGBA{"green"});
+        p1.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
+        p1.override_background_color(Gdk::RGBA{"white"});
 	h1->set(sml(c->getHand(0)));
     	h2->set(sml(c->getHand(1)));
 	h3->set(sml(c->getHand(2)));
@@ -581,6 +581,9 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 2)
 	{
+	action2.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+        action2.override_background_color(Gdk::RGBA{"green"});
+        p3.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
 	h6->set(sml(c->getHand(0)));
     	h7->set(sml(c->getHand(1)));
 	h8->set(sml(c->getHand(2)));
@@ -589,6 +592,9 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 3)
 	{
+        action3.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+        action3.override_background_color(Gdk::RGBA{"green"});
+        p3.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");	
 	h11->set(sml(c->getHand(0)));
     	h12->set(sml(c->getHand(1)));
 	h13->set(sml(c->getHand(2)));
@@ -597,6 +603,9 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 4)
 	{
+        action4.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+        action4.override_background_color(Gdk::RGBA{"green"});
+        p4.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");	
 	h16->set(sml(c->getHand(0)));
     	h17->set(sml(c->getHand(1)));
 	h18->set(sml(c->getHand(2)));
@@ -605,21 +614,28 @@ void Mainwin::on_ready_click()
 	}
 	else if (c->playerNo == 5)
 	{
+        action5.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
+        action5.override_background_color(Gdk::RGBA{"green"});
+        p5.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");	
 	h21->set(sml(c->getHand(0)));
     	h22->set(sml(c->getHand(1)));
 	h23->set(sml(c->getHand(2)));
 	h24->set(sml(c->getHand(3)));
 	h25->set(sml(c->getHand(4)));
 	}
-    	bh1->set(big(c->getHand(0)));
+    	
+	//set big images
+	bh1->set(big(c->getHand(0)));
 	bh2->set(big(c->getHand(1)));
 	bh3->set(big(c->getHand(2)));
 	bh4->set(big(c->getHand(3)));
 	bh5->set(big(c->getHand(4)));
-    chat_message msg;
+   
+       chat_message msg;
        nlohmann::json to_dealer;
-    to_dealer["ready"] = true;
-	to_dealer["p"+ to_string(c->playerNo)+" ready"] = true;
+    
+       to_dealer["ready"] = true;
+       to_dealer["p"+ to_string(c->playerNo)+" ready"] = true;
        
        //std::cout << "to dealer:" << std::endl;
        //std::cout << to_dealer.dump(2) << std::endl;
