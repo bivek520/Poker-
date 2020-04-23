@@ -323,7 +323,12 @@ void Mainwin::on_fold_click() {
     
     std::cout << "Player Folded!" << std::endl;
     shiftIndicator();
-    
+    bh1->set(big(1111));
+    bh2->set(big(2222));
+    bh3->set(big(3333));
+    bh4->set(big(4444));
+    bh5->set(big(5555));
+
     //send dealer player folded
     chat_message msg;
     nlohmann::json to_dealer;
