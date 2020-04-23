@@ -39,6 +39,12 @@ class Mainwin : public Gtk::Window {
 	bool on_my_timeout();
         void updateReadyBoxes(int participant);
 	void updateFoldAction(int participant);
+	void updateCheckAction(int participant);
+	void updateCallAction(int participant);
+	void updateBetAction(int participant);
+	void updateRaiseAction(int participant);
+	void updateAllInAction(int participant);
+	void startRound();
 	void toGui(std::string, int);
 	int seconds=30;
         bool reset=false;

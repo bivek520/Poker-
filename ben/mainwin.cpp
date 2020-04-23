@@ -20,6 +20,24 @@ void Mainwin::toGui(std::string s, int participant)
 	}else if(s == "updateFoldAction")
 	{
 	updateFoldAction(participant);
+	}else if(s == "updateCheckAction")
+	{
+	updateCheckAction(participant);
+	}else if(s == "updateCallAction")
+	{
+	updateCallAction(participant);
+	}else if(s == "updateBetAction")
+	{
+	updateBetAction(participant);
+	}else if(s == "updateRaiseAction")
+	{
+	updateRaiseAction(participant);
+	}else if(s == "updateAllInAction")
+	{
+	updateAllInAction(participant);
+	}else if(s == "startRound")
+	{
+	startRound();
 	}
 }
 std::string big(int card)
@@ -360,14 +378,6 @@ void Mainwin::on_fold_click() {
 void Mainwin::on_check_click() {
     reset=true;
     //action1.set_text("\nChecked");
-    action1.set_markup("<span size='16000' color ='black' weight='bold'>Checked </span>");
-    action1.override_background_color(Gdk::RGBA{"yellow"});
-    p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
-    p1.override_background_color(Gdk::RGBA{"white"});
-    balance1.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(balance) + "</span>");
-    balance1.override_background_color(Gdk::RGBA{"white"});
-    
     std::cout << "Player Checked!" << std::endl;
     //shiftIndicator();
 
@@ -391,11 +401,7 @@ void Mainwin::on_bet_click() {
     call.set_label(to_call_button);
     
     //action1.set_text("\nBet $" + std::to_string(sp));
-    action1.set_markup("<span size='16000' color ='white' weight='bold'>Bet $" + std::to_string(sp)+" </span>");
-    action1.override_background_color(Gdk::RGBA{"red"});
-    p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
-    p1.override_background_color(Gdk::RGBA{"white"});
-    
+
     std::cout << "Player Bet $" + std::to_string(sp) + "!"<< std::endl;
     check.hide();
     bet.hide();
@@ -448,11 +454,7 @@ void Mainwin::on_call_click() {
     call.set_image(*calling);
     calling->show();
     
-    action1.set_markup("<span size='16000' color ='black' weight='bold'>Called $" + std::to_string(TESTVAL)+" </span>");
-    action1.override_background_color(Gdk::RGBA{"yellow"});
-    p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
-    p1.override_background_color(Gdk::RGBA{"white"});
-    
+
     std::cout << "Player Called $" + std::to_string(TESTVAL) + "!"<< std::endl;
     shiftIndicator();
     balance = balance - TESTVAL;
@@ -483,11 +485,7 @@ void Mainwin::on_raise_click() {
     reset=true;
     int sp = HScale.get_value();
     //action1.set_text("\nRaised $" + std::to_string(sp));
-    action1.set_markup("<span size='16000' color ='white' weight='bold'>Raised $" + std::to_string(sp)+" </span>");
-    action1.override_background_color(Gdk::RGBA{"red"});
-    p1.set_markup("<span size='16000' color ='black' weight='bold'>Player 1 </span>");
-    p1.override_background_color(Gdk::RGBA{"white"});
-    
+
     std::cout << "Player Raised $" + std::to_string(sp) + "!"<< std::endl;
     TESTVAL += sp;
     std::string to_call_button = "$" + std::to_string(TESTVAL);
@@ -590,53 +588,7 @@ void Mainwin::on_ready_click()
     timerBool=true;
 
         //set small images
-	if(c->playerNo == 1)
-	{
-	h1->set(sml(c->getHand(0)));
-    	h2->set(sml(c->getHand(1)));
-	h3->set(sml(c->getHand(2)));
-	h4->set(sml(c->getHand(3)));
-	h5->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 2)
-	{
-	h6->set(sml(c->getHand(0)));
-    	h7->set(sml(c->getHand(1)));
-	h8->set(sml(c->getHand(2)));
-	h9->set(sml(c->getHand(3)));
-	h10->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 3)
-	{
-	h11->set(sml(c->getHand(0)));
-    	h12->set(sml(c->getHand(1)));
-	h13->set(sml(c->getHand(2)));
-	h14->set(sml(c->getHand(3)));
-	h15->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 4)
-	{
-	h16->set(sml(c->getHand(0)));
-    	h17->set(sml(c->getHand(1)));
-	h18->set(sml(c->getHand(2)));
-	h19->set(sml(c->getHand(3)));
-	h20->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 5)
-	{
-	h21->set(sml(c->getHand(0)));
-    	h22->set(sml(c->getHand(1)));
-	h23->set(sml(c->getHand(2)));
-	h24->set(sml(c->getHand(3)));
-	h25->set(sml(c->getHand(4)));
-	}
-    	
-	//set big images
-	bh1->set(big(c->getHand(0)));
-	bh2->set(big(c->getHand(1)));
-	bh3->set(big(c->getHand(2)));
-	bh4->set(big(c->getHand(3)));
-	bh5->set(big(c->getHand(4)));
+	
    
        chat_message msg;
        nlohmann::json to_dealer;
@@ -813,3 +765,216 @@ void Mainwin::updateFoldAction(int participant)
            balance5.override_background_color(Gdk::RGBA{"black"});
         }
 }
+	void Mainwin::updateCheckAction(int participant)
+{
+	if (participant==1)
+	{
+	   action1.set_markup("<span size='16000' color ='black' weight='bold'>Checked </span>");
+    	   action1.override_background_color(Gdk::RGBA{"yellow"});
+	}
+        if (participant==2)
+        {
+           action2.set_markup("<span size='16000' color ='black' weight='bold'>Checked </span>");
+    	   action2.override_background_color(Gdk::RGBA{"yellow"});
+        }
+	if (participant==3)
+        {
+           action3.set_markup("<span size='16000' color ='black' weight='bold'>Checked </span>");
+    	   action3.override_background_color(Gdk::RGBA{"yellow"});
+        }
+        if (participant==4)
+        {
+           action4.set_markup("<span size='16000' color ='black' weight='bold'>Checked </span>");
+    	   action4.override_background_color(Gdk::RGBA{"yellow"});
+        }
+        if (participant==5)
+        {
+           action5.set_markup("<span size='16000' color ='black' weight='bold'>Checked </span>");
+    	   action5.override_background_color(Gdk::RGBA{"yellow"});
+	}
+}
+		void Mainwin::updateCallAction(int participant)
+{
+	if (participant==1)
+	{
+	   action1.set_markup("<span size='16000' color ='black' weight='bold'>Called #</span>");
+    	   action1.override_background_color(Gdk::RGBA{"yellow"});
+	}
+        if (participant==2)
+        {
+           action2.set_markup("<span size='16000' color ='black' weight='bold'>Called #</span>");
+    	   action2.override_background_color(Gdk::RGBA{"yellow"});
+        }
+	if (participant==3)
+        {
+           action3.set_markup("<span size='16000' color ='black' weight='bold'>Called #</span>");
+    	   action3.override_background_color(Gdk::RGBA{"yellow"});
+        }
+        if (participant==4)
+        {
+           action4.set_markup("<span size='16000' color ='black' weight='bold'>Called #</span>");
+    	   action4.override_background_color(Gdk::RGBA{"yellow"});
+        }
+        if (participant==5)
+        {
+           action5.set_markup("<span size='16000' color ='black' weight='bold'>Called #</span>");
+    	   action5.override_background_color(Gdk::RGBA{"yellow"});
+	}
+}
+	void Mainwin::updateBetAction(int participant)
+{
+	if (participant==1)
+	{
+	   action1.set_markup("<span size='16000' color ='black' weight='bold'>Bet #</span>");
+    	   action1.override_background_color(Gdk::RGBA{"green"});
+	}
+        if (participant==2)
+        {
+           action2.set_markup("<span size='16000' color ='black' weight='bold'>Bet #</span>");
+    	   action2.override_background_color(Gdk::RGBA{"green"});
+        }
+	if (participant==3)
+        {
+           action3.set_markup("<span size='16000' color ='black' weight='bold'>Bet #</span>");
+    	   action3.override_background_color(Gdk::RGBA{"green"});
+        }
+        if (participant==4)
+        {
+           action4.set_markup("<span size='16000' color ='black' weight='bold'>Bet #</span>");
+    	   action4.override_background_color(Gdk::RGBA{"green"});
+        }
+        if (participant==5)
+        {
+           action5.set_markup("<span size='16000' color ='black' weight='bold'>Bet #</span>");
+    	   action5.override_background_color(Gdk::RGBA{"green"});
+	}
+}
+	void Mainwin::updateRaiseAction(int participant)
+{
+	if (participant==1)
+	{
+	   action1.set_markup("<span size='16000' color ='black' weight='bold'>Raise #</span>");
+    	   action1.override_background_color(Gdk::RGBA{"green"});
+	}
+        if (participant==2)
+        {
+           action2.set_markup("<span size='16000' color ='black' weight='bold'>Raise #</span>");
+    	   action2.override_background_color(Gdk::RGBA{"green"});
+        }
+	if (participant==3)
+        {
+           action3.set_markup("<span size='16000' color ='black' weight='bold'>Raise #</span>");
+    	   action3.override_background_color(Gdk::RGBA{"green"});
+        }
+        if (participant==4)
+        {
+           action4.set_markup("<span size='16000' color ='black' weight='bold'>Raise #</span>");
+    	   action4.override_background_color(Gdk::RGBA{"green"});
+        }
+        if (participant==5)
+        {
+           action5.set_markup("<span size='16000' color ='black' weight='bold'>Raise #</span>");
+    	   action5.override_background_color(Gdk::RGBA{"green"});
+	}
+}
+	void Mainwin::updateAllInAction(int participant)
+{
+	if (participant==1)
+	{
+	   action1.set_markup("<span size='16000' color ='black' weight='bold'>All In! #</span>");
+    	   action1.override_background_color(Gdk::RGBA{"green"});
+	}
+        if (participant==2)
+        {
+           action2.set_markup("<span size='16000' color ='black' weight='bold'>All In! #</span>");
+    	   action2.override_background_color(Gdk::RGBA{"green"});
+        }
+	if (participant==3)
+        {
+           action3.set_markup("<span size='16000' color ='black' weight='bold'>All In! #</span>");
+    	   action3.override_background_color(Gdk::RGBA{"green"});
+        }
+        if (participant==4)
+        {
+           action4.set_markup("<span size='16000' color ='black' weight='bold'>All In! #</span>");
+    	   action4.override_background_color(Gdk::RGBA{"green"});
+        }
+        if (participant==5)
+        {
+           action5.set_markup("<span size='16000' color ='black' weight='bold'>All In! #</span>");
+    	   action5.override_background_color(Gdk::RGBA{"green"});
+	}
+}
+void Mainwin::startRound()
+{
+    action1.set_markup("<span size='16000' color ='black' >Waiting </span>");
+    action2.set_markup("<span size='16000' color ='black' >Waiting </span>");
+    action3.set_markup("<span size='16000' color ='black' >Waiting </span>");
+    action4.set_markup("<span size='16000' color ='black' >Waiting </span>");
+    action5.set_markup("<span size='16000' color ='black' >Waiting </span>");
+    
+    action1.override_background_color(Gdk::RGBA{"white"});
+    action2.override_background_color(Gdk::RGBA{"white"});
+    action3.override_background_color(Gdk::RGBA{"white"});
+    action4.override_background_color(Gdk::RGBA{"white"});
+    action5.override_background_color(Gdk::RGBA{"white"});
+	if(c->playerNo == 1)
+	{
+	h1->set(sml(c->getHand(0)));
+    	h2->set(sml(c->getHand(1)));
+	h3->set(sml(c->getHand(2)));
+	h4->set(sml(c->getHand(3)));
+	h5->set(sml(c->getHand(4)));
+	}
+	else if (c->playerNo == 2)
+	{
+	h6->set(sml(c->getHand(0)));
+    	h7->set(sml(c->getHand(1)));
+	h8->set(sml(c->getHand(2)));
+	h9->set(sml(c->getHand(3)));
+	h10->set(sml(c->getHand(4)));
+	}
+	else if (c->playerNo == 3)
+	{
+	h11->set(sml(c->getHand(0)));
+    	h12->set(sml(c->getHand(1)));
+	h13->set(sml(c->getHand(2)));
+	h14->set(sml(c->getHand(3)));
+	h15->set(sml(c->getHand(4)));
+	}
+	else if (c->playerNo == 4)
+	{
+	h16->set(sml(c->getHand(0)));
+    	h17->set(sml(c->getHand(1)));
+	h18->set(sml(c->getHand(2)));
+	h19->set(sml(c->getHand(3)));
+	h20->set(sml(c->getHand(4)));
+	}
+	else if (c->playerNo == 5)
+	{
+	h21->set(sml(c->getHand(0)));
+    	h22->set(sml(c->getHand(1)));
+	h23->set(sml(c->getHand(2)));
+	h24->set(sml(c->getHand(3)));
+	h25->set(sml(c->getHand(4)));
+	}
+    	
+	//set big images
+	bh1->set(big(c->getHand(0)));
+	bh2->set(big(c->getHand(1)));
+	bh3->set(big(c->getHand(2)));
+	bh4->set(big(c->getHand(3)));
+	bh5->set(big(c->getHand(4)));
+}
+
+
+
+
+
+
+
+
+
+
+
+

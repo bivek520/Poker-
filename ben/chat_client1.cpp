@@ -112,6 +112,14 @@ typedef std::deque<chat_message> chat_message_queue;
                         turn = from_dealer["turn"];
                 if (from_dealer["uuid"].empty() == false)
                         uuid = from_dealer["uuid"];
+		if(from_dealer["start"].empty()==false && start)
+		{
+			if(newRound)
+			{
+			win->toGui("startRound",0);
+			newRound = false;
+			}
+		}
 		
 		//get ready status from dealer and resetaction box
 		if (from_dealer["participant"].empty()==false &&
@@ -121,7 +129,6 @@ typedef std::deque<chat_message> chat_message_queue;
 				win->updateReadyBoxes(from_dealer["participant"]);
 				gdk_threads_leave();
 		}
-
 		if (from_dealer["hand["+ to_string(playerNo) +"][0]"].empty() == false)
 			hand[0] = from_dealer["hand["+ to_string(playerNo) +"][0]"];
 		if (from_dealer["hand["+ to_string(playerNo) +"][1]"].empty() == false)
@@ -133,41 +140,50 @@ typedef std::deque<chat_message> chat_message_queue;
 		if (from_dealer["hand["+ to_string(playerNo) +"][4]"].empty() == false)
                         hand[4] = from_dealer["hand["+ to_string(playerNo) +"][4]"];
 		
-		//get action sent from dealer
 		if (from_dealer["action"].empty()==false)
 		{
 			if(from_dealer["action"]=="folded")
 			{
-                                //win->updateFoldAction(from_dealer["participant"]);
                                 win->toGui("updateFoldAction",from_dealer["participant"]);
 			}
+			if(from_dealer["action"]=="checked")
+			{
+                                win->toGui("updateCheckAction",from_dealer["participant"]);
+			}if(from_dealer["action"]=="called")
+			{
+                                win->toGui("updateCallAction",from_dealer["participant"]);
+			}if(from_dealer["action"]=="bet")
+			{
+                                win->toGui("updateBetAction",from_dealer["participant"]);
+			}if(from_dealer["action"]=="raised")
+			{
+                                win->toGui("updateRaiseAction",from_dealer["participant"]);
+			}if(from_dealer["action"]=="exchanged")
+			{
+                                win->toGui("updateExchangeAction",from_dealer["participant"]);
+			}if(from_dealer["action"]=="allin")
+			{
+                                win->toGui("updateAllinAction",from_dealer["participant"]);
+			}
 		}
-		//gdk_threads_enter();
+
 		if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
 		{
-			 //gdk_threads_enter();
-			win->toGui("updateButton",0);//gdk_threads_leave();
+			win->toGui("updateButton",0);
 			win->toGui("shift",0);
 			
 		}
 		if (turn>0 && playerNo>0 && turn!=playerNo && !skipStatus)
-		{//gdk_threads_enter();
-			win->toGui("grayOutButton",0);//gdk_threads_leave();
+		{
+			win->toGui("grayOutButton",0);
 			win->toGui("shift",0);
 		}
 		if (turn>=2)
 		{
-			//gdk_threads_enter();
-			win->toGui("shift",0);
-			//gdk_threads_leave();		
+			win->toGui("shift",0);	
 		}
-		/*
-		win->toGui("shift");
-		if(!skipStatus)
-		{
-		win->toGui("shift");
-		}
-		*/
+
+		
 		
 /*
                 if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)

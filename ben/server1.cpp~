@@ -325,6 +325,7 @@ private:
 			cout<<"cant start game"<<endl;
 			nlohmann::json to_player1;
 			to_player1["start"]=false;
+			to_player1["newRound"]=true;
                         string t=to_player1.dump();
                         chat_message sending;
                         if (t.size() < chat_message::max_body_length)

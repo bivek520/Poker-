@@ -42,7 +42,9 @@ public:
     int getCard4();
     int getCard5();
     int getHand(int card);
-	bool skipStatus = false;;
+    bool skipStatus = false;
+    bool newRound=true;
+ 
 private:
     friend class Mainwin;
     void do_connect(const tcp::resolver::results_type& endpoints);
@@ -54,7 +56,8 @@ private:
     chat_message read_msg_;
     chat_message_queue write_msgs_;	
     int card1, card2, card3, card4, card5;
-	int hand[5];
+    int hand[5];
+    balance = 200;
 };
 #endif 
 
