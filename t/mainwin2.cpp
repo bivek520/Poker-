@@ -559,18 +559,18 @@ void Mainwin::on_ready_click()
     p1.override_background_color(Gdk::RGBA{"white"});
     timerBool=true;
   
-    h1 =Gtk::manage(new Gtk::Image{sml(c->getCard1())});
-    h2 =Gtk::manage(new Gtk::Image{sml(c->getCard2())});
-    h3 =Gtk::manage(new Gtk::Image{sml(c->getCard3())});
-    h4 =Gtk::manage(new Gtk::Image{sml(c->getCard4())});
-    h5 =Gtk::manage(new Gtk::Image{sml(c->getCard5())});
+    	h1->set(sml(c->getCard1()));
+    	h2->set(sml(c->getCard2()));
+	h3->set(sml(c->getCard3()));
+	h4->set(sml(c->getCard4()));
+	h5->set(sml(c->getCard5()));
 
-    bh1 =Gtk::manage(new Gtk::Image{big(c->getCard1())});
-    bh2 =Gtk::manage(new Gtk::Image{big(c->getCard2())});
-    bh3 =Gtk::manage(new Gtk::Image{big(c->getCard3())});
-    bh4 =Gtk::manage(new Gtk::Image{big(c->getCard4())});
-    bh5 =Gtk::manage(new Gtk::Image{big(c->getCard5())}); 
-    
+    	bh1->set(big(c->getCard1()));
+	bh2->set(big(c->getCard2()));
+	bh3->set(big(c->getCard3()));
+	bh4->set(big(c->getCard4()));
+	bh5->set(big(c->getCard5()));
+
     chat_message msg;
        nlohmann::json to_dealer;
     to_dealer["ready"] = true;
