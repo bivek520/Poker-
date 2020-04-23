@@ -583,7 +583,7 @@ void Mainwin::on_ready_click()
 	{
 	action2.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
         action2.override_background_color(Gdk::RGBA{"green"});
-        p3.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
+        p2.set_markup("<span size='16000' color ='black' weight='bold'>You </span>");
 	h6->set(sml(c->getHand(0)));
     	h7->set(sml(c->getHand(1)));
 	h8->set(sml(c->getHand(2)));
