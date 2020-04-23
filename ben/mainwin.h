@@ -38,6 +38,7 @@ class Mainwin : public Gtk::Window {
 	void on_HScale_value_changed();
 	bool on_my_timeout();
         void updateReadyBoxes(int participant);
+	void updateFoldAction(int participant);
 	int seconds=30;
         bool reset=false;
 	Gtk::VBox cvbox;

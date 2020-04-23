@@ -313,14 +313,14 @@ Mainwin::~Mainwin() { }
 void Mainwin::on_fold_click() {
     reset=true;
     //action1.set_text("\nFolded");
-    action1.set_markup("<span size='16000' color ='white' weight='bold'>Folded </span>");
+/*    action1.set_markup("<span size='16000' color ='white' weight='bold'>Folded </span>");
     action1.override_background_color(Gdk::RGBA{"black"});
     p1.set_markup("<span size='16000' color ='white' weight='bold'>Player 1 </span>");
     p1.override_background_color(Gdk::RGBA{"black"});
     balance1.set_markup("<span size='14000' color ='white' >$  "
                         +  std::to_string(balance) + "</span>");
     balance1.override_background_color(Gdk::RGBA{"black"});
-    
+*/  
     std::cout << "Player Folded!" << std::endl;
     shiftIndicator();
     bh1->set(big(1111));
@@ -338,8 +338,7 @@ void Mainwin::on_fold_click() {
     std::memcpy(msg.body(), t.c_str() , msg.body_length());
     msg.encode_header();   
     assert ( c );
-    c->write(msg);
-    
+    c->write(msg);    
 }
 
 void Mainwin::on_check_click() {
@@ -727,5 +726,74 @@ void Mainwin::updateReadyBoxes(int participant)
            action5.set_markup("<span size='16000' color ='white' weight='bold'>Ready! </span>");
            action5.override_background_color(Gdk::RGBA{"green"});
            p5.override_background_color(Gdk::RGBA{"white"});
+        }
+}
+
+void Mainwin::updateFoldAction(int participant)
+{
+	if (participant==1)
+	{
+	   action1.set_markup("<span size='16000' color ='white' weight='bold'>Folded </span>");
+    	   action1.override_background_color(Gdk::RGBA{"black"});
+	   if (c->playerNo==participant)
+		p1.set_markup("<span size='16000' color ='white' weight='bold'>You </span>");
+	   else
+	   	p1.set_markup("<span size='16000' color ='white' weight='bold'>Player 1 </span>");
+	   p1.override_background_color(Gdk::RGBA{"black"});
+	   balance1.set_markup("<span size='14000' color ='white' >$  "
+                       +  std::to_string(balance) + "</span>");
+	   balance1.override_background_color(Gdk::RGBA{"black"});
+	}
+        if (participant==2)
+        {
+           action2.set_markup("<span size='16000' color ='white' weight='bold'>Folded </span>");
+           action2.override_background_color(Gdk::RGBA{"black"});
+           if (c->playerNo==participant)
+                p2.set_markup("<span size='16000' color ='white' weight='bold'>You </span>");
+           else
+	   	p2.set_markup("<span size='16000' color ='white' weight='bold'>Player 2 </span>");
+           p2.override_background_color(Gdk::RGBA{"black"});
+           balance2.set_markup("<span size='14000' color ='white' >$  "
+                       +  std::to_string(balance) + "</span>");
+           balance2.override_background_color(Gdk::RGBA{"black"});
+        }
+	if (participant==3)
+        {
+           action3.set_markup("<span size='16000' color ='white' weight='bold'>Folded </span>");
+           action3.override_background_color(Gdk::RGBA{"black"});
+           if (c->playerNo==participant)
+                p3.set_markup("<span size='16000' color ='white' weight='bold'>You </span>");
+	   else
+	        p3.set_markup("<span size='16000' color ='white' weight='bold'>Player 3 </span>");
+           p3.override_background_color(Gdk::RGBA{"black"});
+           balance3.set_markup("<span size='14000' color ='white' >$  "
+                       +  std::to_string(balance) + "</span>");
+           balance3.override_background_color(Gdk::RGBA{"black"});
+        }
+        if (participant==4)
+        {
+           action4.set_markup("<span size='16000' color ='white' weight='bold'>Folded </span>");
+           action4.override_background_color(Gdk::RGBA{"black"});
+           if (c->playerNo==participant)
+                p4.set_markup("<span size='16000' color ='white' weight='bold'>You </span>");           
+	   else
+      	        p4.set_markup("<span size='16000' color ='white' weight='bold'>Player 4 </span>");
+           p4.override_background_color(Gdk::RGBA{"black"});
+           balance4.set_markup("<span size='14000' color ='white' >$  "
+                       +  std::to_string(balance) + "</span>");
+           balance4.override_background_color(Gdk::RGBA{"black"});
+        }
+        if (participant==5)
+        {
+           action5.set_markup("<span size='16000' color ='white' weight='bold'>Folded </span>");
+           action5.override_background_color(Gdk::RGBA{"black"});
+           if (c->playerNo==participant)
+                p5.set_markup("<span size='16000' color ='white' weight='bold'>You </span>");           
+	   else
+        	p5.set_markup("<span size='16000' color ='white' weight='bold'>Player 5 </span>");
+           p5.override_background_color(Gdk::RGBA{"black"});
+           balance5.set_markup("<span size='14000' color ='white' >$  "
+                       +  std::to_string(balance) + "</span>");
+           balance5.override_background_color(Gdk::RGBA{"black"});
         }
 }
