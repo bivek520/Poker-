@@ -64,7 +64,18 @@ typedef std::deque<chat_message> chat_message_queue;
             }
         });
     }
-    
+	/*
+    void chat_client::giveMoney(int ammount)
+    {
+   	nlohmann::json to_dealer = nlohmann::json::parse(read_msg_.body());
+	to_player1["p" +to_string(playerNo)+" bid"]=ammount;
+ 
+    }
+	*/
+    int chat_client::getPot()
+    {
+	return pot;
+    }
     void chat_client::do_read_header()
     {
         
@@ -112,11 +123,14 @@ typedef std::deque<chat_message> chat_message_queue;
                         turn = from_dealer["turn"];
                 if (from_dealer["uuid"].empty() == false)
                         uuid = from_dealer["uuid"];
+		if (from_dealer["pot"].empty()==false)
+             		pot = from_dealer["pot"];
 		if(from_dealer["start"].empty()==false && start)
 		{
+			
 			if(newRound)
 			{
-			win->toGui("startRound",0);
+			win->toGui("startRound",0, 0);
 			newRound = false;
 			}
 		}
@@ -125,9 +139,7 @@ typedef std::deque<chat_message> chat_message_queue;
 		if (from_dealer["participant"].empty()==false &&
 		    from_dealer["ready"].empty()==false)
 		{
-				gdk_threads_enter();
-				win->updateReadyBoxes(from_dealer["participant"]);
-				gdk_threads_leave();
+				win->toGui("updateReadyBoxes",from_dealer["participant"], 0);
 		}
 		if (from_dealer["hand["+ to_string(playerNo) +"][0]"].empty() == false)
 			hand[0] = from_dealer["hand["+ to_string(playerNo) +"][0]"];
@@ -144,43 +156,42 @@ typedef std::deque<chat_message> chat_message_queue;
 		{
 			if(from_dealer["action"]=="folded")
 			{
-                                win->toGui("updateFoldAction",from_dealer["participant"]);
-			}
-			if(from_dealer["action"]=="checked")
+                                win->toGui("updateFoldAction",from_dealer["participant"], 0);
+			}if(from_dealer["action"]=="checked")
 			{
-                                win->toGui("updateCheckAction",from_dealer["participant"]);
+                                win->toGui("updateCheckAction",from_dealer["participant"], 0);
 			}if(from_dealer["action"]=="called")
 			{
-                                win->toGui("updateCallAction",from_dealer["participant"]);
+                                win->toGui("updateCallAction",from_dealer["participant"], 0);
 			}if(from_dealer["action"]=="bet")
 			{
-                                win->toGui("updateBetAction",from_dealer["participant"]);
+                                win->toGui("updateBetAction",from_dealer["participant"], 0);
 			}if(from_dealer["action"]=="raised")
 			{
-                                win->toGui("updateRaiseAction",from_dealer["participant"]);
+                                win->toGui("updateRaiseAction",from_dealer["participant"], 0);
 			}if(from_dealer["action"]=="exchanged")
 			{
-                                win->toGui("updateExchangeAction",from_dealer["participant"]);
+                                win->toGui("updateExchangeAction",from_dealer["participant"], 0);
 			}if(from_dealer["action"]=="allin")
 			{
-                                win->toGui("updateAllinAction",from_dealer["participant"]);
+                                win->toGui("updateAllinAction",from_dealer["participant"], 0);
 			}
 		}
-
+		
 		if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
 		{
-			win->toGui("updateButton",0);
-			win->toGui("shift",0);
+			win->toGui("updateButton",0, 0);
+			win->toGui("updateVals",0, 0);
 			
 		}
 		if (turn>0 && playerNo>0 && turn!=playerNo && !skipStatus)
 		{
-			win->toGui("grayOutButton",0);
-			win->toGui("shift",0);
+			win->toGui("grayOutButton",0, 0);
+			win->toGui("updateVals",0, 0);
 		}
 		if (turn>=2)
 		{
-			win->toGui("shift",0);	
+			win->toGui("shift",0, 0);	
 		}
 
 		

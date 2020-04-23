@@ -56,13 +56,7 @@ int turn=0;
 int playerNumber=1;
 int start;
 string action;
-bool newRound = false;
-
-/*dealer Dealer;
-Dealer.createDeck();
-vector<int>Deck = Dealer.getDeck();
-int card1, card2, card3, card4,card5;
-*/
+int pot = 0;
 class poker_table
 {
 public:
@@ -325,7 +319,8 @@ private:
 			cout<<"cant start game"<<endl;
 			nlohmann::json to_player1;
 			to_player1["start"]=false;
-			to_player1["newRound"]=true;
+			pot=playerNumber * 5;
+			to_player1["pot"]=pot;
                         string t=to_player1.dump();
                         chat_message sending;
                         if (t.size() < chat_message::max_body_length)

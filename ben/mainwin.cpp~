@@ -6,7 +6,7 @@ using namespace std;
 
 typedef std::deque<chat_message> chat_message_queue;
 
-void Mainwin::toGui(std::string s, int participant)
+void Mainwin::toGui(std::string s, int participant, int val)
 {
    	if(s == "updateButton")
 	{
@@ -38,6 +38,12 @@ void Mainwin::toGui(std::string s, int participant)
 	}else if(s == "startRound")
 	{
 	startRound();
+	}else if(s == "updateVals")
+	{
+	updateVals(participant);
+	}else if(s == "updateReadyBoxes")
+	{
+	updateReadyBoxes(participant);
 	}
 }
 std::string big(int card)
@@ -123,15 +129,15 @@ Mainwin::Mainwin(chat_client *c_)
     m_Grid.attach(action5, 4, 1, 1, 1);
     
     balance1.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(balance) + "</span>");
+                        +  std::to_string(c->balance) + "</span>");
     balance2.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(balance) + "</span>");
+                        +  std::to_string(c->balance) + "</span>");
     balance3.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(balance) + "</span>");
+                        +  std::to_string(c->balance) + "</span>");
     balance4.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(balance) + "</span>");
+                        +  std::to_string(c->balance) + "</span>");
     balance5.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(balance) + "</span>");
+                        +  std::to_string(c->balance) + "</span>");
     
     balance1.override_background_color(Gdk::RGBA{"white"});
     balance2.override_background_color(Gdk::RGBA{"white"});
@@ -229,8 +235,7 @@ Mainwin::Mainwin(chat_client *c_)
     shiftIndicator();
     
     //pot.set_text("\nPOT: $" +std::to_string(potVal));
-    pot.set_markup("<span size='20000' color ='red' weight='bold'>$  "
-                   +  std::to_string(potVal) + "</span>");
+    pot.set_markup("<span size='200' color ='red' weight='bold'>$  </span>");
     //pot.override_foreground_color(Gdk::RGBA{"gold"});
     m_Grid.attach(pot, 2, 5, 1, 1);
     
@@ -384,7 +389,8 @@ void Mainwin::on_check_click() {
     //send dealer player checked
     chat_message msg;
     nlohmann::json to_dealer;
-    to_dealer["action"] = "checked";     
+    to_dealer["action"] = "checked";
+    to_dealer["ammount"] = 0;
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
     std::memcpy(msg.body(), t.c_str() , msg.body_length());
@@ -420,22 +426,19 @@ void Mainwin::on_bet_click() {
     raising->show();
     raise.signal_clicked().connect([this] {this->on_raise_click();});
     raise.show();
-    
-    balance = balance - TESTVAL;
     balance1.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(balance) + "</span>");
+                        +  std::to_string(c->balance) + "</span>");
     balance1.override_background_color(Gdk::RGBA{"white"});
     
     shiftIndicator();
     potVal = potVal + TESTVAL;
-    pot.set_text("\nPOT: $" +std::to_string(potVal));
 
     //send dealer player bet, amount bet, player's balance and pot value after betting 
     chat_message msg;
     nlohmann::json to_dealer;
     to_dealer["action"] = "bet";
     to_dealer["amount"] = TESTVAL;
-    to_dealer["balance"] = balance;
+    to_dealer["balance"] = c->balance;
     to_dealer["pot"] = potVal;
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
@@ -457,10 +460,9 @@ void Mainwin::on_call_click() {
 
     std::cout << "Player Called $" + std::to_string(TESTVAL) + "!"<< std::endl;
     shiftIndicator();
-    balance = balance - TESTVAL;
     //balance1.set_text("\n$" + std::to_string(balance));
     balance1.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(balance) + "</span>");
+                        +  std::to_string(c->balance) + "</span>");
     balance1.override_background_color(Gdk::RGBA{"white"});
     
     potVal = potVal + TESTVAL;
@@ -471,7 +473,7 @@ void Mainwin::on_call_click() {
     nlohmann::json to_dealer;
     to_dealer["action"] = "called";
     to_dealer["amount"] = TESTVAL;
-    to_dealer["balance"] = balance;
+    to_dealer["balance"] = c->balance;
     to_dealer["pot"] = potVal;
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
@@ -495,10 +497,9 @@ void Mainwin::on_raise_click() {
     calling->show();
     
     shiftIndicator();
-    balance = balance - TESTVAL;
     //balance1.set_text("\n$" + std::to_string(balance));
     balance1.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(balance) + "</span>");
+                        +  std::to_string(c->balance) + "</span>");
     balance1.override_background_color(Gdk::RGBA{"white"});
     
     potVal = potVal + TESTVAL;
@@ -510,7 +511,7 @@ void Mainwin::on_raise_click() {
     to_dealer["action"] = "raised";
     to_dealer["raised_by"] = sp;
     to_dealer["amount"] = TESTVAL;
-    to_dealer["balance"] = balance;
+    to_dealer["balance"] = c->balance;
     to_dealer["pot"] = potVal;
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
@@ -588,57 +589,10 @@ void Mainwin::on_ready_click()
     timerBool=true;
 
         //set small images
-	if(c->playerNo == 1)
-	{
-	h1->set(sml(c->getHand(0)));
-    	h2->set(sml(c->getHand(1)));
-	h3->set(sml(c->getHand(2)));
-	h4->set(sml(c->getHand(3)));
-	h5->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 2)
-	{
-	h6->set(sml(c->getHand(0)));
-    	h7->set(sml(c->getHand(1)));
-	h8->set(sml(c->getHand(2)));
-	h9->set(sml(c->getHand(3)));
-	h10->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 3)
-	{
-	h11->set(sml(c->getHand(0)));
-    	h12->set(sml(c->getHand(1)));
-	h13->set(sml(c->getHand(2)));
-	h14->set(sml(c->getHand(3)));
-	h15->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 4)
-	{
-	h16->set(sml(c->getHand(0)));
-    	h17->set(sml(c->getHand(1)));
-	h18->set(sml(c->getHand(2)));
-	h19->set(sml(c->getHand(3)));
-	h20->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 5)
-	{
-	h21->set(sml(c->getHand(0)));
-    	h22->set(sml(c->getHand(1)));
-	h23->set(sml(c->getHand(2)));
-	h24->set(sml(c->getHand(3)));
-	h25->set(sml(c->getHand(4)));
-	}
-    	
-	//set big images
-	bh1->set(big(c->getHand(0)));
-	bh2->set(big(c->getHand(1)));
-	bh3->set(big(c->getHand(2)));
-	bh4->set(big(c->getHand(3)));
-	bh5->set(big(c->getHand(4)));
+	
    
        chat_message msg;
        nlohmann::json to_dealer;
-    
        to_dealer["ready"] = true;
        //to_dealer["p"+ to_string(c->playerNo)+" ready"] = true;
 
@@ -755,7 +709,7 @@ void Mainwin::updateFoldAction(int participant)
 	   	p1.set_markup("<span size='16000' color ='white' weight='bold'>Player 1 </span>");
 	   p1.override_background_color(Gdk::RGBA{"black"});
 	   balance1.set_markup("<span size='14000' color ='white' >$  "
-                       +  std::to_string(balance) + "</span>");
+                       +  std::to_string(c->balance) + "</span>");
 	   balance1.override_background_color(Gdk::RGBA{"black"});
 	}
         if (participant==2)
@@ -768,7 +722,7 @@ void Mainwin::updateFoldAction(int participant)
 	   	p2.set_markup("<span size='16000' color ='white' weight='bold'>Player 2 </span>");
            p2.override_background_color(Gdk::RGBA{"black"});
            balance2.set_markup("<span size='14000' color ='white' >$  "
-                       +  std::to_string(balance) + "</span>");
+                       +  std::to_string(c->balance) + "</span>");
            balance2.override_background_color(Gdk::RGBA{"black"});
         }
 	if (participant==3)
@@ -781,7 +735,7 @@ void Mainwin::updateFoldAction(int participant)
 	        p3.set_markup("<span size='16000' color ='white' weight='bold'>Player 3 </span>");
            p3.override_background_color(Gdk::RGBA{"black"});
            balance3.set_markup("<span size='14000' color ='white' >$  "
-                       +  std::to_string(balance) + "</span>");
+                       +  std::to_string(c->balance) + "</span>");
            balance3.override_background_color(Gdk::RGBA{"black"});
         }
         if (participant==4)
@@ -794,7 +748,7 @@ void Mainwin::updateFoldAction(int participant)
       	        p4.set_markup("<span size='16000' color ='white' weight='bold'>Player 4 </span>");
            p4.override_background_color(Gdk::RGBA{"black"});
            balance4.set_markup("<span size='14000' color ='white' >$  "
-                       +  std::to_string(balance) + "</span>");
+                       +  std::to_string(c->balance) + "</span>");
            balance4.override_background_color(Gdk::RGBA{"black"});
         }
         if (participant==5)
@@ -807,7 +761,7 @@ void Mainwin::updateFoldAction(int participant)
         	p5.set_markup("<span size='16000' color ='white' weight='bold'>Player 5 </span>");
            p5.override_background_color(Gdk::RGBA{"black"});
            balance5.set_markup("<span size='14000' color ='white' >$  "
-                       +  std::to_string(balance) + "</span>");
+                       +  std::to_string(c->balance) + "</span>");
            balance5.override_background_color(Gdk::RGBA{"black"});
         }
 }
@@ -923,36 +877,84 @@ void Mainwin::updateFoldAction(int participant)
     	   action5.override_background_color(Gdk::RGBA{"green"});
 	}
 }
+	void Mainwin::updateVals(int participant)
+{
+	pot.set_markup("<span size='20000' color ='red' weight='bold'>$"
+                   + to_string(c->getPot()) + "</span>");
+	if (participant==1)
+	{
+	balance1.set_markup("<span size='14000' color ='black' >$  "
+                        +  std::to_string(c->balance) + "</span>");
+	}
+        if (participant==2)
+        {
+	 balance2.set_markup("<span size='14000' color ='black' >$  "
+                        +  std::to_string(c->balance) + "</span>");
+        }
+	if (participant==3)
+        {
+	balance3.set_markup("<span size='14000' color ='black' >$  "
+                        +  std::to_string(c->balance) + "</span>");
+        }
+        if (participant==4)
+        {
+	balance4.set_markup("<span size='14000' color ='black' >$  "
+                        +  std::to_string(c->balance) + "</span>");
+        }
+        if (participant==5)
+        {
+	balance5.set_markup("<span size='14000' color ='black' >$  "
+                        +  std::to_string(c->balance) + "</span>");
+	}
+}
 	void Mainwin::updateAllInAction(int participant)
 {
 	if (participant==1)
 	{
+	balance1.set_markup("<span size='14000' color ='black' >$  "
+                        +  std::to_string(c->balance) + "</span>");
 	   action1.set_markup("<span size='16000' color ='black' weight='bold'>All In! #</span>");
     	   action1.override_background_color(Gdk::RGBA{"green"});
 	}
         if (participant==2)
         {
+	 balance2.set_markup("<span size='14000' color ='black' >$  "
+                        +  std::to_string(c->balance) + "</span>");
            action2.set_markup("<span size='16000' color ='black' weight='bold'>All In! #</span>");
     	   action2.override_background_color(Gdk::RGBA{"green"});
         }
 	if (participant==3)
         {
+	balance3.set_markup("<span size='14000' color ='black' >$  "
+                        +  std::to_string(c->balance) + "</span>");
            action3.set_markup("<span size='16000' color ='black' weight='bold'>All In! #</span>");
     	   action3.override_background_color(Gdk::RGBA{"green"});
         }
         if (participant==4)
         {
+	balance4.set_markup("<span size='14000' color ='black' >$  "
+                        +  std::to_string(c->balance) + "</span>");
            action4.set_markup("<span size='16000' color ='black' weight='bold'>All In! #</span>");
     	   action4.override_background_color(Gdk::RGBA{"green"});
         }
         if (participant==5)
         {
+	balance5.set_markup("<span size='14000' color ='black' >$  "
+                        +  std::to_string(c->balance) + "</span>");
            action5.set_markup("<span size='16000' color ='black' weight='bold'>All In! #</span>");
     	   action5.override_background_color(Gdk::RGBA{"green"});
 	}
+	
+    
+    
+    
+    
 }
 void Mainwin::startRound()
 {
+	
+    c->balance = c->balance -5;
+    updateVals(c->playerNo);
     action1.set_markup("<span size='16000' color ='black' >Waiting </span>");
     action2.set_markup("<span size='16000' color ='black' >Waiting </span>");
     action3.set_markup("<span size='16000' color ='black' >Waiting </span>");
@@ -964,6 +966,53 @@ void Mainwin::startRound()
     action3.override_background_color(Gdk::RGBA{"white"});
     action4.override_background_color(Gdk::RGBA{"white"});
     action5.override_background_color(Gdk::RGBA{"white"});
+	if(c->playerNo == 1)
+	{
+	h1->set(sml(c->getHand(0)));
+    	h2->set(sml(c->getHand(1)));
+	h3->set(sml(c->getHand(2)));
+	h4->set(sml(c->getHand(3)));
+	h5->set(sml(c->getHand(4)));
+	}
+	else if (c->playerNo == 2)
+	{
+	h6->set(sml(c->getHand(0)));
+    	h7->set(sml(c->getHand(1)));
+	h8->set(sml(c->getHand(2)));
+	h9->set(sml(c->getHand(3)));
+	h10->set(sml(c->getHand(4)));
+	}
+	else if (c->playerNo == 3)
+	{
+	h11->set(sml(c->getHand(0)));
+    	h12->set(sml(c->getHand(1)));
+	h13->set(sml(c->getHand(2)));
+	h14->set(sml(c->getHand(3)));
+	h15->set(sml(c->getHand(4)));
+	}
+	else if (c->playerNo == 4)
+	{
+	h16->set(sml(c->getHand(0)));
+    	h17->set(sml(c->getHand(1)));
+	h18->set(sml(c->getHand(2)));
+	h19->set(sml(c->getHand(3)));
+	h20->set(sml(c->getHand(4)));
+	}
+	else if (c->playerNo == 5)
+	{
+	h21->set(sml(c->getHand(0)));
+    	h22->set(sml(c->getHand(1)));
+	h23->set(sml(c->getHand(2)));
+	h24->set(sml(c->getHand(3)));
+	h25->set(sml(c->getHand(4)));
+	}
+    	
+	//set big images
+	bh1->set(big(c->getHand(0)));
+	bh2->set(big(c->getHand(1)));
+	bh3->set(big(c->getHand(2)));
+	bh4->set(big(c->getHand(3)));
+	bh5->set(big(c->getHand(4)));
 }
 
 

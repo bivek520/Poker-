@@ -44,7 +44,9 @@ class Mainwin : public Gtk::Window {
 	void updateBetAction(int participant);
 	void updateRaiseAction(int participant);
 	void updateAllInAction(int participant);
-	void toGui(std::string, int);
+	void updateVals();
+	void startRound();
+	void toGui(std::string, int, int);
 	int seconds=30;
         bool reset=false;
 	Gtk::VBox cvbox;
@@ -64,7 +66,6 @@ class Mainwin : public Gtk::Window {
 	friend class chat_client;
 
     private:
-	int balance = 175;
 	int potVal = 200;
         Gtk::Label p1,p2,p3,p4,p5;                  // Display player name
         Gtk::Label action1, action2, action3, action4, action5;                   // Action message display

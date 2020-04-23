@@ -44,6 +44,8 @@ public:
     int getHand(int card);
     bool skipStatus = false;
     bool newRound=true;
+    void giveMoney(int);
+    int getPot();
  
 private:
     friend class Mainwin;
@@ -58,6 +60,9 @@ private:
     int card1, card2, card3, card4, card5;
     int hand[5];
     int balance = 200;
+    int bid = 5;
+    int pot;
+    int ammount;
 };
 #endif 
 
