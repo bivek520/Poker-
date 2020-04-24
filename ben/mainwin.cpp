@@ -905,9 +905,6 @@ void Mainwin::updateBetAction(int participant, int val)
 }
 void Mainwin::startRound()
 {
-	
-    
-    //updateBalances(c->playerNo);
     ready.hide();
     exchange.show();
     exchange.set_sensitive(false);

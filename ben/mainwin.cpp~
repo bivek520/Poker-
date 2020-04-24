@@ -281,9 +281,9 @@ Mainwin::Mainwin(chat_client *c_)
     vbox->pack_start(exchangeHbox);
 
     
-     exchangeHbox.pack_start(ready ,Gtk::PACK_END, 0);
-     ready.signal_clicked().connect([this] {this->on_ready_click();});
-     ready.show();
+    exchangeHbox.pack_start(ready ,Gtk::PACK_END, 0);
+    ready.signal_clicked().connect([this] {this->on_ready_click();});
+    ready.show();
     
     fold.set_sensitive(false);
     check.set_sensitive(false);
@@ -597,8 +597,7 @@ void Mainwin::updateButton()
      fold.set_sensitive(true);
      check.set_sensitive(true);
      bet.set_sensitive(true);
-     ready.hide();
-     exchange.show();
+     
 }
 
 void Mainwin::grayOutButton()
@@ -909,6 +908,9 @@ void Mainwin::startRound()
 	
     
     //updateBalances(c->playerNo);
+    ready.hide();
+    exchange.show();
+    exchange.set_sensitive(false);
     action1.set_markup("<span size='16000' color ='black' >Waiting </span>");
     action2.set_markup("<span size='16000' color ='black' >Waiting </span>");
     action3.set_markup("<span size='16000' color ='black' >Waiting </span>");
