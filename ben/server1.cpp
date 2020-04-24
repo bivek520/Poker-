@@ -47,7 +47,7 @@ public:
     //int turn;
     int playerNo;
     bool ready = false;
-    int balance = 200;
+    int balance = 195;
 };
 
 typedef std::shared_ptr<player> player_ptr;
@@ -59,6 +59,7 @@ int start;
 string action;
 int pot = 0;
 int bid = 0;
+int raise_by = 0;
 class poker_table
 {
 public:
@@ -327,6 +328,7 @@ private:
 			to_player1["start"]=false;
 			pot=(playerNumber-1) * 5;
 			to_player1["pot"]=pot;
+			to_player1["balance"]=shared_from_this()->balance;
                         string t=to_player1.dump();
                         chat_message sending;
                         if (t.size() < chat_message::max_body_length)
@@ -380,17 +382,33 @@ private:
 				cout << "pot = " <<pot<<endl;
 				shared_from_this()->balance=from_player["balance"];
 				}
+				if(action == "raised")
+				{
+				raise_by = from_player["raise_by"];
+				pot = pot + raise_by + bid;
+				cout << "pot = " <<pot<<endl;
+				cout << "pot = " <<pot<<endl;
+				int temp = from_player["balance"];
+				shared_from_this()->balance=temp-raise_by-bid;
+				bid = bid + raise_by;
+				}
+				if(action == "called")
+				{
+				int temp = from_player["balance"];
+				shared_from_this()->balance=temp-bid;
+				pot = pot + bid;
+				cout << "pot = " <<pot<<endl;
+				}
 			}
 			//send turn to all players
 			nlohmann::json to_player2;
-//                        to_player2["start"]=true;
                         to_player2["participant"]=shared_from_this()->playerNo;
-			//to_player2["bid"]=bid;
 			to_player2["action"]=action;
 			to_player2["turn"]=turn;
+			to_player2["raise_by"]=raise_by;
 			to_player2["pot"]=pot;	
 			to_player2["bid"]=bid;
-			to_player2["balance"]=from_player["balance"];
+			to_player2["balance"]=shared_from_this()->balance;
                                 string t=to_player2.dump();
                                 chat_message sending;
                                 if (t.size() < chat_message::max_body_length)
