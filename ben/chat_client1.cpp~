@@ -180,7 +180,6 @@ typedef std::deque<chat_message> chat_message_queue;
 		}
 		if(turn>0 && playerNo>0)
 		{
-			cout<<"GRGRGRGRGRGRGRGRGRRGRG"<<endl;
 			win->toGui("grayOutButton",0, 0);
 			win->toGui("updateVals",0, 0);
 			if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)

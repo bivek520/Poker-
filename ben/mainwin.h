@@ -41,13 +41,12 @@ class Mainwin : public Gtk::Window {
 	void updateFoldAction(int participant);
 	void updateCheckAction(int participant);
 	void updateCallAction(int participant);
-	void updateBetAction(int participant);
+	void updateBetAction(int participant, int);
 	void updateRaiseAction(int participant);
 	void updateAllInAction(int participant);
 	void updateVals(int participant);
 	void startRound();
 	void toGui(std::string, int, int);
-	int seconds=30;
         bool reset=false;
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;

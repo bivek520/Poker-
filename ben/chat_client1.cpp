@@ -166,7 +166,7 @@ typedef std::deque<chat_message> chat_message_queue;
                                 win->toGui("updateCallAction",from_dealer["participant"], 0);
 			}if(from_dealer["action"]=="bet")
 			{
-                                win->toGui("updateBetAction",from_dealer["participant"], 0);
+                                win->toGui("updateBetAction",from_dealer["participant"], from_dealer["bid"]);
 			}if(from_dealer["action"]=="raised")
 			{
                                 win->toGui("updateRaiseAction",from_dealer["participant"], 0);
