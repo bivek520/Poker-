@@ -353,9 +353,8 @@ private:
 		else
 		{
 			turn++;
-			if (turn==6)
+			if (turn==playerNumber)
 				turn=1;
-			
 			//read json from player getting their action
                         nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
                         if (from_player["action"].empty()==false)
@@ -365,9 +364,9 @@ private:
 			//send turn to all players
 			nlohmann::json to_player2;
 //                        to_player2["start"]=true;
-                        	to_player2["participant"]=shared_from_this()->playerNo;
-				to_player2["action"]=action;
-				to_player2["turn"]=turn;
+                        to_player2["participant"]=shared_from_this()->playerNo;
+			to_player2["action"]=action;
+			to_player2["turn"]=turn;
 				
                                 string t=to_player2.dump();
                                 chat_message sending;

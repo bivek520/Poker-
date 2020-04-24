@@ -16,7 +16,7 @@ void Mainwin::toGui(std::string s, int participant, int val)
 	grayOutButton();
 	}else if(s == "shift")
 	{
-	shiftIndicator();
+	shiftIndicator(participant);
 	}else if(s == "updateFoldAction")
 	{
 	updateFoldAction(participant);
@@ -164,7 +164,7 @@ Mainwin::Mainwin(chat_client *c_)
     //    publicCardHbox.pack_start(image13, Gtk::PACK_END, 0);
     //    publicCardHbox.pack_start(image14,Gtk::PACK_END, 0);
     //    publicCardHbox.pack_start(image15,Gtk::PACK_END, 0);
-    
+    /*
     h1 =Gtk::manage(new Gtk::Image{sml(11)});
     h2 =Gtk::manage(new Gtk::Image{sml(11)});
     h3 =Gtk::manage(new Gtk::Image{sml(11)});
@@ -231,19 +231,17 @@ Mainwin::Mainwin(chat_client *c_)
     m_Grid.attach(small_card_grid3, 2, 3, 1, 1);
     m_Grid.attach(small_card_grid4, 3, 3, 1, 1);
     m_Grid.attach(small_card_grid5, 4, 3, 1, 1);
-    
-    shiftIndicator();
+*/
+    shiftIndicator(1);
+ 
     
     //pot.set_text("\nPOT: $" +std::to_string(potVal));
     pot.set_markup("<span size='200' color ='red' weight='bold'>$  </span>");
     //pot.override_foreground_color(Gdk::RGBA{"gold"});
     m_Grid.attach(pot, 2, 5, 1, 1);
     
-    timer.set_markup("<span size='16000' color ='white' >Timer time: </span>");
-    //timer.set_text("Timer time: ");
-    m_Grid.attach(timer, 4, 5, 1, 1);
-    if (timerBool == true)
-    	Glib::signal_timeout().connect( sigc::mem_fun(*this, &Mainwin::on_my_timeout), 1000 );
+
+    
     
     bh1 =Gtk::manage(new Gtk::Image{big(1111)});
     bh2 =Gtk::manage(new Gtk::Image{big(2222)});
@@ -361,7 +359,6 @@ void Mainwin::on_fold_click() {
     balance1.override_background_color(Gdk::RGBA{"black"});
 */  
     std::cout << "Player Folded!" << std::endl;
-    shiftIndicator();
     bh1->set(big(1111));
     bh2->set(big(2222));
     bh3->set(big(3333));
@@ -430,7 +427,6 @@ void Mainwin::on_bet_click() {
                         +  std::to_string(c->balance) + "</span>");
     balance1.override_background_color(Gdk::RGBA{"white"});
     
-    shiftIndicator();
     potVal = potVal + TESTVAL;
 
     //send dealer player bet, amount bet, player's balance and pot value after betting 
@@ -459,7 +455,6 @@ void Mainwin::on_call_click() {
     
 
     std::cout << "Player Called $" + std::to_string(TESTVAL) + "!"<< std::endl;
-    shiftIndicator();
     //balance1.set_text("\n$" + std::to_string(balance));
     balance1.set_markup("<span size='14000' color ='black' >$  "
                         +  std::to_string(c->balance) + "</span>");
@@ -496,7 +491,6 @@ void Mainwin::on_raise_click() {
     call.set_image(*calling);
     calling->show();
     
-    shiftIndicator();
     //balance1.set_text("\n$" + std::to_string(balance));
     balance1.set_markup("<span size='14000' color ='black' >$  "
                         +  std::to_string(c->balance) + "</span>");
@@ -546,31 +540,31 @@ void Mainwin::on_exchange_click(){
     if(RB1.get_active())
     {
         bh1->set(big(142));
-        h1->set(sml(142));
+        //h1->set(sml(142));
         RB1.set_sensitive(false);
     }
     if(RB2.get_active())
     {
         bh2->set(big(94));
-        h2->set(sml(94));
+        //h2->set(sml(94));
         RB2.set_sensitive(false);
     }
     if(RB3.get_active())
     {
         bh3->set(big(41));
-        h3->set(sml(41));
+        //h3->set(sml(41));
         RB3.set_sensitive(false);
     }
     if(RB4.get_active())
     {
         bh4->set(big(111));
-        h4->set(sml(111));
+        //h4->set(sml(111));
         RB4.set_sensitive(false);
     }
     if(RB5.get_active())
     {
         bh5->set(big(22));
-        h5->set(sml(22));
+       //h5->set(sml(22));
         RB5.set_sensitive(false);
     }
     RB1.set_active(false);
@@ -586,7 +580,6 @@ void Mainwin::on_ready_click()
     exchangeHbox.pack_start(exchange ,Gtk::PACK_END, 0);
     exchange.signal_clicked().connect([this] {this->on_exchange_click();});
     exchange.show();
-    timerBool=true;
 
         //set small images
 	
@@ -607,43 +600,21 @@ void Mainwin::on_ready_click()
        c->write(msg);
 }
 
-void Mainwin::shiftIndicator(){
-    if (TESTTURN>=1)
-	TESTTURN = c->turn-1;
-    reset=false;
-    seconds=30;
+void Mainwin::shiftIndicator(int participant){
+    //if (TESTTURN>=1)
+	//TESTTURN = c->turn-1;
+    //reset=false;
+    //seconds=30;
+	
+	
     m_Grid.remove(*indicator);
-    m_Grid.attach(*indicator, TESTTURN, 4, 1, 1);
-    TESTTURN += 1;
-    if (TESTTURN == 5) TESTTURN = 0;
+    m_Grid.attach(*indicator, participant-1, 4, 1, 1);
+   // TESTTURN += 1;
+    //if (TESTTURN == 5) TESTTURN = 0;
+		
 }
 
-bool Mainwin::on_my_timeout()
-{
-    timerBool=true;
-    char Text[50];
-    sprintf (Text,"Timer: %d s",--seconds);
-    timer.set_text(Text);
-    if (seconds==5)
-    {
-        system("canberra-gtk-play  -f Sounds/tick.wav &");
-        std::cout<<"sound need to be played here"<<std::endl;
-    }
-    if (seconds==0)
-    {
-        system("canberra-gtk-play  -f Sounds/buzzer.wav &");
-        std::cout<<"sound need to be played here"<<std::endl;
-        
-        Mainwin::on_fold_click();
-        seconds=30;
-    }
-    if (reset==true)
-    {
-        reset=false;
-        Mainwin::shiftIndicator();
-    }
-    return true;
-}
+
 
 void Mainwin::updateButton()
 {
@@ -966,6 +937,7 @@ void Mainwin::startRound()
     action3.override_background_color(Gdk::RGBA{"white"});
     action4.override_background_color(Gdk::RGBA{"white"});
     action5.override_background_color(Gdk::RGBA{"white"});
+	/*
 	if(c->playerNo == 1)
 	{
 	h1->set(sml(c->getHand(0)));
@@ -1006,7 +978,7 @@ void Mainwin::startRound()
 	h24->set(sml(c->getHand(3)));
 	h25->set(sml(c->getHand(4)));
 	}
-    	
+    	*/
 	//set big images
 	bh1->set(big(c->getHand(0)));
 	bh2->set(big(c->getHand(1)));

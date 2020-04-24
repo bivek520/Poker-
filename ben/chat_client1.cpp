@@ -189,11 +189,10 @@ typedef std::deque<chat_message> chat_message_queue;
 			win->toGui("grayOutButton",0, 0);
 			win->toGui("updateVals",0, 0);
 		}
-		if (turn>=2)
+		if (turn>0)
 		{
-			win->toGui("shift",0, 0);	
+			win->toGui("shift",turn, 0);	
 		}
-
 		
 		
 /*

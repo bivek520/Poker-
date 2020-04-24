@@ -61,7 +61,7 @@ class Mainwin : public Gtk::Window {
 /*	void on_new_game_click();*/
 /*        void on_quit_click();              // Exit the application*/
 /*        void on_about_click();              // new window displaying game rules and info*/
-	void shiftIndicator();
+	void shiftIndicator(int);
 	Gtk::Image *indicator =Gtk::manage(new Gtk::Image{"Icons/indicator.png"});
 	friend class chat_client;
 
@@ -72,7 +72,6 @@ class Mainwin : public Gtk::Window {
 	Gtk::Label balance1, balance2, balance3, balance4, balance5;		//Player's current balance, Available amount 
 	Gtk::Label indicator1, indicator2, indicator3, indicator4, indicator5;   //Indicates whose turn.
 	Gtk::Label pot;
-	Gtk::Label timer;
 	Gtk::Label image11, image12, image13, image14, image15;          //player1 hands
 	Gtk::Label image21, image22, image23, image24, image25;	//player2 hands
 	Gtk::Label image31, image32, image33, image34, image35;	//player3 hands
@@ -90,16 +89,15 @@ class Mainwin : public Gtk::Window {
 	Gtk::Button ready{"READY"};  
 	
 	Gtk::Image *bh1, *bh2, *bh3, *bh4, *bh5; //big cards
-	Gtk::Image *h1, *h2, *h3, *h4, *h5,	 //sml cards
+	/*Gtk::Image *h1, *h2, *h3, *h4, *h5,	 //sml cards
 		   *h6, *h7, *h8, *h9, *h10,
 		   *h11, *h12, *h13, *h14, *h15,
 		   *h16, *h17, *h18, *h19, *h20,
-		   *h21, *h22, *h23, *h24, *h25;
+		   *h21, *h22, *h23, *h24, *h25;*/
 
 	int TESTVAL;
 	int TESTTURN = 0;
 	bool readyBool = false;
-	bool timerBool = false;
 	chat_client *c;
 };
 #endif 
