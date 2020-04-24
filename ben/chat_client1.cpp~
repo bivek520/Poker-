@@ -126,7 +126,7 @@ typedef std::deque<chat_message> chat_message_queue;
 			
 			if(newRound)
 			{
-			win->toGui("startRound",0, 0);
+			win->toGui("startRound",0, 0,0,0);
 			newRound = false;
 			}
 		}
@@ -135,7 +135,7 @@ typedef std::deque<chat_message> chat_message_queue;
 		if (from_dealer["participant"].empty()==false &&
 		    from_dealer["ready"].empty()==false)
 		{
-				win->toGui("updateReadyBoxes",from_dealer["participant"], 0);
+				win->toGui("updateReadyBoxes",from_dealer["participant"], 0,0,0);
 		}
 		if (from_dealer["hand["+ to_string(playerNo) +"][0]"].empty() == false)
 			hand[0] = from_dealer["hand["+ to_string(playerNo) +"][0]"];
@@ -152,40 +152,42 @@ typedef std::deque<chat_message> chat_message_queue;
 		{
 			if(from_dealer["action"]=="folded")
 			{
-                                win->toGui("updateFoldAction",from_dealer["participant"], 0);
+                                win->toGui("updateFoldAction",from_dealer["participant"], 0,0,0);
 			}if(from_dealer["action"]=="checked")
 			{
-                                win->toGui("updateCheckAction",from_dealer["participant"], 0);
+                                win->toGui("updateCheckAction",from_dealer["participant"], 0,0,0);
 			}if(from_dealer["action"]=="called")
 			{
-                                win->toGui("updateCallAction",from_dealer["participant"], 0);
+                                win->toGui("updateCallAction",from_dealer["participant"], 0,0,0);
 			}if(from_dealer["action"]=="bet")
 			{
-                                win->toGui("updateBetAction",from_dealer["participant"], from_dealer["bid"]);
+                                win->toGui("updateBetAction",from_dealer["participant"], from_dealer["balance"], from_dealer["pot"], from_dealer["bid"]);
 			}if(from_dealer["action"]=="raised")
 			{
-                                win->toGui("updateRaiseAction",from_dealer["participant"], 0);
+                                win->toGui("updateRaiseAction",from_dealer["participant"], 0,0,0);
 			}if(from_dealer["action"]=="exchanged")
 			{
-                                win->toGui("updateExchangeAction",from_dealer["participant"], 0);
+                                win->toGui("updateExchangeAction",from_dealer["participant"], 0,0,0);
 			}if(from_dealer["action"]=="allin")
 			{
-                                win->toGui("updateAllinAction",from_dealer["participant"], 0);
+                                win->toGui("updateAllinAction",from_dealer["participant"], 0,0,0);
 			}
 		}
 		if(turn>0 && playerNo>0)
 		{
-			
-			win->toGui("grayOutButton",0, 0);
-			//win->toGui("updateBalances",0,0);
-			cout<<"EEEEEEEEEEEEEEEEEEEEE"<<endl;
+			if (newRound)win->toGui("updatePot",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
+			win->toGui("grayOutButton",0, 0,0,0);
+			//win->toGui("updateBalances",0,0);    doesnt work
 			if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
 			{
-				win->toGui("updateButton",0, 0);
-				//win->toGui("updateBalances",0,0);
+				if(from_dealer["bid"]==0)
+				{
+				win->toGui("updateButton",0, 0,0,0);
+				}
+				//win->toGui("updateBalances",0,0); doesnt work
 			}
 			
-			win->toGui("shift",turn, 0);
+			win->toGui("shift",turn, 0,0,0);
 
 		}
 		

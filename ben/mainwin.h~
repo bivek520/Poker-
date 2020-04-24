@@ -41,12 +41,14 @@ class Mainwin : public Gtk::Window {
 	void updateFoldAction(int participant);
 	void updateCheckAction(int participant);
 	void updateCallAction(int participant);
-	void updateBetAction(int participant, int);
+	void updateBetAction(int participant, int balance, int pot, int val);
 	void updateRaiseAction(int participant);
 	void updateAllInAction(int participant);
-	void updateBalances();
+	void updateBalances(int participant);
 	void startRound();
-	void toGui(std::string, int, int);
+	void toGui(std::string, int, int, int, int);
+	void updateCallRaiseButtons(int, int, int, int);
+	void updatePot(int,int,int);
         bool reset=false;
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;
@@ -65,12 +67,17 @@ class Mainwin : public Gtk::Window {
 	friend class chat_client;
 
     private:
+	int bal1=195;
+	int bal2=195;
+	int bal3=195;
+	int bal4=195; 
+	int bal5=195;
 	int potVal = 200;
         Gtk::Label p1,p2,p3,p4,p5;                  // Display player name
         Gtk::Label action1, action2, action3, action4, action5;                   // Action message display
 	Gtk::Label balance1, balance2, balance3, balance4, balance5;		//Player's current balance, Available amount 
 	Gtk::Label indicator1, indicator2, indicator3, indicator4, indicator5;   //Indicates whose turn.
-	Gtk::Label pot;
+	Gtk::Label potLabel;
 	Gtk::Label image11, image12, image13, image14, image15;          //player1 hands
 	Gtk::Label image21, image22, image23, image24, image25;	//player2 hands
 	Gtk::Label image31, image32, image33, image34, image35;	//player3 hands

@@ -47,6 +47,7 @@ public:
     //int turn;
     int playerNo;
     bool ready = false;
+    int balance = 200;
 };
 
 typedef std::shared_ptr<player> player_ptr;
@@ -191,6 +192,7 @@ public:
 
             if(participant->playerNo==deli_to)
             {
+		
 		nlohmann::json to_player;
 		//to_player["p"+to_string(participant->playerNo)+" ready"];
                 participant->ready=status;
@@ -296,6 +298,7 @@ private:
 		if (turn==0)
 		{	
 		   nlohmann::json to_dealer = nlohmann::json::parse(std::string(read_msg_.body()));
+		   nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
 		   room_.set_ready(to_dealer["ready"],shared_from_this()->playerNo);
 		
 	           //send out ready status to all players
@@ -338,6 +341,9 @@ private:
 			nlohmann::json to_player2;
 			to_player2["start"]=true;
 			to_player2["turn"]=turn;
+			to_player2["bid"]=bid;
+			to_player2["pot"]=pot;
+			to_player2["balance"]=shared_from_this()->balance;
                         string t=to_player2.dump();
                         chat_message sending;
                         if (t.size() < chat_message::max_body_length)
@@ -364,8 +370,12 @@ private:
 				if(action == "bet")
 				{
 				bid = from_player["bid"];
-				cout<<"bid: "+to_string(bid)<<endl;
+//				cout<<"bid: "+to_string(bid)<<endl;
+//				cout <<"balance: " <<from_player["balance"] <<endl;
+
 				pot = pot + bid;
+				cout << "pot = " <<pot<<endl;
+				shared_from_this()->balance=from_player["balance"];
 				}
 			}
 			//send turn to all players
@@ -377,6 +387,7 @@ private:
 			to_player2["turn"]=turn;
 			to_player2["pot"]=pot;	
 			to_player2["bid"]=bid;
+			to_player2["balance"]=from_player["balance"];
                                 string t=to_player2.dump();
                                 chat_message sending;
                                 if (t.size() < chat_message::max_body_length)
