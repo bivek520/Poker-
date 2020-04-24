@@ -107,6 +107,7 @@ typedef std::deque<chat_message> chat_message_queue;
                          asio::buffer(read_msg_.body(), read_msg_.body_length()),
                          [this](std::error_code ec, std::size_t /*length*/)
                          {
+	gdk_threads_enter();
             if (!ec)
             {
                
@@ -225,6 +226,7 @@ typedef std::deque<chat_message> chat_message_queue;
             {
                 socket_.close();
             }
+	gdk_threads_leave();			
         });
     }
     
