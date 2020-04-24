@@ -57,6 +57,7 @@ int playerNumber=1;
 int start;
 string action;
 int pot = 0;
+int bid = 0;
 class poker_table
 {
 public:
@@ -360,14 +361,26 @@ private:
                         if (from_player["action"].empty()==false)
 			{
 				action = from_player["action"];
+				if(action == "bet")
+				{
+				bid = from_player["bid"];
+				cout<<"bid: "+to_string(bid)<<endl;
+				}
+				if(action == "pot")
+				{
+				pot = from_player["pot"];
+				cout<<"pot: "+to_string(bid)<<endl;
+				}	
 			}
 			//send turn to all players
 			nlohmann::json to_player2;
 //                        to_player2["start"]=true;
                         to_player2["participant"]=shared_from_this()->playerNo;
+			//to_player2["bid"]=bid;
 			to_player2["action"]=action;
 			to_player2["turn"]=turn;
-				
+			to_player2["pot"]=pot;	
+			to_player2["bid"]=bid;
                                 string t=to_player2.dump();
                                 chat_message sending;
                                 if (t.size() < chat_message::max_body_length)

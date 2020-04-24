@@ -74,6 +74,7 @@ typedef std::deque<chat_message> chat_message_queue;
 	*/
     int chat_client::getPot()
     {
+	cout<<"getPot: "+to_string(pot)<<endl;
 	return pot;
     }
     void chat_client::do_read_header()
@@ -177,21 +178,20 @@ typedef std::deque<chat_message> chat_message_queue;
                                 win->toGui("updateAllinAction",from_dealer["participant"], 0);
 			}
 		}
-		
-		if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
+		if(turn>0 && playerNo>0)
 		{
-			win->toGui("updateButton",0, 0);
-			win->toGui("updateVals",0, 0);
-			
-		}
-		if (turn>0 && playerNo>0 && turn!=playerNo && !skipStatus)
-		{
+			cout<<"GRGRGRGRGRGRGRGRGRRGRG"<<endl;
 			win->toGui("grayOutButton",0, 0);
 			win->toGui("updateVals",0, 0);
-		}
-		if (timer>0)
-		{
-			win->toGui("shift",turn, 0);	
+			if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
+			{
+				win->toGui("updateButton",0, 0);
+				win->toGui("updateVals",0, 0);
+				
+			}
+			
+			win->toGui("shift",turn, 0);
+
 		}
 		
 		

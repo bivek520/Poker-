@@ -433,9 +433,9 @@ void Mainwin::on_bet_click() {
     chat_message msg;
     nlohmann::json to_dealer;
     to_dealer["action"] = "bet";
-    to_dealer["amount"] = TESTVAL;
-    to_dealer["balance"] = c->balance;
-    to_dealer["pot"] = potVal;
+    to_dealer["bid"] = sp;
+    to_dealer["pot"] = c->getPot()+sp;
+    c->balance=c->balance-sp;
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
     std::memcpy(msg.body(), t.c_str() , msg.body_length());
@@ -796,28 +796,38 @@ void Mainwin::updateFoldAction(int participant)
 {
 	if (participant==1)
 	{
-	   action1.set_markup("<span size='16000' color ='black' weight='bold'>Bet #</span>");
+	   action1.set_markup("<span size='16000' color ='black' weight='bold'>Bet $" +to_string(c->bid)+"</span>");
     	   action1.override_background_color(Gdk::RGBA{"green"});
+	balance1.set_markup("<span size='14000' color ='white' >$  "
+                       +  std::to_string(c->balance) + "</span>");
 	}
         if (participant==2)
         {
-           action2.set_markup("<span size='16000' color ='black' weight='bold'>Bet #</span>");
+           action2.set_markup("<span size='16000' color ='black' weight='bold'>Bet $" +to_string(c->bid)+"</span>");
     	   action2.override_background_color(Gdk::RGBA{"green"});
+	balance2.set_markup("<span size='14000' color ='white' >$  "
+                       +  std::to_string(c->balance) + "</span>");
         }
 	if (participant==3)
         {
-           action3.set_markup("<span size='16000' color ='black' weight='bold'>Bet #</span>");
+           action3.set_markup("<span size='16000' color ='black' weight='bold'>Bet $" +to_string(c->bid)+"</span>");
     	   action3.override_background_color(Gdk::RGBA{"green"});
+	balance3.set_markup("<span size='14000' color ='white' >$  "
+                       +  std::to_string(c->balance) + "</span>");
         }
         if (participant==4)
         {
-           action4.set_markup("<span size='16000' color ='black' weight='bold'>Bet #</span>");
+           action4.set_markup("<span size='16000' color ='black' weight='bold'>Bet $" +to_string(c->bid)+"</span>");
     	   action4.override_background_color(Gdk::RGBA{"green"});
+	balance4.set_markup("<span size='14000' color ='white' >$  "
+                       +  std::to_string(c->balance) + "</span>");
         }
         if (participant==5)
         {
-           action5.set_markup("<span size='16000' color ='black' weight='bold'>Bet #</span>");
+           action5.set_markup("<span size='16000' color ='black' weight='bold'>Bet $" +to_string(c->bid)+"</span>");
     	   action5.override_background_color(Gdk::RGBA{"green"});
+	balance5.set_markup("<span size='14000' color ='white' >$  "
+                       +  std::to_string(c->balance) + "</span>");
 	}
 }
 	void Mainwin::updateRaiseAction(int participant)

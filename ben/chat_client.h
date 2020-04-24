@@ -62,7 +62,6 @@ private:
     int balance = 200;
     int bid = 5;
     int pot;
-    int ammount;
 };
 #endif 
 
