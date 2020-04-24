@@ -47,9 +47,9 @@ void Mainwin::toGui(std::string s, int participant, int balance, int pot, int va
 	}else if(s == "updateCallRaiseButtons")
 	{
 	updateCallRaiseButtons();
-	}else if(s == "updatePot")
+	}else if(s == "updateVals")
 	{
-	updatePot(participant, balance, pot);
+	updateVals(participant, balance, pot);
 	}
 	
 }
@@ -1024,7 +1024,7 @@ void Mainwin::updateCallRaiseButtons(){
     call.set_sensitive(true);
     raise.set_sensitive(true);
 }
-void Mainwin::updatePot(int participant,int balance,int pot)
+void Mainwin::updateVals(int participant,int balance,int pot)
 {
 potLabel.set_markup("<span size='20000' color ='red' weight='bold'>$"+std::to_string(pot)+"  </span>");
 if (participant==1)

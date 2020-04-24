@@ -307,6 +307,8 @@ private:
 			nlohmann::json to_player;
 	     		to_player["participant"]=shared_from_this()->playerNo;
 			to_player["ready"]=true;
+			to_player["pot"]=pot;
+			to_player["balance"]=shared_from_this()->balance;
                         string t=to_player.dump();
                         chat_message sending;
                         if (t.size() < chat_message::max_body_length)
@@ -340,6 +342,7 @@ private:
 			turn++;
 			nlohmann::json to_player2;
 			to_player2["start"]=true;
+			to_player2["participant"]=shared_from_this()->playerNo;
 			to_player2["turn"]=turn;
 			to_player2["bid"]=bid;
 			to_player2["pot"]=pot;

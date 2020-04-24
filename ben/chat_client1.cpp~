@@ -126,8 +126,9 @@ typedef std::deque<chat_message> chat_message_queue;
 			
 			if(newRound)
 			{
+			
 			win->toGui("startRound",0, 0,0,0);
-			newRound = false;
+			
 			}
 		}
 		
@@ -175,7 +176,11 @@ typedef std::deque<chat_message> chat_message_queue;
 		}
 		if(turn>0 && playerNo>0)
 		{
-			if (newRound)win->toGui("updatePot",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
+			if (newRound)
+			{
+			win->toGui("updatePot",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
+			newRound = false;
+			}
 			win->toGui("grayOutButton",0, 0,0,0);
 			//win->toGui("updateBalances",0,0);    doesnt work
 			if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
@@ -183,6 +188,10 @@ typedef std::deque<chat_message> chat_message_queue;
 				if(from_dealer["bid"]==0)
 				{
 				win->toGui("updateButton",0, 0,0,0);
+				}
+				else
+				{
+				win->toGui("updateCallRaiseButtons",0, 0,0,0);
 				}
 				//win->toGui("updateBalances",0,0); doesnt work
 			}

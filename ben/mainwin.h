@@ -48,7 +48,7 @@ class Mainwin : public Gtk::Window {
 	void startRound();
 	void toGui(std::string, int, int, int, int);
 	void updateCallRaiseButtons();
-	void updatePot(int,int,int);
+	void updateVals(int,int,int);
         bool reset=false;
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;

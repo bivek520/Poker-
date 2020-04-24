@@ -47,9 +47,9 @@ void Mainwin::toGui(std::string s, int participant, int balance, int pot, int va
 	}else if(s == "updateCallRaiseButtons")
 	{
 	updateCallRaiseButtons();
-	}else if(s == "updatePot")
+	}else if(s == "updateVals")
 	{
-	updatePot(participant, balance, pot);
+	updateVals(participant, balance, pot);
 	}
 	
 }
@@ -1003,7 +1003,7 @@ void Mainwin::startRound()
 
 void Mainwin::updateCallRaiseButtons(){
 
-check.hide();
+    check.hide();
     bet.hide();
     playHbox.pack_start(call ,Gtk::PACK_END, 0);
     playHbox.pack_start(raise ,Gtk::PACK_END, 0);
@@ -1020,9 +1020,9 @@ check.hide();
     raising->show();
     raise.signal_clicked().connect([this] {this->on_raise_click();});
     raise.show();
-     fold.set_sensitive(true);
-     call.set_sensitive(true);
-     raise.set_sensitive(true);
+    fold.set_sensitive(true);
+    call.set_sensitive(true);
+    raise.set_sensitive(true);
 }
 void Mainwin::updatePot(int participant,int balance,int pot)
 {
