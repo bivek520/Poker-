@@ -86,7 +86,7 @@ typedef std::deque<chat_message> chat_message_queue;
                          {
             if (!ec && read_msg_.decode_header())
             {
-                for (unsigned int i=0;i<chat_message::max_body_length;i++)
+                for (unsigned int i=chat_message::header_length;i<chat_message::max_body_length;i++)
                 {
                 read_msg_.body() [i] = '\0';
                 }
