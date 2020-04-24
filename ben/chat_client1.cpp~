@@ -72,11 +72,7 @@ typedef std::deque<chat_message> chat_message_queue;
  
     }
 	*/
-    int chat_client::getPot()
-    {
-	cout<<"getPot: "+to_string(pot)<<endl;
-	return pot;
-    }
+    
     void chat_client::do_read_header()
     {
         
@@ -86,7 +82,7 @@ typedef std::deque<chat_message> chat_message_queue;
                          {
             if (!ec && read_msg_.decode_header())
             {
-                for (unsigned int i=0;i<chat_message::max_body_length;i++)
+                for (unsigned int i=chat_message::header_length;i<chat_message::max_body_length;i++)
                 {
                 read_msg_.body() [i] = '\0';
                 }
@@ -124,8 +120,6 @@ typedef std::deque<chat_message> chat_message_queue;
                         turn = from_dealer["turn"];
                 if (from_dealer["uuid"].empty() == false)
                         uuid = from_dealer["uuid"];
-		if (from_dealer["pot"].empty()==false)
-             		pot = from_dealer["pot"];
 		if(from_dealer["start"].empty()==false && start)
 		{
 			
@@ -166,7 +160,7 @@ typedef std::deque<chat_message> chat_message_queue;
                                 win->toGui("updateCallAction",from_dealer["participant"], 0);
 			}if(from_dealer["action"]=="bet")
 			{
-                                win->toGui("updateBetAction",from_dealer["participant"], 0);
+                                win->toGui("updateBetAction",from_dealer["balance"], from_dealer["bid"]);
 			}if(from_dealer["action"]=="raised")
 			{
                                 win->toGui("updateRaiseAction",from_dealer["participant"], 0);
@@ -180,13 +174,14 @@ typedef std::deque<chat_message> chat_message_queue;
 		}
 		if(turn>0 && playerNo>0)
 		{
+			
 			win->toGui("grayOutButton",0, 0);
-			win->toGui("updateVals",0, 0);
+			//win->toGui("updateBalances",0,0);
+			cout<<"EEEEEEEEEEEEEEEEEEEEE"<<endl;
 			if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
 			{
 				win->toGui("updateButton",0, 0);
-				win->toGui("updateVals",0, 0);
-				
+				//win->toGui("updateBalances",0,0);
 			}
 			
 			win->toGui("shift",turn, 0);

@@ -38,9 +38,9 @@ void Mainwin::toGui(std::string s, int participant, int val)
 	}else if(s == "startRound")
 	{
 	startRound();
-	}else if(s == "updateVals")
+	}else if(s == "updateBalances")
 	{
-	updateVals(participant);
+	updateBalances(participant);
 	}else if(s == "updateReadyBoxes")
 	{
 	updateReadyBoxes(participant);
@@ -423,9 +423,7 @@ void Mainwin::on_bet_click() {
     raising->show();
     raise.signal_clicked().connect([this] {this->on_raise_click();});
     raise.show();
-    balance1.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(c->balance) + "</span>");
-    balance1.override_background_color(Gdk::RGBA{"white"});
+    
     
     potVal = potVal + TESTVAL;
 
@@ -433,9 +431,10 @@ void Mainwin::on_bet_click() {
     chat_message msg;
     nlohmann::json to_dealer;
     to_dealer["action"] = "bet";
-    to_dealer["bid"] = sp;
-    to_dealer["pot"] = c->pot+sp;
     c->balance=c->balance-sp;
+    to_dealer["bid"] = sp;
+	
+    
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
     std::memcpy(msg.body(), t.c_str() , msg.body_length());
@@ -860,10 +859,10 @@ void Mainwin::updateFoldAction(int participant)
     	   action5.override_background_color(Gdk::RGBA{"green"});
 	}
 }
-	void Mainwin::updateVals(int participant)
+	void Mainwin::updateBalances(int participant)
 {	
-	pot.set_markup("<span size='20000' color ='red' weight='bold'>$"
-                   + to_string(c->pot) + "</span>");
+	pot.set_markup("<span size='20000' color ='red' weight='bold'> </span>");
+
 	if (participant==1)
 	{
 	balance1.set_markup("<span size='14000' color ='black' >$  "
@@ -889,6 +888,7 @@ void Mainwin::updateFoldAction(int participant)
 	balance5.set_markup("<span size='14000' color ='black' >$  "
                         +  std::to_string(c->balance) + "</span>");
 	}
+	
 }
 	void Mainwin::updateAllInAction(int participant)
 {
@@ -937,7 +937,7 @@ void Mainwin::startRound()
 {
 	
     
-    updateVals(c->playerNo);
+    updateBalances(c->playerNo);
     action1.set_markup("<span size='16000' color ='black' >Waiting </span>");
     action2.set_markup("<span size='16000' color ='black' >Waiting </span>");
     action3.set_markup("<span size='16000' color ='black' >Waiting </span>");

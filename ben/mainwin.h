@@ -44,7 +44,7 @@ class Mainwin : public Gtk::Window {
 	void updateBetAction(int participant, int);
 	void updateRaiseAction(int participant);
 	void updateAllInAction(int participant);
-	void updateVals(int participant);
+	void updateBalances(int participant);
 	void startRound();
 	void toGui(std::string, int, int);
         bool reset=false;

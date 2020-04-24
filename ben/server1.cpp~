@@ -360,7 +360,6 @@ private:
                         nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
                         if (from_player["action"].empty()==false)
 			{
-				cout<<"ACTION NOT EMPTY"<<endl;
 				action = from_player["action"];
 				if(action == "bet")
 				{

@@ -365,12 +365,8 @@ private:
 				{
 				bid = from_player["bid"];
 				cout<<"bid: "+to_string(bid)<<endl;
+				pot = pot + bid;
 				}
-				if(action == "pot")
-				{
-				pot = from_player["pot"];
-				cout<<"pot: "+to_string(bid)<<endl;
-				}	
 			}
 			//send turn to all players
 			nlohmann::json to_player2;
