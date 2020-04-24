@@ -177,12 +177,11 @@ typedef std::deque<chat_message> chat_message_queue;
 		{
 			
 			win->toGui("grayOutButton",0, 0);
-			//win->toGui("updateBalances",0,0);
-			cout<<"EEEEEEEEEEEEEEEEEEEEE"<<endl;
+			//win->toGui("updateBalances",0,0);    doesnt work
 			if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
 			{
 				win->toGui("updateButton",0, 0);
-				//win->toGui("updateBalances",0,0);
+				//win->toGui("updateBalances",0,0); doesnt work
 			}
 			
 			win->toGui("shift",turn, 0);

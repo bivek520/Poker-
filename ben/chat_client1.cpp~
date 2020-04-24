@@ -103,9 +103,10 @@ typedef std::deque<chat_message> chat_message_queue;
                          asio::buffer(read_msg_.body(), read_msg_.body_length()),
                          [this](std::error_code ec, std::size_t /*length*/)
                          {
+	    gdk_threads_enter();
             if (!ec)
             {
-               
+                
 	   	nlohmann::json from_dealer = nlohmann::json::parse(read_msg_.body());
 		nlohmann::json to_dealer = nlohmann::json::parse(read_msg_.body());
                 cout << "after parse "<<endl;
@@ -160,7 +161,7 @@ typedef std::deque<chat_message> chat_message_queue;
                                 win->toGui("updateCallAction",from_dealer["participant"], 0);
 			}if(from_dealer["action"]=="bet")
 			{
-                                win->toGui("updateBetAction",from_dealer["balance"], from_dealer["bid"]);
+                                win->toGui("updateBetAction",from_dealer["participant"], from_dealer["bid"]);
 			}if(from_dealer["action"]=="raised")
 			{
                                 win->toGui("updateRaiseAction",from_dealer["participant"], 0);
@@ -220,6 +221,7 @@ typedef std::deque<chat_message> chat_message_queue;
             {
                 socket_.close();
             }
+	gdk_threads_leave();			
         });
     }
     
