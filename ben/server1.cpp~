@@ -48,6 +48,7 @@ public:
     int playerNo;
     bool ready = false;
     int balance = 195;
+    int skipStatus = false;
 };
 
 typedef std::shared_ptr<player> player_ptr;
@@ -365,51 +366,55 @@ private:
 		else
 		{
 			turn++;
-			if (turn==playerNumber)
-				turn=1;
+			if (turn>=playerNumber)turn=1;
+			
 			//read json from player getting their action
                         nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
-                        if (from_player["action"].empty()==false)
-			{
-				action = from_player["action"];
-				if(action == "bet")
+			
+		                if (from_player["action"].empty()==false)
 				{
-				bid = from_player["bid"];
-//				cout<<"bid: "+to_string(bid)<<endl;
-//				cout <<"balance: " <<from_player["balance"] <<endl;
-
-				pot = pot + bid;
-				cout << "pot = " <<pot<<endl;
-				shared_from_this()->balance=from_player["balance"];
-				}
-				if(action == "raised")
-				{
-				raise_by = from_player["raise_by"];
-				pot = pot + raise_by + bid;
-				cout << "pot = " <<pot<<endl;
-				cout << "pot = " <<pot<<endl;
-				int temp = from_player["balance"];
-				shared_from_this()->balance=temp-raise_by-bid;
-				bid = bid + raise_by;
-				}
-				if(action == "called")
-				{
-				int temp = from_player["balance"];
-				shared_from_this()->balance=temp-bid;
-				pot = pot + bid;
-				cout << "pot = " <<pot<<endl;
-				}
+					action = from_player["action"];
+					if(action == "bet")
+					{
+					bid = from_player["bid"];
+					pot = pot + bid;
+					cout << "pot = " <<pot<<endl;
+					shared_from_this()->balance=from_player["balance"];
+					}
+					if(action == "raised")
+					{
+					raise_by = from_player["raise_by"];
+					pot = pot + raise_by + bid;
+					cout << "pot = " <<pot<<endl;
+					cout << "pot = " <<pot<<endl;
+					int temp = from_player["balance"];
+					shared_from_this()->balance=temp-raise_by-bid;
+					bid = bid + raise_by;
+					}
+					if(action == "called")
+					{
+					int temp = from_player["balance"];
+					shared_from_this()->balance=temp-bid;
+					pot = pot + bid;
+					cout << "pot = " <<pot<<endl;
+					}
+					if(action == "folded")
+					{
+					shared_from_this()->skipStatus=true;
+					}
 				
-			}
-			//send turn to all players
-			nlohmann::json to_player2;
-                        to_player2["participant"]=shared_from_this()->playerNo;
-			to_player2["action"]=action;
-			to_player2["turn"]=turn;
-			to_player2["raise_by"]=raise_by;
-			to_player2["pot"]=pot;	
-			to_player2["bid"]=bid;
-			to_player2["balance"]=shared_from_this()->balance;
+				}
+			
+
+				//send turn to all players
+				nlohmann::json to_player2;
+		                to_player2["participant"]=shared_from_this()->playerNo;
+				to_player2["action"]=action;
+				to_player2["turn"]=turn;
+				to_player2["raise_by"]=raise_by;
+				to_player2["pot"]=pot;	
+				to_player2["bid"]=bid;
+				to_player2["balance"]=shared_from_this()->balance;
                                 string t=to_player2.dump();
                                 chat_message sending;
                                 if (t.size() < chat_message::max_body_length)
@@ -419,7 +424,7 @@ private:
                                         sending.encode_header();
                                         room_.deliver(sending);
                                 }
-		
+			
 		}	
 	    do_read_header();
             }

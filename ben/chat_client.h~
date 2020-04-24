@@ -42,7 +42,6 @@ public:
     int getCard4();
     int getCard5();
     int getHand(int card);
-    bool skipStatus = false;
     bool newRound=true;
     void giveMoney(int);
  
@@ -59,6 +58,7 @@ private:
     int card1, card2, card3, card4, card5;
     int hand[5];
     int balance = 195;
+    bool skipStatus = false;
     //int pot=0;
 };
 #endif 

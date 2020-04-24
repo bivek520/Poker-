@@ -152,7 +152,6 @@ typedef std::deque<chat_message> chat_message_queue;
 			if(from_dealer["action"]=="folded")
 			{
                                 win->toGui("updateFoldAction",from_dealer["participant"], 0,0,0);
-				
 			}if(from_dealer["action"]=="checked")
 			{
                                 win->toGui("updateCheckAction",from_dealer["participant"], 0,0,0);
@@ -196,35 +195,8 @@ typedef std::deque<chat_message> chat_message_queue;
 			win->toGui("skip",0, 0,0,0);
 			}
 			win->toGui("shift",turn, 0,0,0);
-
 		}
-		
-		
-/*
-                if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
-		{
-			gdk_threads_enter(); 
-			win->updateButton();
-			gdk_threads_leave();	
-		
-		}
-		if (turn>0 && playerNo>0 && turn!=playerNo && !skipStatus)
-		{
-			gdk_threads_enter(); 
-			win->grayOutButton();
-			gdk_threads_leave();
-		}
-		if (turn>=2)
-		{
-			gdk_threads_enter();
-			win->shiftIndicator();
-			gdk_threads_leave();		
-		}
-*/
 		std::cout << "\n";
-
-//                win->shiftIndicator();
-
                 do_read_header();
             }
             else

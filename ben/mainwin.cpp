@@ -246,7 +246,7 @@ Mainwin::Mainwin(chat_client *c_)
  
     
     //pot.set_text("\nPOT: $" +std::to_string(potVal));
-    potLabel.set_markup("<span size='20000' color ='red' weight='bold'>$  </span>");
+    potLabel.set_markup("<span size='20000' color ='red' weight='bold'>  </span>");
     //pot.override_foreground_color(Gdk::RGBA{"gold"});
     m_Grid.attach(potLabel, 2, 5, 1, 1);
     

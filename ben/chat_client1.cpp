@@ -176,54 +176,20 @@ typedef std::deque<chat_message> chat_message_queue;
 		{
 			win->toGui("updateVals",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
 			win->toGui("grayOutButton",0, 0,0,0);
-			if(!skipStatus)
+			if (turn>0 && playerNo>0 && turn==playerNo)
 			{
-				if (turn>0 && playerNo>0 && turn==playerNo)
+				if(from_dealer["bid"]==0)
 				{
-					if(from_dealer["bid"]==0)
-					{
-					win->toGui("updateButton",0, 0,0,0);
-					}
-					else
-					{
-					win->toGui("updateCallRaiseButtons",0, from_dealer["balance"],0,from_dealer["bid"]);
-					}
+				win->toGui("updateButton",0, 0,0,0);
+				}
+				else
+				{
+				win->toGui("updateCallRaiseButtons",0, from_dealer["balance"],0,from_dealer["bid"]);
 				}
 			}
-			else
-			{
-			win->toGui("skip",0, 0,0,0);
-			}
-			win->toGui("shift",turn, 0,0,0);
-
+		win->toGui("shift",turn, 0,0,0);
 		}
-		
-		
-/*
-                if (turn>0 && playerNo>0 && turn==playerNo && !skipStatus)
-		{
-			gdk_threads_enter(); 
-			win->updateButton();
-			gdk_threads_leave();	
-		
-		}
-		if (turn>0 && playerNo>0 && turn!=playerNo && !skipStatus)
-		{
-			gdk_threads_enter(); 
-			win->grayOutButton();
-			gdk_threads_leave();
-		}
-		if (turn>=2)
-		{
-			gdk_threads_enter();
-			win->shiftIndicator();
-			gdk_threads_leave();		
-		}
-*/
 		std::cout << "\n";
-
-//                win->shiftIndicator();
-
                 do_read_header();
             }
             else

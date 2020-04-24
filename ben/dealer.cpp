@@ -249,36 +249,27 @@ int dealer::organizeAndRank(int * hand, int * rankHand)
 			valueHand[3]=valueHand[1];
 			valueHand[1]=temp;
 		}
-		else if(valueHand[3]==num1)
+		else
 		{
 			temp=hand[3];
 			hand[3]=hand[0];
 			hand[0]=temp;
 			temp=hand[4];
 			hand[4]=hand[1];
-			hand[1]=temp;		
+			hand[1]=temp;
+			temp=hand[3];
+			hand[3]=hand[2];
+			hand[2]=temp;
+			temp=hand[3];
+			hand[3]=hand[4];
+			hand[4]=temp;
 			temp=valueHand[3];
 			valueHand[3]=valueHand[0];
 			valueHand[0]=temp;
 			temp=valueHand[4];
 			valueHand[4]=valueHand[1];
 			valueHand[1]=temp;	
-		}
-		else
-		{
-			temp=hand[4];
-			hand[4]=hand[0];
-			hand[0]=temp;
-			temp=hand[4];
-			hand[5]=hand[1];
-			hand[1]=temp;		
-			temp=valueHand[3];
-			valueHand[4]=valueHand[0];
-			valueHand[0]=temp;
-			temp=valueHand[5];
-			valueHand[5]=valueHand[1];
-			valueHand[1]=temp;	
-		}
+		}	
 		rankHand[0]=2;
 		rankHand[1]=num1;
 		rankHand[2]=valueHand[2];
