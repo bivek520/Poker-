@@ -107,10 +107,10 @@ typedef std::deque<chat_message> chat_message_queue;
                          asio::buffer(read_msg_.body(), read_msg_.body_length()),
                          [this](std::error_code ec, std::size_t /*length*/)
                          {
-	gdk_threads_enter();
+	
             if (!ec)
             {
-               
+                gdk_threads_enter();
 	   	nlohmann::json from_dealer = nlohmann::json::parse(read_msg_.body());
 		nlohmann::json to_dealer = nlohmann::json::parse(read_msg_.body());
                 cout << "after parse "<<endl;
