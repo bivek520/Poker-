@@ -30,9 +30,9 @@ dealer Dealer;
 //vector<int>Deck = Dealer.getDeck();
 int card1, card2, card3, card4, card5, card6, card7, card8, card9, card10;;
 //int hand1[5], hand2[5], hand3[5], hand4[5], hand5[5];
-int hand[5][5];
-int ehand[5][5];
-int rankHand1[6], rankHand2[6], rankHand3[6], rankHand4[6], rankHand5[6];
+int hand[6][5];
+int ehand[6][5];
+int rankHand[6][6];
 //----------------------------------------------------------------------
 
 typedef std::deque<chat_message> chat_message_queue;
@@ -132,7 +132,7 @@ public:
 	    boost::uuids::basic_random_generator<boost::mt19937> g;
             boost::uuids::uuid u=g();
 	    //Dealer.organizeAndRank(hand1,rankHand1);
-	    Dealer.organizeAndRank(hand[participant->playerNo],rankHand1);
+	    Dealer.organizeAndRank(hand[participant->playerNo],rankHand[participant->playerNo]);
             string playerID;
             stringstream ss;
             ss<<u;
@@ -499,7 +499,7 @@ private:
 			 	if (from_player["gimmieCards"].empty() == false)
 				{
 					nlohmann::json to_player;
-					Dealer.organizeAndRank(hand[shared_from_this()->playerNo],rankHand1);
+					Dealer.organizeAndRank(hand[shared_from_this()->playerNo],rankHand[shared_from_this()->playerNo]);
 				    	
 					to_player["turn"]=turn;
 					to_player["participant"]=shared_from_this()->playerNo;
