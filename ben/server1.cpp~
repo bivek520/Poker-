@@ -487,6 +487,7 @@ private:
 				}
 				if(action == "folded")
 				{
+					
 					proceedPlayer+=1;
 					if (shared_from_this()->playerNo==1)
 						skip1=true;
@@ -567,6 +568,7 @@ private:
 		if(turn == playerNumber && phase == "ephase")
 		{
 			phase = "b2phase";
+			proceedPlayer = 0;
 		}
 		
                 string t=to_player2.dump();

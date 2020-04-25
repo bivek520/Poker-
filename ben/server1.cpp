@@ -487,6 +487,7 @@ private:
 				}
 				if(action == "folded")
 				{
+					
 					proceedPlayer+=1;
 					if (shared_from_this()->playerNo==1)
 						skip1=true;
@@ -542,7 +543,6 @@ private:
 		if(proceedPlayer == playerNumber && phase == "b1phase")
 		{	
 		cout<<"POT SETTLED"<<endl;
-		to_player2["exchangePhase"]=true;
 		bid=0;
 		raise_by=0;
 		lastPhase=true;
