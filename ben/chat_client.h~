@@ -42,7 +42,7 @@ public:
     int getCard4();
     int getCard5();
     int getHand(int card);
-    int geteHand(int card)
+    int geteHand(int card);
     bool newRound=true;
     void giveMoney(int);
  
@@ -61,6 +61,7 @@ private:
     int ehand[5];
     int balance = 195;
     int size;
+    bool isFold = false;
     //int pot=0;
 };
 #endif 

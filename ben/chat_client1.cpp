@@ -184,7 +184,10 @@ typedef std::deque<chat_message> chat_message_queue;
                                 win->toGui("updateExchangeAction",from_dealer["participant"], 0,0,0);
 			}if(from_dealer["action"]=="allin")
 			{
-                                win->toGui("updateAllinAction",from_dealer["participant"], 0,0,0);
+				if(from_dealer["raise_by"].empty() == false)
+                                win->toGui("updateAllinAction",from_dealer["participant"], 0, 0, from_dealer["raise_by"]);
+				if(from_dealer["bid"].empty() == false)
+				win->toGui("updateAllinAction",from_dealer["participant"], 0, 0, from_dealer["bid"]);
 			}
 		}
 		if(from_dealer["potSettled"].empty() == false && from_dealer["exchangePhase"].empty() == false)
@@ -201,7 +204,7 @@ typedef std::deque<chat_message> chat_message_queue;
 			{
 				if(from_dealer["bid"]==0)
 				{
-				win->toGui("updateButton",0, 0,0,0);
+				win->toGui("updateButton",0, from_dealer["balance"],0,0);
 				}
 				else
 				{

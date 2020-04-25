@@ -33,7 +33,7 @@ class Mainwin : public Gtk::Window {
 	void on_raise_click();
 	void on_exchange_click();
 	void on_ready_click();
-	void updateButton();
+	void updateButton(int);
 	void grayOutButton();
 	void on_HScale_value_changed();
 	bool on_my_timeout();
@@ -43,14 +43,12 @@ class Mainwin : public Gtk::Window {
 	void updateCallAction(int participant, int val);
 	void updateBetAction(int participant, int val);
 	void updateRaiseAction(int participant, int val);
-	void updateAllInAction(int participant);
-	void updateBalances(int participant);
+	void updateAllInAction(int participant, int val);
 	void showCards();
 	void startRound();
 	void toGui(std::string, int, int, int, int);
 	void updateCallRaiseButtons(int, int);
 	void updateVals(int,int,int);
-	void skip();
 	void hidePlayers(int);
         bool reset=false;
 	Gtk::VBox cvbox;

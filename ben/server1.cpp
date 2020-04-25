@@ -50,6 +50,7 @@ public:
     bool ready = false;
     int balance = 195;
     int skipStatus = false;
+    string actionTaken;
 };
 
 typedef std::shared_ptr<player> player_ptr;
@@ -64,6 +65,11 @@ int bid = 0;
 int raise_by = 0;
 int bidChange = 0;
 int totalPlayers;
+bool skip1=false;
+bool skip2=false;
+bool skip3=false;
+bool skip4=false;
+bool skip5=false;
 class poker_table
 {
 public:
@@ -396,17 +402,26 @@ private:
 		else
 		{
 			turn++;
-			
-			if(shared_from_this()->skipStatus)
-			{
-				do_read_header();
-			}
-			if (turn>playerNumber)turn=1;
+			if (turn== (room_.getSize()+1))
+				turn=1;
+			if (skip1==true && turn==1)
+			       turn++;
+			if (skip2==true && turn==2)                
+                               turn++;
+			if (skip3==true && turn==3)                
+                               turn++;
+			if (skip4==true && turn==4)                
+                               turn++;
+			if (skip5==true && turn==5)                
+                        turn++;
+
+			if (turn==(room_.getSize()+1))turn=1;
 			//read json from player getting their action
                         nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
 			
 		                if (from_player["action"].empty()==false)
 				{
+					shared_from_this()->actionTaken = from_player["action"];
 					action = from_player["action"];
 					if(action == "bet")
 					{
@@ -422,7 +437,6 @@ private:
 					raise_by = from_player["raise_by"];
 					pot = pot + raise_by + bid;
 					cout << "pot = " <<pot<<endl;
-					cout << "pot = " <<pot<<endl;
 					int temp = from_player["balance"];
 					shared_from_this()->balance=temp-raise_by-bid;
 					bid = bid + raise_by;
@@ -434,9 +448,41 @@ private:
 					pot = pot + bid;
 					cout << "pot = " <<pot<<endl;
 					}
+					if(action == "allin")
+					{
+					bidChange = playerNumber;
+					
+						if(from_player["raise_by"].empty() == false)
+						{
+						raise_by = from_player["raise_by"];
+						pot = pot + raise_by + bid;
+						cout << "pot = " <<pot<<endl;
+						int temp = from_player["balance"];
+						shared_from_this()->balance=temp-raise_by-bid;
+						bid = bid + raise_by;
+						}
+						if(from_player["bid"].empty() == false)
+						{
+						bid = from_player["bid"];
+						pot = pot + bid;
+						cout << "pot = " <<pot<<endl;
+						shared_from_this()->balance=from_player["balance"];
+						}
+					}
 					if(action == "folded")
 					{
+					if (shared_from_this()->playerNo==1)
+						skip1=true;
+					if (shared_from_this()->playerNo==2)
+                                                skip2=true;
+					if (shared_from_this()->playerNo==3)
+                                                skip3=true;
+					if (shared_from_this()->playerNo==4)
+                                                skip4=true;
+					if (shared_from_this()->playerNo==5)
+                                                skip5=true;
 					shared_from_this()->skipStatus=true;
+					bidChange =bidChange - 1;
 					}
 				}
 				if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][0]"].empty() == false)

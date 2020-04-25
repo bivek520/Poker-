@@ -61,6 +61,8 @@ private:
     int ehand[5];
     int balance = 195;
     int size;
+    bool isFold = false;
+    int max =0;
     //int pot=0;
 };
 #endif 
