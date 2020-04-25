@@ -64,14 +64,6 @@ typedef std::deque<chat_message> chat_message_queue;
             }
         });
     }
-	/*
-    void chat_client::giveMoney(int ammount)
-    {
-   	nlohmann::json to_dealer = nlohmann::json::parse(read_msg_.body());
-	to_player1["p" +to_string(playerNo)+" bid"]=ammount;
- 
-    }
-	*/
     
     void chat_client::do_read_header()
     {
@@ -192,8 +184,8 @@ typedef std::deque<chat_message> chat_message_queue;
 		if(from_dealer["potSettled"].empty() == false && from_dealer["exchangePhase"].empty() == false)
 		{
 		cout<<"\nRequesting cards to exchange..."<<endl;
+		win->exchange.set_sensitive(false);
 		win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
-		win->exchange.set_sensitive(true);
 		}
 		if(turn>0 && playerNo>0)
 		{
@@ -210,7 +202,11 @@ typedef std::deque<chat_message> chat_message_queue;
 				win->toGui("updateCallRaiseButtons",0, from_dealer["balance"],0,from_dealer["bid"]);
 				}
 			}
-
+		if(from_dealer["potSettled"].empty() == false && from_dealer["exchangePhase"].empty() == false) 
+		{
+		win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
+		if(!isFold)win->toGui("activateExchange",turn,0,0,0);
+		}
 		win->toGui("shift",turn, 0,0,0);
 		}
 		std::cout << "\n";

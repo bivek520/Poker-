@@ -47,6 +47,9 @@ void Mainwin::toGui(std::string s, int participant, int balance, int pot, int va
 	}else if(s == "updateVals")
 	{
 	updateVals(participant, balance, pot);
+	}else if(s == "activateExchange")
+	{
+	activateExchange(participant, val);
 	}
 	
 }
@@ -513,36 +516,25 @@ void Mainwin::on_HScale_value_changed() {
 void Mainwin::on_exchange_click(){
     if(RB1.get_active())
     {
-        //bh1->set(big(c->geteHand(0)));
 	c->hand[0]=c->ehand[0];
-        RB1.set_sensitive(false);
     }
     if(RB2.get_active())
     {
-        //bh2->set(big(c->geteHand(1)));
 	c->hand[1]=c->ehand[1];
-        RB2.set_sensitive(false);
     }
     if(RB3.get_active())
     {
-        //bh3->set(big(c->geteHand(2)));
 	c->hand[2]=c->ehand[2];
-        RB3.set_sensitive(false);
     }
     if(RB4.get_active())
     {
-        //bh4->set(big(c->geteHand(3)));
 	c->hand[3]=c->ehand[3];
-        RB4.set_sensitive(false);
     }
     if(RB5.get_active())
     {
-        //bh5->set(big(c->geteHand(4)));
 	c->hand[4]=c->ehand[4];
-        RB5.set_sensitive(false);
     }
     nlohmann::json to_dealer;
-    //to_dealer["playerNo"] = c->playerNo;
     to_dealer["hand["+ to_string(c->playerNo) +"][0]"]=c->hand[0];
     to_dealer["hand["+ to_string(c->playerNo) +"][1]"]=c->hand[1];
     to_dealer["hand["+ to_string(c->playerNo) +"][2]"]=c->hand[2];
@@ -562,8 +554,13 @@ void Mainwin::on_exchange_click(){
     RB3.set_active(false);
     RB4.set_active(false);
     RB5.set_active(false);
+    RB1.set_sensitive(false);
+    RB2.set_sensitive(false);
+    RB3.set_sensitive(false);
+    RB4.set_sensitive(false);
+    RB5.set_sensitive(false);
+    exchange.set_sensitive(false);
     showCards();
-    cout<<"888888888888888888888888"<<endl;
 }
 
 void Mainwin::on_ready_click()
@@ -1034,7 +1031,30 @@ void Mainwin::showCards()
 	bh4->set(big(c->getHand(3)));
 	bh5->set(big(c->getHand(4)));
 }
+void Mainwin::activateExchange(int participant,int val)
+{
+	if (participant==1)
+	{
+	exchange.set_sensitive(true);
+	}
+        if (participant==2)
+        {
+	 exchange.set_sensitive(true);
+        }
+	if (participant==3)
+        {
+	exchange.set_sensitive(true);
+        }
+        if (participant==4)
+        {
+	exchange.set_sensitive(true);
+        }
+        if (participant==5)
+        {
+	exchange.set_sensitive(true);
+	}
 
+}
 
 
 

@@ -500,7 +500,7 @@ private:
 				{
 					nlohmann::json to_player;
 					Dealer.organizeAndRank(hand[shared_from_this()->playerNo],rankHand1);
-				    	to_player["playerNo"] = shared_from_this()->playerNo;
+				    	
 					to_player["turn"]=turn;
 					to_player["participant"]=shared_from_this()->playerNo;
 					to_player["balance"]=shared_from_this()->balance;
@@ -527,8 +527,7 @@ private:
 				cout<<"POT SETTLED"<<endl;
 				to_player2["potSettled"]=true;
 				to_player2["exchangePhase"]=true;
-				
-				//turn = 0;
+
 				}
 				bidChange=bidChange-1;
 				//send turn to all players

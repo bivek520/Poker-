@@ -527,8 +527,8 @@ private:
 				cout<<"POT SETTLED"<<endl;
 				to_player2["potSettled"]=true;
 				to_player2["exchangePhase"]=true;
-				
-				//turn = 0;
+				turn = 1;
+
 				}
 				bidChange=bidChange-1;
 				//send turn to all players
