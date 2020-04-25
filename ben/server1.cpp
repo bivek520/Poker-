@@ -132,7 +132,7 @@ public:
 	    boost::uuids::basic_random_generator<boost::mt19937> g;
             boost::uuids::uuid u=g();
 	    //Dealer.organizeAndRank(hand1,rankHand1);
-		Dealer.organizeAndRank(hand[participant->playerNo],rankHand1);
+	    Dealer.organizeAndRank(hand[participant->playerNo],rankHand1);
             string playerID;
             stringstream ss;
             ss<<u;
@@ -438,7 +438,7 @@ private:
 					pot = pot + raise_by + bid;
 					cout << "pot = " <<pot<<endl;
 					int temp = from_player["balance"];
-					shared_from_this()->balance=temp-raise_by-bid;
+					shared_from_this()->balance=temp-(raise_by+bid);
 					bid = bid + raise_by;
 					}
 					if(action == "called")
@@ -486,7 +486,7 @@ private:
 					}
 				}
 				if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][0]"].empty() == false)
-					{hand[shared_from_this()->playerNo][0] = from_player["hand["+ to_string(playerNo) +"][0]"]; cout<<"card 1 recived from server"<<endl;}
+					hand[shared_from_this()->playerNo][0] = from_player["hand["+ to_string(playerNo) +"][0]"];
 				if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][1]"].empty() == false)
 				        hand[shared_from_this()->playerNo][1] = from_player["hand["+ to_string(playerNo) +"][1]"];
 				if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][2]"].empty() == false)
@@ -497,17 +497,28 @@ private:
 				        hand[shared_from_this()->playerNo][4] = from_player["hand["+ to_string(playerNo) +"][4]"];
 					
 			 	if (from_player["gimmieCards"].empty() == false)
-				{  
-				cout<<"\nRRRRRRRRRRRRR\n"<<endl;
-				Dealer.organizeAndRank(hand[shared_from_this()->playerNo],rankHand1);
-				nlohmann::json to_player;
-		            	to_player["playerNo"] = shared_from_this()->playerNo;
-				to_player["uuid"] = shared_from_this()->uuid;
-				to_player["hand["+ to_string(shared_from_this()->playerNo) +"][0]"]=hand[shared_from_this()->playerNo][0];
-				to_player["hand["+ to_string(shared_from_this()->playerNo) +"][1]"]=hand[shared_from_this()->playerNo][1];
-				to_player["hand["+ to_string(shared_from_this()->playerNo) +"][2]"]=hand[shared_from_this()->playerNo][2];
-			 	to_player["hand["+ to_string(shared_from_this()->playerNo) +"][3]"]=hand[shared_from_this()->playerNo][3];
-				to_player["hand["+ to_string(shared_from_this()->playerNo) +"][4]"]=hand[shared_from_this()->playerNo][4];
+				{
+					nlohmann::json to_player;
+					Dealer.organizeAndRank(hand[shared_from_this()->playerNo],rankHand1);
+				    	
+					to_player["turn"]=turn;
+					to_player["participant"]=shared_from_this()->playerNo;
+					to_player["balance"]=shared_from_this()->balance;
+					to_player["pot"]=pot;
+					to_player["hand["+ to_string(shared_from_this()->playerNo) +"][0]"]=hand[shared_from_this()->playerNo][0];
+					to_player["hand["+ to_string(shared_from_this()->playerNo) +"][1]"]=hand[shared_from_this()->playerNo][1];
+					to_player["hand["+ to_string(shared_from_this()->playerNo) +"][2]"]=hand[shared_from_this()->playerNo][2];
+				 	to_player["hand["+ to_string(shared_from_this()->playerNo) +"][3]"]=hand[shared_from_this()->playerNo][3];
+					to_player["hand["+ to_string(shared_from_this()->playerNo) +"][4]"]=hand[shared_from_this()->playerNo][4];
+					string t=to_player.dump();
+		                        chat_message sending;
+		                        if (t.size() < chat_message::max_body_length)
+		                        {
+		                                memcpy( sending.body(), t.c_str(), t.size() );
+		                                sending.body_length(t.size());
+		                                sending.encode_header();
+		                                room_.deliver(sending);
+		                        }
 				}
 				
 				nlohmann::json to_player2;

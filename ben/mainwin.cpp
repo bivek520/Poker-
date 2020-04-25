@@ -548,7 +548,14 @@ void Mainwin::on_exchange_click(){
     to_dealer["hand["+ to_string(c->playerNo) +"][2]"]=c->hand[2];
     to_dealer["hand["+ to_string(c->playerNo) +"][3]"]=c->hand[3];
     to_dealer["hand["+ to_string(c->playerNo) +"][4]"]=c->hand[4];
-    to_dealer["gimmeCards"] = "yup";
+    to_dealer["gimmieCards"] = "please";
+    chat_message msg;
+    std::string t = to_dealer.dump();
+    msg.body_length(t.size());
+    std::memcpy(msg.body(), t.c_str() , msg.body_length());
+    msg.encode_header();  
+    assert ( c );
+    c->write(msg);
     cout<<"Sending cards back to server..."<<endl;
     RB1.set_active(false);
     RB2.set_active(false);

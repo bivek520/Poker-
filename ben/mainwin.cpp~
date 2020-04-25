@@ -378,7 +378,6 @@ void Mainwin::on_check_click() {
     chat_message msg;
     nlohmann::json to_dealer;
     to_dealer["action"] = "checked";
-    to_dealer["ammount"] = 0;
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
     std::memcpy(msg.body(), t.c_str() , msg.body_length());
@@ -398,14 +397,16 @@ void Mainwin::on_bet_click() {
 
     std::cout << "Player Bet $" + std::to_string(sp) + "!"<< std::endl;
     
-    
-    
-    potVal = potVal + TESTVAL;
+ 
 
     //send dealer player bet, amount bet, player's balance and pot value after betting 
     chat_message msg;
     nlohmann::json to_dealer;
-    to_dealer["action"] = "bet";
+    if(sp == c->max)
+    {
+    to_dealer["action"] = "allin";
+    }
+    else to_dealer["action"] = "bet";
     c->balance=c->balance-sp;
     to_dealer["bid"] = sp;
     to_dealer["balance"]=c->balance;
@@ -547,7 +548,14 @@ void Mainwin::on_exchange_click(){
     to_dealer["hand["+ to_string(c->playerNo) +"][2]"]=c->hand[2];
     to_dealer["hand["+ to_string(c->playerNo) +"][3]"]=c->hand[3];
     to_dealer["hand["+ to_string(c->playerNo) +"][4]"]=c->hand[4];
-    to_dealer["gimmeCards"] = "yup";
+    to_dealer["gimmieCards"] = "please";
+    chat_message msg;
+    std::string t = to_dealer.dump();
+    msg.body_length(t.size());
+    std::memcpy(msg.body(), t.c_str() , msg.body_length());
+    msg.encode_header();  
+    assert ( c );
+    c->write(msg);
     cout<<"Sending cards back to server..."<<endl;
     RB1.set_active(false);
     RB2.set_active(false);
@@ -555,6 +563,7 @@ void Mainwin::on_exchange_click(){
     RB4.set_active(false);
     RB5.set_active(false);
     showCards();
+    cout<<"888888888888888888888888"<<endl;
 }
 
 void Mainwin::on_ready_click()

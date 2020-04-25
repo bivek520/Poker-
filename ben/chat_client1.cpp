@@ -161,7 +161,6 @@ typedef std::deque<chat_message> chat_message_queue;
                         ehand[3] = from_dealer["ehand["+ to_string(playerNo) +"][3]"];
 		if (from_dealer["ehand["+ to_string(playerNo) +"][4]"].empty() == false)
                         ehand[4] = from_dealer["ehand["+ to_string(playerNo) +"][4]"];
-		
 		if (from_dealer["action"].empty()==false)
 		{
 			if(from_dealer["action"]=="folded")
@@ -188,11 +187,11 @@ typedef std::deque<chat_message> chat_message_queue;
                                 win->toGui("updateAllinAction",from_dealer["participant"], 0, 0, from_dealer["raise_by"]);
 				if(from_dealer["bid"].empty() == false)
 				win->toGui("updateAllinAction",from_dealer["participant"], 0, 0, from_dealer["bid"]);
-			}
+			} 
 		}
 		if(from_dealer["potSettled"].empty() == false && from_dealer["exchangePhase"].empty() == false)
 		{
-		cout<<"\nRequesting cards to exchange..."<<endl;	
+		cout<<"\nRequesting cards to exchange..."<<endl;
 		win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
 		win->exchange.set_sensitive(true);
 		}
@@ -200,7 +199,7 @@ typedef std::deque<chat_message> chat_message_queue;
 		{
 			win->toGui("updateVals",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
 			win->toGui("grayOutButton",0, 0,0,0);
-			if (turn>0 && playerNo>0 && turn==playerNo)
+			if (turn>0 && playerNo>0 && turn==playerNo && from_dealer["bid"].empty() == false)
 			{
 				if(from_dealer["bid"]==0)
 				{
@@ -211,9 +210,9 @@ typedef std::deque<chat_message> chat_message_queue;
 				win->toGui("updateCallRaiseButtons",0, from_dealer["balance"],0,from_dealer["bid"]);
 				}
 			}
+
 		win->toGui("shift",turn, 0,0,0);
 		}
-		
 		std::cout << "\n";
                 do_read_header();
             }
