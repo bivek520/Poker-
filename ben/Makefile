@@ -3,7 +3,7 @@ CPPFLAGS+=-I./include -I./asio-1.12.2/include
 LDLIBS+= -lpthread
 GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0 --cflags --libs x11`
 
-all: asio-1.12.2 mainwindow server
+all: asio-1.12.2 mainwindow server 
 
 asio-1.12.2:
 	tar xzf asio-1.12.2.tar.gz
@@ -24,7 +24,7 @@ dealer.o: dealer.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c dealer.cpp $(GTKFLAGS) -o dealer.o
 server.o: server1.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c server1.cpp $(GTKFLAGS) -o server.o
-
+	
 clean:
 	rm -f *.o *.gch mainwindow dealer pokerplus
 	rm -rf asio-1.12.2
