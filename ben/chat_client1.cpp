@@ -129,7 +129,11 @@ typedef std::deque<chat_message> chat_message_queue;
 			newRound = false;
 			}
 		}
-		
+		if (from_dealer["size"].empty()==false)
+		{
+			win->hidePlayers(from_dealer["size"]);		
+			size=from_dealer["size"];
+		}
 		//get ready status from dealer and resetaction box
 		if (from_dealer["participant"].empty()==false &&
 		    from_dealer["ready"].empty()==false)

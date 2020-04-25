@@ -193,7 +193,7 @@ typedef std::deque<chat_message> chat_message_queue;
 		if(from_dealer["potSettled"].empty() == false && from_dealer["exchangePhase"].empty() == false)
 		{
 		cout<<"\nRequesting cards to exchange..."<<endl;	
-		win->toGui("grayOutButton",0,0,0,0);
+		win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
 		}
 		std::cout << "\n";
                 do_read_header();

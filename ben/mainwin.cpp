@@ -919,49 +919,40 @@ void Mainwin::startRound()
     action3.override_background_color(Gdk::RGBA{"white"});
     action4.override_background_color(Gdk::RGBA{"white"});
     action5.override_background_color(Gdk::RGBA{"white"});
-	/*
-	if(c->playerNo == 1)
-	{
-	h1->set(sml(c->getHand(0)));
-    	h2->set(sml(c->getHand(1)));
-	h3->set(sml(c->getHand(2)));
-	h4->set(sml(c->getHand(3)));
-	h5->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 2)
-	{
-	h6->set(sml(c->getHand(0)));
-    	h7->set(sml(c->getHand(1)));
-	h8->set(sml(c->getHand(2)));
-	h9->set(sml(c->getHand(3)));
-	h10->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 3)
-	{
-	h11->set(sml(c->getHand(0)));
-    	h12->set(sml(c->getHand(1)));
-	h13->set(sml(c->getHand(2)));
-	h14->set(sml(c->getHand(3)));
-	h15->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 4)
-	{
-	h16->set(sml(c->getHand(0)));
-    	h17->set(sml(c->getHand(1)));
-	h18->set(sml(c->getHand(2)));
-	h19->set(sml(c->getHand(3)));
-	h20->set(sml(c->getHand(4)));
-	}
-	else if (c->playerNo == 5)
-	{
-	h21->set(sml(c->getHand(0)));
-    	h22->set(sml(c->getHand(1)));
-	h23->set(sml(c->getHand(2)));
-	h24->set(sml(c->getHand(3)));
-	h25->set(sml(c->getHand(4)));
-	}
-    	*/
-	//set big images
+	if (c->size==4)
+        {
+                action5.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance5.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+        }
+
+        if (c->size==3)
+        {
+                action5.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance5.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                action4.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance4.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+        }
+        if (c->size==2)
+        {
+                action5.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance5.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                action4.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance4.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                action3.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance3.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+        }
+
+	    action1.override_background_color(Gdk::RGBA{"white"});
+	    action2.override_background_color(Gdk::RGBA{"white"});
+	    action3.override_background_color(Gdk::RGBA{"white"});
+	    action4.override_background_color(Gdk::RGBA{"white"});
+	    action5.override_background_color(Gdk::RGBA{"white"});
 	bh1->set(big(c->getHand(0)));
 	bh2->set(big(c->getHand(1)));
 	bh3->set(big(c->getHand(2)));
@@ -1026,7 +1017,37 @@ void Mainwin::skip()
 {
 	Mainwin::on_fold_click();
 }
+void Mainwin::hidePlayers(int size)
+{
+	if (size==4)
+	{
+		action5.set_markup("<span size='16000' color ='black' > N/A </span>");
 
+		balance5.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+	}
+
+	if (size==3)
+        {
+                action5.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance5.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                action4.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance4.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+	}
+	if (size==2)
+	{
+                action5.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance5.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                action4.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance4.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                action3.set_markup("<span size='16000' color ='black' > N/A </span>");
+
+                balance3.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+	}
+}
 
 
 

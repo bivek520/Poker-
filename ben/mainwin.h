@@ -50,6 +50,7 @@ class Mainwin : public Gtk::Window {
 	void updateCallRaiseButtons(int, int);
 	void updateVals(int,int,int);
 	void skip();
+	void hidePlayers(int);
         bool reset=false;
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;

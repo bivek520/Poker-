@@ -62,6 +62,7 @@ int pot = 0;
 int bid = 0;
 int raise_by = 0;
 int bidChange = 0;
+int totalPlayers;
 class poker_table
 {
 public:
@@ -216,7 +217,10 @@ public:
         }
         return all_ready;
     }
-    
+    int getSize()
+    {
+	    return participants_.size();
+    }
 private:
 	vector<int>Deck;
     std::set<player_ptr> participants_;
@@ -303,7 +307,7 @@ private:
 		   nlohmann::json to_dealer = nlohmann::json::parse(std::string(read_msg_.body()));
 		   nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
 		   room_.set_ready(to_dealer["ready"],shared_from_this()->playerNo);
-		
+		   totalPlayers=room_.getSize();
 	           //send out ready status to all players
 		   if (shared_from_this()->ready==true)
 		   {
@@ -312,6 +316,7 @@ private:
 			to_player["ready"]=true;
 			to_player["pot"]=pot;
 			to_player["balance"]=shared_from_this()->balance;
+			to_player["size"] = totalPlayers;
                         string t=to_player.dump();
                         chat_message sending;
                         if (t.size() < chat_message::max_body_length)

@@ -58,6 +58,7 @@ private:
     int card1, card2, card3, card4, card5;
     int hand[5];
     int balance = 195;
+    int size;
     //int pot=0;
 };
 #endif 
