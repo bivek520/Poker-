@@ -49,7 +49,7 @@ void Mainwin::toGui(std::string s, int participant, int balance, int pot, int va
 	updateVals(participant, balance, pot);
 	}else if(s == "activateExchange")
 	{
-	activateExchange(participant);
+	activateExchange(participant, val);
 	}
 	
 }
@@ -412,7 +412,7 @@ void Mainwin::on_bet_click() {
     else to_dealer["action"] = "bet";
     c->balance=c->balance-sp;
     to_dealer["bid"] = sp;
-    to_dealer["balance"]=c->balance;
+    //to_dealer["balance"]=c->balance;
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
     std::memcpy(msg.body(), t.c_str() , msg.body_length());
@@ -433,9 +433,7 @@ void Mainwin::on_call_click() {
 
     std::cout << "Player Called $" + std::to_string(TESTVAL) + "!"<< std::endl;
     //balance1.set_text("\n$" + std::to_string(balance));
-    balance1.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(c->balance) + "</span>");
-    balance1.override_background_color(Gdk::RGBA{"white"});
+
     
     potVal = potVal + TESTVAL;
     potLabel.set_text("\nPOT: $" +std::to_string(potVal));
@@ -444,9 +442,8 @@ void Mainwin::on_call_click() {
     chat_message msg;
     nlohmann::json to_dealer;
     to_dealer["action"] = "called";
-    to_dealer["amount"] = TESTVAL;
-    to_dealer["balance"] = c->balance;
-    to_dealer["pot"] = potVal;
+    
+    //to_dealer["balance"] = c->balance;
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
     std::memcpy(msg.body(), t.c_str() , msg.body_length());
@@ -482,7 +479,7 @@ void Mainwin::on_raise_click() {
     }
     else to_dealer["action"] = "raised";
     to_dealer["raise_by"] = sp;
-    to_dealer["balance"] = c->balance;
+    //to_dealer["balance"] = c->balance;
     //to_dealer["pot"];
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
@@ -560,7 +557,7 @@ void Mainwin::on_exchange_click(){
     RB4.set_sensitive(false);
     RB5.set_sensitive(false);
     exchange.set_sensitive(false);
-    showCards();
+    
 }
 
 void Mainwin::on_ready_click()
@@ -1031,32 +1028,32 @@ void Mainwin::showCards()
 	bh4->set(big(c->getHand(3)));
 	bh5->set(big(c->getHand(4)));
 }
-void Mainwin::activateExchange(int participant)
+void Mainwin::activateExchange(int participant,int turn)
 {
-	if (participant==1)
+	if (turn==1 && participant==1)
 	{
 	exchange.set_sensitive(true);
 	}
-        if (participant==2)
+        if (turn==2 && participant==2)
         {
 	 exchange.set_sensitive(true);
         }
-	if (participant==3)
+	if (turn==3 && participant==3)
         {
 	exchange.set_sensitive(true);
         }
-        if (participant==4)
+        if (turn==4 && participant==4)
         {
 	exchange.set_sensitive(true);
         }
-        if (participant==5)
+        if (turn==5 && participant==5)
         {
 	exchange.set_sensitive(true);
 	}
 }
 void Mainwin::displayWinner(int val)
 {
-potLabel.set_markup("<span size='25000' color ='red' weight='bold'>Player "  + to_string(val)+" takes the pot!"+"</span>");
+potLabel.set_markup("<span size='15000' color ='red' weight='bold'>Player "  + to_string(val)+" takes the pot!"+"</span>");
 
 }
 
