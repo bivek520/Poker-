@@ -150,6 +150,17 @@ typedef std::deque<chat_message> chat_message_queue;
                         hand[3] = from_dealer["hand["+ to_string(playerNo) +"][3]"];
 		if (from_dealer["hand["+ to_string(playerNo) +"][4]"].empty() == false)
                         hand[4] = from_dealer["hand["+ to_string(playerNo) +"][4]"];
+
+		if (from_dealer["ehand["+ to_string(playerNo) +"][0]"].empty() == false)
+			ehand[0] = from_dealer["ehand["+ to_string(playerNo) +"][0]"];
+		if (from_dealer["ehand["+ to_string(playerNo) +"][1]"].empty() == false)
+                        ehand[1] = from_dealer["ehand["+ to_string(playerNo) +"][1]"];
+		if (from_dealer["ehand["+ to_string(playerNo) +"][2]"].empty() == false)
+                        ehand[2] = from_dealer["ehand["+ to_string(playerNo) +"][2]"];
+		if (from_dealer["ehand["+ to_string(playerNo) +"][3]"].empty() == false)
+                        ehand[3] = from_dealer["ehand["+ to_string(playerNo) +"][3]"];
+		if (from_dealer["ehand["+ to_string(playerNo) +"][4]"].empty() == false)
+                        ehand[4] = from_dealer["ehand["+ to_string(playerNo) +"][4]"];
 		
 		if (from_dealer["action"].empty()==false)
 		{
@@ -176,7 +187,12 @@ typedef std::deque<chat_message> chat_message_queue;
                                 win->toGui("updateAllinAction",from_dealer["participant"], 0,0,0);
 			}
 		}
-		
+		if(from_dealer["potSettled"].empty() == false && from_dealer["exchangePhase"].empty() == false)
+		{
+		cout<<"\nRequesting cards to exchange..."<<endl;	
+		win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
+		win->exchange.set_sensitive(true);
+		}
 		if(turn>0 && playerNo>0)
 		{
 			win->toGui("updateVals",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
@@ -194,11 +210,7 @@ typedef std::deque<chat_message> chat_message_queue;
 			}
 		win->toGui("shift",turn, 0,0,0);
 		}
-		if(from_dealer["potSettled"].empty() == false && from_dealer["exchangePhase"].empty() == false)
-		{
-		cout<<"\nRequesting cards to exchange..."<<endl;	
-		win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
-		}
+		
 		std::cout << "\n";
                 do_read_header();
             }
@@ -243,7 +255,10 @@ typedef std::deque<chat_message> chat_message_queue;
 	{
 	return hand[card];
 	}
-
+	int chat_client::geteHand(int card)
+	{
+	return ehand[card];
+	}
 
 
 

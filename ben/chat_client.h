@@ -42,6 +42,7 @@ public:
     int getCard4();
     int getCard5();
     int getHand(int card);
+    int geteHand(int card);
     bool newRound=true;
     void giveMoney(int);
  
@@ -57,6 +58,7 @@ private:
     chat_message_queue write_msgs_;	
     int card1, card2, card3, card4, card5;
     int hand[5];
+    int ehand[5];
     int balance = 195;
     int size;
     //int pot=0;

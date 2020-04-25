@@ -513,39 +513,56 @@ void Mainwin::on_HScale_value_changed() {
 void Mainwin::on_exchange_click(){
     if(RB1.get_active())
     {
-        bh1->set(big(142));
-        //h1->set(sml(142));
+        //bh1->set(big(c->geteHand(0)));
+	c->hand[0]=c->ehand[0];
         RB1.set_sensitive(false);
     }
     if(RB2.get_active())
     {
-        bh2->set(big(94));
-        //h2->set(sml(94));
+        //bh2->set(big(c->geteHand(1)));
+	c->hand[1]=c->ehand[1];
         RB2.set_sensitive(false);
     }
     if(RB3.get_active())
     {
-        bh3->set(big(41));
-        //h3->set(sml(41));
+        //bh3->set(big(c->geteHand(2)));
+	c->hand[2]=c->ehand[2];
         RB3.set_sensitive(false);
     }
     if(RB4.get_active())
     {
-        bh4->set(big(111));
-        //h4->set(sml(111));
+        //bh4->set(big(c->geteHand(3)));
+	c->hand[3]=c->ehand[3];
         RB4.set_sensitive(false);
     }
     if(RB5.get_active())
     {
-        bh5->set(big(22));
-       //h5->set(sml(22));
+        //bh5->set(big(c->geteHand(4)));
+	c->hand[4]=c->ehand[4];
         RB5.set_sensitive(false);
     }
+    nlohmann::json to_dealer;
+    //to_dealer["playerNo"] = c->playerNo;
+    to_dealer["hand["+ to_string(c->playerNo) +"][0]"]=c->hand[0];
+    to_dealer["hand["+ to_string(c->playerNo) +"][1]"]=c->hand[1];
+    to_dealer["hand["+ to_string(c->playerNo) +"][2]"]=c->hand[2];
+    to_dealer["hand["+ to_string(c->playerNo) +"][3]"]=c->hand[3];
+    to_dealer["hand["+ to_string(c->playerNo) +"][4]"]=c->hand[4];
+    to_dealer["gimmeCards"] = "yup";
+    cout<<"Sending cards back to server..."<<endl;
+    chat_message msg;
+    std::string t = to_dealer.dump();
+    msg.body_length(t.size());
+    std::memcpy(msg.body(), t.c_str() , msg.body_length());
+    msg.encode_header();  
+    assert ( c );
+    c->write(msg);
     RB1.set_active(false);
     RB2.set_active(false);
     RB3.set_active(false);
     RB4.set_active(false);
     RB5.set_active(false);
+    showCards();
 }
 
 void Mainwin::on_ready_click()
@@ -923,29 +940,29 @@ void Mainwin::startRound()
         {
                 action5.set_markup("<span size='16000' color ='black' > N/A </span>");
 
-                balance5.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                balance5.set_markup("<span size='14000' color ='black' >N/A </span>");
         }
 
         if (c->size==3)
         {
                 action5.set_markup("<span size='16000' color ='black' > N/A </span>");
 
-                balance5.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                balance5.set_markup("<span size='14000' color ='black' >N/A </span>");
                 action4.set_markup("<span size='16000' color ='black' > N/A </span>");
 
-                balance4.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                balance4.set_markup("<span size='14000' color ='black' >N/A </span>");
         }
         if (c->size==2)
         {
                 action5.set_markup("<span size='16000' color ='black' > N/A </span>");
 
-                balance5.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                balance5.set_markup("<span size='14000' color ='black' >N/A </span>");
                 action4.set_markup("<span size='16000' color ='black' > N/A </span>");
 
-                balance4.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                balance4.set_markup("<span size='14000' color ='black' >N/A </span>");
                 action3.set_markup("<span size='16000' color ='black' > N/A </span>");
 
-                balance3.set_markup("<span size='14000' color ='black' >$ N/A </span>");
+                balance3.set_markup("<span size='14000' color ='black' >N/A </span>");
         }
 
 	    action1.override_background_color(Gdk::RGBA{"white"});
@@ -953,11 +970,7 @@ void Mainwin::startRound()
 	    action3.override_background_color(Gdk::RGBA{"white"});
 	    action4.override_background_color(Gdk::RGBA{"white"});
 	    action5.override_background_color(Gdk::RGBA{"white"});
-	bh1->set(big(c->getHand(0)));
-	bh2->set(big(c->getHand(1)));
-	bh3->set(big(c->getHand(2)));
-	bh4->set(big(c->getHand(3)));
-	bh5->set(big(c->getHand(4)));
+	    showCards();
 }
 
 void Mainwin::updateCallRaiseButtons(int balance, int bid){
@@ -1048,6 +1061,33 @@ void Mainwin::hidePlayers(int size)
                 balance3.set_markup("<span size='14000' color ='black' >$ N/A </span>");
 	}
 }
+void Mainwin::showCards()
+{
+	bh1->set(big(c->getHand(0)));
+	bh2->set(big(c->getHand(1)));
+	bh3->set(big(c->getHand(2)));
+	bh4->set(big(c->getHand(3)));
+	bh5->set(big(c->getHand(4)));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

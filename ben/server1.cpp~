@@ -28,9 +28,10 @@ using asio::ip::tcp;
 dealer Dealer;
 //Dealer.createDeck();
 //vector<int>Deck = Dealer.getDeck();
-int card1, card2, card3, card4, card5;
+int card1, card2, card3, card4, card5, card6, card7, card8, card9, card10;;
 //int hand1[5], hand2[5], hand3[5], hand4[5], hand5[5];
 int hand[5][5];
+int ehand[5][5];
 int rankHand1[6], rankHand2[6], rankHand3[6], rankHand4[6], rankHand5[6];
 //----------------------------------------------------------------------
 
@@ -62,6 +63,7 @@ int pot = 0;
 int bid = 0;
 int raise_by = 0;
 int bidChange = 0;
+int totalPlayers;
 class poker_table
 {
 public:
@@ -91,6 +93,16 @@ public:
 	    Deck.pop_back();
             card5 = Deck.back();
 	    Deck.pop_back();
+	    card6 = Deck.back();
+            Deck.pop_back();
+	    card7 = Deck.back();
+	    Deck.pop_back();
+            card8 = Deck.back();
+	    Deck.pop_back();
+            card9 = Deck.back();
+	    Deck.pop_back();
+            card10 = Deck.back();
+	    Deck.pop_back();
 	    /*
 		hand1[0] =card1;
 		hand1[1] =card2;
@@ -104,6 +116,12 @@ public:
 		hand[participant->playerNo][2] =card3;
 		hand[participant->playerNo][3] =card4;
 		hand[participant->playerNo][4] =card5;
+		
+		ehand[participant->playerNo][0] =card6;
+		ehand[participant->playerNo][1] =card7;
+		ehand[participant->playerNo][2] =card8;
+		ehand[participant->playerNo][3] =card9;
+		ehand[participant->playerNo][4] =card10;
 		
 	    boost::uuids::basic_random_generator<boost::mt19937> g;
             boost::uuids::uuid u=g();
@@ -123,12 +141,17 @@ public:
             nlohmann::json to_player;
                     to_player["playerNo"] = participant->playerNo;
                     to_player["uuid"] = participant->uuid;
-
 		    to_player["hand["+ to_string(participant->playerNo) +"][0]"]=hand[participant->playerNo][0];
                     to_player["hand["+ to_string(participant->playerNo) +"][1]"]=hand[participant->playerNo][1];
                     to_player["hand["+ to_string(participant->playerNo) +"][2]"]=hand[participant->playerNo][2];
                     to_player["hand["+ to_string(participant->playerNo) +"][3]"]=hand[participant->playerNo][3];
                     to_player["hand["+ to_string(participant->playerNo) +"][4]"]=hand[participant->playerNo][4];
+
+		    to_player["ehand["+ to_string(participant->playerNo) +"][0]"]=ehand[participant->playerNo][0];
+                    to_player["ehand["+ to_string(participant->playerNo) +"][1]"]=ehand[participant->playerNo][1];
+                    to_player["ehand["+ to_string(participant->playerNo) +"][2]"]=ehand[participant->playerNo][2];
+                    to_player["ehand["+ to_string(participant->playerNo) +"][3]"]=ehand[participant->playerNo][3];
+                    to_player["ehand["+ to_string(participant->playerNo) +"][4]"]=ehand[participant->playerNo][4];
                     string t = to_player.dump();
                     chat_message sending;
                     if (t.size() < chat_message::max_body_length)
@@ -415,15 +438,41 @@ private:
 					{
 					shared_from_this()->skipStatus=true;
 					}
-				
+				cout<<"\nAAAAAAAAAAAAAAAAAA\n"<<endl;
 				}
+				if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][0]"].empty() == false)
+					{hand[shared_from_this()->playerNo][0] = from_player["hand["+ to_string(playerNo) +"][0]"]; cout<<"card 1 recived from server"<<endl;}
+				if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][1]"].empty() == false)
+				        hand[shared_from_this()->playerNo][1] = from_player["hand["+ to_string(playerNo) +"][1]"];
+				if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][2]"].empty() == false)
+				        hand[shared_from_this()->playerNo][2] = from_player["hand["+ to_string(playerNo) +"][2]"];
+				if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][3]"].empty() == false)
+				        hand[shared_from_this()->playerNo][3] = from_player["hand["+ to_string(playerNo) +"][3]"];
+				if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][4]"].empty() == false)
+				        hand[shared_from_this()->playerNo][4] = from_player["hand["+ to_string(playerNo) +"][4]"];
+					
+			 	if (from_player["gimmieCards"].empty() == false)
+				{  
+				cout<<"\nRRRRRRRRRRRRR\n"<<endl;
+				Dealer.organizeAndRank(hand[shared_from_this()->playerNo],rankHand1);
+				nlohmann::json to_player;
+		            	to_player["playerNo"] = shared_from_this()->playerNo;
+				to_player["uuid"] = shared_from_this()->uuid;
+				to_player["hand["+ to_string(shared_from_this()->playerNo) +"][0]"]=hand[shared_from_this()->playerNo][0];
+				to_player["hand["+ to_string(shared_from_this()->playerNo) +"][1]"]=hand[shared_from_this()->playerNo][1];
+				to_player["hand["+ to_string(shared_from_this()->playerNo) +"][2]"]=hand[shared_from_this()->playerNo][2];
+			 	to_player["hand["+ to_string(shared_from_this()->playerNo) +"][3]"]=hand[shared_from_this()->playerNo][3];
+				to_player["hand["+ to_string(shared_from_this()->playerNo) +"][4]"]=hand[shared_from_this()->playerNo][4];
+				}
+				
 				nlohmann::json to_player2;
 				if(bidChange == 1)
 				{	
 				cout<<"POT SETTLED"<<endl;
 				to_player2["potSettled"]=true;
 				to_player2["exchangePhase"]=true;
-				//turn == 0;
+				
+				//turn = 0;
 				}
 				bidChange=bidChange-1;
 				//send turn to all players

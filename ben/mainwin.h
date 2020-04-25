@@ -45,6 +45,7 @@ class Mainwin : public Gtk::Window {
 	void updateRaiseAction(int participant, int val);
 	void updateAllInAction(int participant);
 	void updateBalances(int participant);
+	void showCards();
 	void startRound();
 	void toGui(std::string, int, int, int, int);
 	void updateCallRaiseButtons(int, int);
