@@ -30,7 +30,7 @@ dealer Dealer;
 //vector<int>Deck = Dealer.getDeck();
 int card1, card2, card3, card4, card5;
 //int hand1[5], hand2[5], hand3[5], hand4[5], hand5[5];
-int hand[6][5];
+int hand[5][5];
 int rankHand1[6], rankHand2[6], rankHand3[6], rankHand4[6], rankHand5[6];
 //----------------------------------------------------------------------
 
@@ -55,12 +55,13 @@ typedef std::shared_ptr<player> player_ptr;
 
 //----------------------------------------------------------------------
 int turn=0;
-int playerNumber=1;
+int playerNumber=0;
 int start;
 string action;
 int pot = 0;
 int bid = 0;
 int raise_by = 0;
+int bidChange = 0;
 class poker_table
 {
 public:
@@ -71,6 +72,7 @@ public:
 	}
     void join(player_ptr participant)
     {
+	playerNumber++;
         cout<<"New Player has joined the room"<<endl;
         
         /*participant->playerNo=playerNum;
@@ -137,8 +139,7 @@ public:
                         participant->deliver(sending);
                     }
 
-//        player_turn++;
-        playerNumber++;
+        
 
         participants_.insert(participant);
         for (auto msg: recent_msgs_)                    //CSE3310 (server)  previous chat messages are sent to a client
@@ -327,7 +328,7 @@ private:
 			cout<<"cant start game"<<endl;
 			nlohmann::json to_player1;
 			to_player1["start"]=false;
-			pot=(playerNumber-1) * 5;
+			pot=(playerNumber) * 5;
 			to_player1["pot"]=pot;
 			to_player1["balance"]=shared_from_this()->balance;
                         string t=to_player1.dump();
@@ -342,6 +343,7 @@ private:
 		   }
                    else
                    {	
+			bidChange = playerNumber;
 			turn++;
 			nlohmann::json to_player2;
 			to_player2["start"]=true;
@@ -360,14 +362,19 @@ private:
                             room_.deliver(sending);
                         }
 		   }
+		
 		}
 	  
 		//if turn not 0
 		else
 		{
 			turn++;
-			if (turn>=playerNumber)turn=1;
 			
+			if(shared_from_this()->skipStatus)
+			{
+				do_read_header();
+			}
+			if (turn>playerNumber)turn=1;
 			//read json from player getting their action
                         nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
 			
@@ -376,6 +383,7 @@ private:
 					action = from_player["action"];
 					if(action == "bet")
 					{
+					bidChange = playerNumber;
 					bid = from_player["bid"];
 					pot = pot + bid;
 					cout << "pot = " <<pot<<endl;
@@ -383,6 +391,7 @@ private:
 					}
 					if(action == "raised")
 					{
+					bidChange = playerNumber;
 					raise_by = from_player["raise_by"];
 					pot = pot + raise_by + bid;
 					cout << "pot = " <<pot<<endl;
@@ -404,10 +413,16 @@ private:
 					}
 				
 				}
-			
-
-				//send turn to all players
 				nlohmann::json to_player2;
+				if(bidChange == 1)
+				{	
+				cout<<"POT SETTLED"<<endl;
+				to_player2["potSettled"]=true;
+				to_player2["exchangePhase"]=true;
+				//turn == 0;
+				}
+				bidChange=bidChange-1;
+				//send turn to all players
 		                to_player2["participant"]=shared_from_this()->playerNo;
 				to_player2["action"]=action;
 				to_player2["turn"]=turn;
