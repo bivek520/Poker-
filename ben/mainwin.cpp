@@ -1053,10 +1053,12 @@ void Mainwin::activateExchange(int participant)
         {
 	exchange.set_sensitive(true);
 	}
+}
+void Mainwin::displayWinner(int val)
+{
+potLabel.set_markup("<span size='20000' color ='red' weight='bold'>Player "  + to_string(val)+" takes the pot!"+"</span>");
 
 }
-
-
 
 
 

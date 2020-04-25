@@ -16,7 +16,7 @@ class dealer
 	   void createDeck();
 //	   void shuffleDeck();
 	   std::vector<int> getDeck();
-        int compareHands(int *, int *, int *, int *, int *);
+        int compareHands(int, int , int , int , int);
 	int organizeAndRank(int * hand, int * rankHand);
    private:
 	   std::vector<int> Deck;

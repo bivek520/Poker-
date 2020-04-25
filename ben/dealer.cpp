@@ -3,7 +3,35 @@
 dealer::dealer()
 {
 }
-
+int dealer::compareHands(int hand1[], int hand2[], int hand3[], int hand4[], int hand5[])
+{
+	int winner =0;
+	int hands[5][6];
+	for(int x=0;x<6;x++)
+	{
+		hands[0][x]= hand1[x];
+		hands[1][x]= hand2[x];
+		hands[2][x]= hand3[x];
+		hands[3][x]= hand4[x];
+		hands[4][x]= hand5[x];
+	}
+	for(int x=1;x<5;x++)
+	{
+		for(int y=0;y<6;y++)
+		{
+			if(hands[winner][y]>hands[x][y])
+			{
+			break;
+			}
+			else if(hands[winner][y]<hands[x][y])
+			{
+			winner = x;
+			break;
+			}
+		}
+	}
+	return winner+1;
+}
 void dealer::createDeck()
 {
 //this function creates a Deck and shuffled it up

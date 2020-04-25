@@ -132,6 +132,7 @@ typedef std::deque<chat_message> chat_message_queue;
 		{
 				win->toGui("updateReadyBoxes",from_dealer["participant"], 0,0,0);
 		}
+		
 		if (from_dealer["hand["+ to_string(playerNo) +"][0]"].empty() == false)
 			hand[0] = from_dealer["hand["+ to_string(playerNo) +"][0]"];
 		if (from_dealer["hand["+ to_string(playerNo) +"][1]"].empty() == false)
@@ -191,6 +192,10 @@ typedef std::deque<chat_message> chat_message_queue;
 		{
 			win->toGui("updateVals",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
 			win->toGui("grayOutButton",0, 0,0,0);
+			if (from_dealer["winner"].empty()==false)
+			{
+			win->displayWinner(from_dealer["winner"]);
+			}
 			if (turn>0 && playerNo>0 && turn==playerNo && from_dealer["bid"].empty() == false)
 			{
 				if(from_dealer["bid"]==0)
@@ -216,6 +221,7 @@ typedef std::deque<chat_message> chat_message_queue;
             {
                 socket_.close();
             }
+	
 	gdk_threads_leave();			
         });
     }

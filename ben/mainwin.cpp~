@@ -49,7 +49,7 @@ void Mainwin::toGui(std::string s, int participant, int balance, int pot, int va
 	updateVals(participant, balance, pot);
 	}else if(s == "activateExchange")
 	{
-	activateExchange(participant, val);
+	activateExchange(participant);
 	}
 	
 }
@@ -1031,7 +1031,7 @@ void Mainwin::showCards()
 	bh4->set(big(c->getHand(3)));
 	bh5->set(big(c->getHand(4)));
 }
-void Mainwin::activateExchange(int participant,int val)
+void Mainwin::activateExchange(int participant)
 {
 	if (participant==1)
 	{
@@ -1053,10 +1053,12 @@ void Mainwin::activateExchange(int participant,int val)
         {
 	exchange.set_sensitive(true);
 	}
+}
+void Mainwin::displayWinner(int val)
+{
+potLabel.set_markup("<span size='25000' color ='red' weight='bold'>Player "  + to_string(val)+" takes the pot!"+"</span>");
 
 }
-
-
 
 
 

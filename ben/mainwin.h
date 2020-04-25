@@ -52,6 +52,7 @@ class Mainwin : public Gtk::Window {
 	void updateVals(int,int,int);
 	void hidePlayers(int);
         bool reset=false;
+	void displayWinner(int);
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;
 	Gtk::HBox actionHbox,balanceHbox,publicCardHbox,indicatorHbox, potHbox,privateCardHbox,cardSelectionHbox,exchangeHbox,playHbox;

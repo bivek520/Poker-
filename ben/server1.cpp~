@@ -30,9 +30,9 @@ dealer Dealer;
 //vector<int>Deck = Dealer.getDeck();
 int card1, card2, card3, card4, card5, card6, card7, card8, card9, card10;;
 //int hand1[5], hand2[5], hand3[5], hand4[5], hand5[5];
-int hand[5][5];
-int ehand[5][5];
-int rankHand[5][6];
+int hand[6][5];
+int ehand[6][5];
+int rankHand[6][6];
 //----------------------------------------------------------------------
 
 typedef std::deque<chat_message> chat_message_queue;
@@ -70,6 +70,9 @@ bool skip2=false;
 bool skip3=false;
 bool skip4=false;
 bool skip5=false;
+bool lastPhase = false;
+int winner;
+bool gameOver = false;
 class poker_table
 {
 public:
@@ -499,7 +502,7 @@ private:
 			 	if (from_player["gimmieCards"].empty() == false)
 				{
 					nlohmann::json to_player;
-					Dealer.organizeAndRank(hand[shared_from_this()->playerNo],rankHand1);
+					Dealer.organizeAndRank(hand[shared_from_this()->playerNo],rankHand[shared_from_this()->playerNo]);
 				    	
 					to_player["turn"]=turn;
 					to_player["participant"]=shared_from_this()->playerNo;
@@ -520,7 +523,6 @@ private:
 		                                room_.deliver(sending);
 		                        }
 				}
-				
 				nlohmann::json to_player2;
 				if(bidChange == 1)
 				{	
@@ -528,8 +530,13 @@ private:
 				to_player2["potSettled"]=true;
 				to_player2["exchangePhase"]=true;
 				turn = 1;
-
+				bid=0;
+				raise_by=0;
+				lastPhase=true;
 				}
+				int winner = Dealer.compareHands(rankHand[1], rankHand[2], rankHand[3], rankHand[4], rankHand[5]);
+				cout << "WINNER:  Player "+to_string(winner)<<endl;
+				to_player2["winner"]=winner;
 				bidChange=bidChange-1;
 				//send turn to all players
 		                to_player2["participant"]=shared_from_this()->playerNo;

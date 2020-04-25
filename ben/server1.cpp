@@ -70,6 +70,9 @@ bool skip2=false;
 bool skip3=false;
 bool skip4=false;
 bool skip5=false;
+bool lastPhase = false;
+int winner;
+bool gameOver = false;
 class poker_table
 {
 public:
@@ -520,7 +523,6 @@ private:
 		                                room_.deliver(sending);
 		                        }
 				}
-				
 				nlohmann::json to_player2;
 				if(bidChange == 1)
 				{	
@@ -528,8 +530,13 @@ private:
 				to_player2["potSettled"]=true;
 				to_player2["exchangePhase"]=true;
 				turn = 1;
-
+				bid=0;
+				raise_by=0;
+				lastPhase=true;
 				}
+				int winner = Dealer.compareHands(rankHand[1], rankHand[2], rankHand[3], rankHand[4], rankHand[5]);
+				cout << "WINNER:  Player "+to_string(winner)<<endl;
+				//to_player2["winner"]=winner;             USE THIS TO FIND WINNER     <3
 				bidChange=bidChange-1;
 				//send turn to all players
 		                to_player2["participant"]=shared_from_this()->playerNo;
