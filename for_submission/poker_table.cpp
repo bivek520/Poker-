@@ -13,7 +13,7 @@ int ehand[6][5];
 int rankHand[6][6];
 int card1, card2, card3, card4, card5, card6, card7, card8, card9, card10;
 
-
+dealer Dealer;
 
 poker_table::poker_table()
 {
