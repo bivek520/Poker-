@@ -22,92 +22,92 @@ const std::string COOKIE{"M⅍S1"};
 
 
 class Mainwin : public Gtk::Window {
-    public:
-        Mainwin(chat_client*);
-        virtual ~Mainwin();
-    protected:
-	void on_fold_click();
-	void on_check_click();
-	void on_bet_click();
-	void on_call_click();
-	void on_raise_click();
-	void on_exchange_click();
-	void on_ready_click();
-	void updateButton(int);
-	void grayOutButton();
-	void on_HScale_value_changed();
-	bool on_my_timeout();
-        void updateReadyBoxes(int participant);
-	void updateFoldAction(int participant);
-	void updateCheckAction(int participant);
-	void updateCallAction(int participant, int val);
-	void updateBetAction(int participant, int val);
-	void updateRaiseAction(int participant, int val);
-	void updateAllInAction(int participant, int val);
-	void showCards();
-	void activateExchange(int, int);
-	void startRound();
-	void toGui(std::string, int, int, int, int);
-	void updateCallRaiseButtons(int, int);
-	void updateVals(int,int,int);
-	void hidePlayers(int);
-        bool reset=false;
-	void displayWinner(int);
-	Gtk::VBox cvbox;
-	Gtk::HBox hbox;
-	Gtk::HBox actionHbox,balanceHbox,publicCardHbox,indicatorHbox, potHbox,privateCardHbox,cardSelectionHbox,exchangeHbox,playHbox;
-	Gtk::Grid m_Grid;
-	Gtk::Frame Frame_Horizontal, Frame_Vertical;
-	Gtk::CheckButton RB1, RB2, RB3, RB4, RB5;
-	Gtk::Separator sep1, sep2,sep3, sep4;
-	Gtk::Scale HScale;
-	Gtk::Grid m_grid,small_card_grid1,small_card_grid2,small_card_grid3,small_card_grid4,small_card_grid5;
-/*	void on_new_game_click();*/
-/*        void on_quit_click();              // Exit the application*/
-/*        void on_about_click();              // new window displaying game rules and info*/
-	void shiftIndicator(int);
-	Gtk::Image *indicator =Gtk::manage(new Gtk::Image{"Icons/indicator.png"});
-	friend class chat_client;
-
-    private:
-	int bal1=195;
-	int bal2=195;
-	int bal3=195;
-	int bal4=195; 
-	int bal5=195;
-	int potVal = 200;
-        Gtk::Label p1,p2,p3,p4,p5;                  // Display player name
-        Gtk::Label action1, action2, action3, action4, action5;                   // Action message display
-	Gtk::Label balance1, balance2, balance3, balance4, balance5;		//Player's current balance, Available amount 
-	Gtk::Label indicator1, indicator2, indicator3, indicator4, indicator5;   //Indicates whose turn.
-	Gtk::Label potLabel;
-	Gtk::Label image11, image12, image13, image14, image15;          //player1 hands
-	Gtk::Label image21, image22, image23, image24, image25;	//player2 hands
-	Gtk::Label image31, image32, image33, image34, image35;	//player3 hands
-	Gtk::Label image41, image42, image43, image44, image45;	//player4 hands
-	Gtk::Label image51, image52, image53, image54, image55;	//player5 hands
-
-	Gtk::Label hand1, hand2, hand3, hand4, hand5;	//your hands, big picture
-	
-	Gtk::Button fold;//{"FOLD"};
-	Gtk::Button check;//{"CHECK"};
-	Gtk::Button bet;//{"BET $5"};
-	Gtk::Button call;//{"CALL"};
-	Gtk::Button raise;//{"RAISE $5"};
-	Gtk::Button exchange{"EXCHANGE"};  
-	Gtk::Button ready{"READY"};  
-	
-	Gtk::Image *bh1, *bh2, *bh3, *bh4, *bh5; //big cards
-	/*Gtk::Image *h1, *h2, *h3, *h4, *h5,	 //sml cards
-		   *h6, *h7, *h8, *h9, *h10,
-		   *h11, *h12, *h13, *h14, *h15,
-		   *h16, *h17, *h18, *h19, *h20,
-		   *h21, *h22, *h23, *h24, *h25;*/
-
-	int TESTVAL;
-	int TESTTURN = 0;
-	bool readyBool = false;
-	chat_client *c;
+public:
+    Mainwin(chat_client*);
+    virtual ~Mainwin();
+protected:
+    void on_fold_click();
+    void on_check_click();
+    void on_bet_click();
+    void on_call_click();
+    void on_raise_click();
+    void on_exchange_click();
+    void on_ready_click();
+    void updateButton(int balance);
+    void grayOutButton();
+    void on_HScale_value_changed();
+    bool on_my_timeout();
+    void updateReadyBoxes(int participant);
+    void updateFoldAction(int participant);
+    void updateCheckAction(int participant);
+    void updateCallAction(int participant, int val);
+    void updateBetAction(int participant, int val);
+    void updateRaiseAction(int participant, int val);
+    void updateAllInAction(int participant, int val);
+    void showCards();
+    void activateExchange(int participant, int turn);
+    void startRound();
+    void toGui(std::string, int participant, int balance, int pot, int val);
+    void updateCallRaiseButtons(int balance, int bid);
+    void updateVals(int participant,int balance,int pot);
+    void hidePlayers(int size);
+    bool reset=false;
+    void displayWinner(int val);
+    Gtk::VBox cvbox;
+    Gtk::HBox hbox;
+    Gtk::HBox actionHbox,balanceHbox,publicCardHbox,indicatorHbox, potHbox,privateCardHbox,cardSelectionHbox,exchangeHbox,playHbox;
+    Gtk::Grid m_Grid;
+    Gtk::Frame Frame_Horizontal, Frame_Vertical;
+    Gtk::CheckButton RB1, RB2, RB3, RB4, RB5;
+    Gtk::Separator sep1, sep2,sep3, sep4;
+    Gtk::Scale HScale;
+    Gtk::Grid m_grid,small_card_grid1,small_card_grid2,small_card_grid3,small_card_grid4,small_card_grid5;
+    /*	void on_new_game_click();*/
+    /*        void on_quit_click();              // Exit the application*/
+    /*        void on_about_click();              // new window displaying game rules and info*/
+    void shiftIndicator(int participant);
+    Gtk::Image *indicator =Gtk::manage(new Gtk::Image{"Icons/indicator.png"});
+    friend class chat_client;
+    
+private:
+    int bal1=195;
+    int bal2=195;
+    int bal3=195;
+    int bal4=195; 
+    int bal5=195;
+    int potVal = 200;
+    Gtk::Label p1,p2,p3,p4,p5;                  // Display player name
+    Gtk::Label action1, action2, action3, action4, action5;                   // Action message display
+    Gtk::Label balance1, balance2, balance3, balance4, balance5;		//Player's current balance, Available amount 
+    Gtk::Label indicator1, indicator2, indicator3, indicator4, indicator5;   //Indicates whose turn.
+    Gtk::Label potLabel;
+    Gtk::Label image11, image12, image13, image14, image15;          //player1 hands
+    Gtk::Label image21, image22, image23, image24, image25;	//player2 hands
+    Gtk::Label image31, image32, image33, image34, image35;	//player3 hands
+    Gtk::Label image41, image42, image43, image44, image45;	//player4 hands
+    Gtk::Label image51, image52, image53, image54, image55;	//player5 hands
+    
+    Gtk::Label hand1, hand2, hand3, hand4, hand5;	//your hands, big picture
+    
+    Gtk::Button fold;//{"FOLD"};
+    Gtk::Button check;//{"CHECK"};
+    Gtk::Button bet;//{"BET $5"};
+    Gtk::Button call;//{"CALL"};
+    Gtk::Button raise;//{"RAISE $5"};
+    Gtk::Button exchange{"EXCHANGE"};  
+    Gtk::Button ready{"READY"};  
+    
+    Gtk::Image *bh1, *bh2, *bh3, *bh4, *bh5; //big cards
+    /*Gtk::Image *h1, *h2, *h3, *h4, *h5,	 //sml cards
+     *h6, *h7, *h8, *h9, *h10,
+     *h11, *h12, *h13, *h14, *h15,
+     *h16, *h17, *h18, *h19, *h20,
+     *h21, *h22, *h23, *h24, *h25;*/
+    
+    int TESTVAL;
+    int TESTTURN = 0;
+    bool readyBool = false;
+    chat_client *c;
 };
 #endif 
 
