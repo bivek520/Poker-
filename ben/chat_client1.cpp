@@ -113,8 +113,14 @@ typedef std::deque<chat_message> chat_message_queue;
                         turn = from_dealer["turn"];
                 if (from_dealer["uuid"].empty() == false)
                         uuid = from_dealer["uuid"];
+		if(from_dealer["phase"] == "b2phase" && !newRound) 
+		{
+			cout<<"new round set"<<endl;
+			newRound = true;
+		}
 		if(from_dealer["start"].empty()==false && start)
 		{
+		cout<<"STARTTTTT"<<endl;
 			if(newRound)
 			{
 			win->toGui("startRound",0, 0,0,0);
@@ -182,12 +188,7 @@ typedef std::deque<chat_message> chat_message_queue;
 				win->toGui("updateAllinAction",from_dealer["participant"], 0, 0, from_dealer["bid"]);
 			} 
 		}
-		if(from_dealer["exchangePhase"].empty() == false)
-		{
-		cout<<"\nRequesting cards to exchange..."<<endl;
-		win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
-		win->exchange.set_sensitive(true);
-		}
+		
 		if(turn>0 && playerNo>0)
 		{
 			win->showCards();
@@ -195,7 +196,7 @@ typedef std::deque<chat_message> chat_message_queue;
 			win->toGui("grayOutButton",0, 0,0,0);
 			if (from_dealer["winner"].empty()==false)
 			{
-			win->displayWinner(from_dealer["winner"]);
+				win->displayWinner(from_dealer["winner"]);
 			}
 			if (turn>0 && playerNo>0 && turn==playerNo && from_dealer["bid"].empty() == false)
 			{
@@ -208,20 +209,22 @@ typedef std::deque<chat_message> chat_message_queue;
 				win->toGui("updateCallRaiseButtons",0, from_dealer["balance"],0,from_dealer["bid"]);
 				}
 			}
-		if(from_dealer["exchangePhase"].empty() == false) 
-		{
-		win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
-		if(!isFold)win->toGui("activateExchange",0,0,0,turn);
-		}
-		win->toGui("shift",turn, 0,0,0);
+			if(from_dealer["phase"] == "ephase") 
+			{
+				cout<<"\nRequesting cards to exchange..."<<endl;
+				win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
+				if(!isFold)win->toGui("activateExchange",0,0,0,turn);
+			}
+			
+			win->toGui("shift",turn, 0,0,0);
 		}
 		std::cout << "\n";
-                do_read_header();
-            }
-            else
-            {
-                socket_.close();
-            }
+		do_read_header();
+            	}
+		else
+		{
+		   socket_.close();
+		}
 	
 	gdk_threads_leave();			
         });

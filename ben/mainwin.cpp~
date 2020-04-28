@@ -49,7 +49,10 @@ void Mainwin::toGui(std::string s, int participant, int balance, int pot, int va
 	updateVals(participant, balance, pot);
 	}else if(s == "activateExchange")
 	{
-	activateExchange(participant, val);
+	activateExchange(val);
+	}else if(s == "updateExchangeAction")
+	{
+	updateExchangeAction(participant);
 	}
 	
 }
@@ -538,6 +541,7 @@ void Mainwin::on_exchange_click(){
     to_dealer["hand["+ to_string(c->playerNo) +"][3]"]=c->hand[3];
     to_dealer["hand["+ to_string(c->playerNo) +"][4]"]=c->hand[4];
     to_dealer["gimmieCards"] = "please";
+    to_dealer["action"] = "exchanged";
     chat_message msg;
     std::string t = to_dealer.dump();
     msg.body_length(t.size());
@@ -1028,35 +1032,63 @@ void Mainwin::showCards()
 	bh4->set(big(c->getHand(3)));
 	bh5->set(big(c->getHand(4)));
 }
-void Mainwin::activateExchange(int participant,int turn)
+void Mainwin::activateExchange(int turn)
 {
-	if (turn==1 && participant==1)
+	cout<< "activateExchange:" +to_string(turn) + " " + to_string(c->playerNo);
+	if (turn==1 && c->playerNo==1)
 	{
 	exchange.set_sensitive(true);
 	}
-        if (turn==2 && participant==2)
-        {
-	 exchange.set_sensitive(true);
-        }
-	if (turn==3 && participant==3)
+        if (turn==2 && c->playerNo==2)
         {
 	exchange.set_sensitive(true);
         }
-        if (turn==4 && participant==4)
+	if (turn==3 && c->playerNo==3)
         {
 	exchange.set_sensitive(true);
         }
-        if (turn==5 && participant==5)
+        if (turn==4 && c->playerNo==4)
+        {
+	exchange.set_sensitive(true);
+        }
+        if (turn==5 && c->playerNo==5)
         {
 	exchange.set_sensitive(true);
 	}
 }
 void Mainwin::displayWinner(int val)
 {
-potLabel.set_markup("<span size='15000' color ='red' weight='bold'>Player "  + to_string(val)+" takes the pot!"+"</span>");
+potLabel.set_markup("<span size='10000' color ='red' weight='bold'>Player "  + to_string(val)+" takes the pot!"+"</span>");
 
 }
-
+void Mainwin::updateExchangeAction(int participant)
+{
+	if (participant==1)
+	{
+	   action1.set_markup("<span size='16000' color ='white' weight='bold'>Exchanged </span>");
+    	   action1.override_background_color(Gdk::RGBA{"black"});
+	}
+        if (participant==2)
+        {
+	   action2.set_markup("<span size='16000' color ='white' weight='bold'>Exchanged </span>");
+    	   action2.override_background_color(Gdk::RGBA{"black"});
+        }
+	if (participant==3)
+        {
+	   action3.set_markup("<span size='16000' color ='white' weight='bold'>Exchanged </span>");
+    	   action3.override_background_color(Gdk::RGBA{"black"});
+        }
+        if (participant==4)
+        {
+	   action4.set_markup("<span size='16000' color ='white' weight='bold'>Exchanged </span>");
+    	   action4.override_background_color(Gdk::RGBA{"black"});
+        }
+        if (participant==5)
+        {
+	   action5.set_markup("<span size='16000' color ='white' weight='bold'>Exchanged </span>");
+    	   action5.override_background_color(Gdk::RGBA{"black"});
+        }
+}
 
 
 

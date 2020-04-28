@@ -405,16 +405,20 @@ private:
 		//if turn not 0
 		else
 		{
-			turn++;
 			nlohmann::json to_player;
-			if(turn == playerNumber && phase == "b2phase")
+			
+			
+			//if (turn>= (room_.getSize()+1))
+				//turn=1;
+			if(turn == playerNumber && phase == "ephase")
 			{
-			int winner = Dealer.compareHands(rankHand[1], rankHand[2], rankHand[3], rankHand[4], rankHand[5]);
-			cout << "WINNER:  Player "+to_string(winner)<<endl;
-			to_player["winner"]=winner;
+			cout<<"EPHASE OVER"<<endl;
+			phase = "b2phase";
+			to_player["start"]=true;
+			to_player["phase"]=phase;
+			proceedPlayer = 0;
 			}
-			if (turn== (room_.getSize()+1))
-				turn=1;
+			turn++;
 			if (skip1==true && turn==1)
 			       {proceedPlayer+=1;turn++;}
 			if (skip2==true && turn==2)                
@@ -424,9 +428,33 @@ private:
 			if (skip4==true && turn==4)                
                                {proceedPlayer+=1;turn++;}
 			if (skip5==true && turn==5)                
-                        turn++;
-		
-			if (turn==(room_.getSize()+1))turn=1;
+                               {proceedPlayer+=1;turn++;}
+			
+			if (turn>=(room_.getSize()+1))turn=1;
+	
+/*
+			if(turn == playerNumber && phase == "ephase")
+			{
+				cout<<"EPHASE OVER"<<endl;
+				phase = "b2phase";
+				to_player["start"]=true;
+				to_player["phase"]=phase;
+				proceedPlayer = 0;
+			}
+		*/
+			//to_player["phase"]=phase;
+			if(phase=="ephase"){cout<<"IN EPHASE"<<endl;}
+			if(phase=="b1phase"){cout<<"IN B1PHASE"<<endl;}
+			if(phase=="b2phase"){cout<<"IN B2PHASE"<<endl;}
+			//cout << "proceedPlayer: " + proceedPlayer <<endl;
+			
+			
+			if(turn == playerNumber && phase == "b2phase")
+			{
+			int winner = Dealer.compareHands(rankHand[1], rankHand[2], rankHand[3], rankHand[4], rankHand[5]);
+			cout << "WINNER:  Player "+to_string(winner)<<endl;
+			to_player["winner"]=winner;
+			}
 			//read json from player getting their action
                         nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
 		if(phase != "ephase")
@@ -487,7 +515,6 @@ private:
 				}
 				if(action == "folded")
 				{
-					
 					proceedPlayer+=1;
 					if (shared_from_this()->playerNo==1)
 						skip1=true;
@@ -540,36 +567,34 @@ private:
 			}
 		}
 		nlohmann::json to_player2;
+		
+		//send turn to all players
+		//if(phase=="ephase"){cout<<"IN EPHASE"<<endl;}
 		if(proceedPlayer == playerNumber && phase == "b1phase")
 		{	
 		cout<<"POT SETTLED"<<endl;
-		bid=0;
-		raise_by=0;
+		//bid=0;
+		//raise_by=0;
+		
 		lastPhase=true;
 		phase = "ephase";
 		proceedPlayer = 0;
+		turn =1;
 		}
 		
-			
-		
-		
-		//send turn to all players
-		if(phase=="ephase")
-			to_player2["exchangePhase"]=true;
-                to_player2["participant"]=shared_from_this()->playerNo;
+		if(phase != "ephase")
+		{
 		to_player2["action"]=action;
+		}
+		to_player2["phase"]=phase;
+                to_player2["participant"]=shared_from_this()->playerNo;
+		
 		to_player2["turn"]=turn;
 		to_player2["raise_by"]=raise_by;
 		to_player2["pot"]=pot;	
 		to_player2["bid"]=bid;
 		to_player2["balance"]=shared_from_this()->balance;
-		
-		if(turn == playerNumber && phase == "ephase")
-		{
-			phase = "b2phase";
-			proceedPlayer = 0;
-		}
-		
+		//if(phase == "ephase") turn=0;
                 string t=to_player2.dump();
                 chat_message sending;
                 if (t.size() < chat_message::max_body_length)
