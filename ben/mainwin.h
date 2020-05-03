@@ -49,7 +49,7 @@ class Mainwin : public Gtk::Window {
 	void activateExchange(int);
 	void startRound();
 	void toGui(std::string, int, int, int, int);
-	void updateCallRaiseButtons(int, int);
+	void updateCallRaiseButtons(int,int, int);
 	void updateVals(int,int,int);
 	void hidePlayers(int);
         bool reset=false;

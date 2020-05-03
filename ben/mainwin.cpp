@@ -43,7 +43,7 @@ void Mainwin::toGui(std::string s, int participant, int balance, int pot, int va
 	updateReadyBoxes(participant);
 	}else if(s == "updateCallRaiseButtons")
 	{
-	updateCallRaiseButtons(balance, val);
+	updateCallRaiseButtons(participant, balance, val);
 	}else if(s == "updateVals")
 	{
 	updateVals(participant, balance, pot);
@@ -414,6 +414,7 @@ void Mainwin::on_bet_click() {
     }
     else to_dealer["action"] = "bet";
     c->balance=c->balance-sp;
+    c->put=sp;
     to_dealer["bid"] = sp;
     //to_dealer["balance"]=c->balance;
     std::string t = to_dealer.dump();
@@ -434,13 +435,8 @@ void Mainwin::on_call_click() {
     calling->show();
     
 
-    std::cout << "Player Called $" + std::to_string(TESTVAL) + "!"<< std::endl;
+    std::cout << "Player Called!"<< std::endl;
     //balance1.set_text("\n$" + std::to_string(balance));
-
-    
-    potVal = potVal + TESTVAL;
-    potLabel.set_text("\nPOT: $" +std::to_string(potVal));
-	
     //send dealer player called, amount called, player's balance and pot value after calling 
     chat_message msg;
     nlohmann::json to_dealer;
@@ -460,8 +456,7 @@ void Mainwin::on_raise_click() {
     int sp = HScale.get_value();
     //action1.set_text("\nRaised $" + std::to_string(sp));
 
-    std::cout << "Player Raised $" + std::to_string(sp) + "!"<< std::endl;
-    TESTVAL += sp;
+    std::cout << "Player Raised!"<< std::endl;
     std::string to_call_button = "$" + std::to_string(TESTVAL);
     call.set_label(to_call_button);
     Gtk::Image* calling = Gtk::manage(new Gtk::Image{"Icons/call.jpg"});
@@ -482,6 +477,8 @@ void Mainwin::on_raise_click() {
     }
     else to_dealer["action"] = "raised";
     to_dealer["raise_by"] = sp;
+    c->balance=c->balance-sp;
+    c->put+=sp;
     //to_dealer["balance"] = c->balance;
     //to_dealer["pot"];
     std::string t = to_dealer.dump();
@@ -535,13 +532,14 @@ void Mainwin::on_exchange_click(){
 	c->hand[4]=c->ehand[4];
     }
     nlohmann::json to_dealer;
+    to_dealer["action"] = "exchanged";
     to_dealer["gimmieCards"] = "please";
     to_dealer["hand["+ to_string(c->playerNo) +"][0]"]=c->hand[0];
     to_dealer["hand["+ to_string(c->playerNo) +"][1]"]=c->hand[1];
     to_dealer["hand["+ to_string(c->playerNo) +"][2]"]=c->hand[2];
     to_dealer["hand["+ to_string(c->playerNo) +"][3]"]=c->hand[3];
     to_dealer["hand["+ to_string(c->playerNo) +"][4]"]=c->hand[4];
-    to_dealer["action"] = "exchanged";
+    
     
     chat_message msg;
     std::string t = to_dealer.dump();
@@ -551,6 +549,7 @@ void Mainwin::on_exchange_click(){
     assert ( c );
     c->write(msg);
     cout<<"Sending cards back to server..."<<endl;
+	
     RB1.set_active(false);
     RB2.set_active(false);
     RB3.set_active(false);
@@ -591,7 +590,6 @@ void Mainwin::on_ready_click()
        assert ( c );
        c->write(msg);
 }
-
 void Mainwin::shiftIndicator(int participant){
     //if (TESTTURN>=1)
 	//TESTTURN = c->turn-1;
@@ -605,9 +603,6 @@ void Mainwin::shiftIndicator(int participant){
     //if (TESTTURN == 5) TESTTURN = 0;
 		
 }
-
-
-
 void Mainwin::updateButton(int balance)
 {
      HScale.set_range(5, balance);
@@ -615,7 +610,6 @@ void Mainwin::updateButton(int balance)
      fold.set_sensitive(true);
      check.set_sensitive(true);
      bet.set_sensitive(true);
-     
 }
 
 void Mainwin::grayOutButton()
@@ -930,17 +924,31 @@ void Mainwin::startRound()
 	    showCards();
 }
 
-void Mainwin::updateCallRaiseButtons(int balance, int bid){
+void Mainwin::updateCallRaiseButtons(int raise_by,int balance, int bid){
 
     check.hide();
     bet.hide();
     playHbox.pack_start(call ,Gtk::PACK_END, 0);
     playHbox.pack_start(raise ,Gtk::PACK_END, 0);
     HScale.set_value(5);
-    call.set_label("$"+to_string(bid));
+	/*
+    if(c->put == 0)
+    {
+    c->put+=bid;
+    c->balance-=bid;
+    }
+    else
+    {
+    c->put+=raise_by;
+    c->balance-=raise_by;
+    }
+	*/
+    if(c->put != 0){call.set_label("$"+to_string(bid-c->put)); cout<<"AGAIN FOUND"<<endl;}
+    else call.set_label("$"+to_string(bid));
     HScale.set_range(5, balance-bid);
-    std::string to_bet_button = "$" + std::to_string(bid);
-    std::string to_raise_button = "$" + std::to_string(bid);
+    int sp = HScale.get_value();
+    std::string to_bet_button = "$" + std::to_string(sp);
+    std::string to_raise_button = "$" + std::to_string(sp);
     if (balance-bid <= 0)
     {
         to_bet_button = "ALL IN $" + std::to_string(bid) + "!";
@@ -1035,7 +1043,6 @@ void Mainwin::showCards()
 }
 void Mainwin::activateExchange(int turn)
 {
-	cout<< "activateExchange:" +to_string(turn) + " " + to_string(c->playerNo);
 	if (turn==1 && c->playerNo==1)
 	{
 	exchange.set_sensitive(true);

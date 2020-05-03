@@ -113,19 +113,14 @@ typedef std::deque<chat_message> chat_message_queue;
                         turn = from_dealer["turn"];
                 if (from_dealer["uuid"].empty() == false)
                         uuid = from_dealer["uuid"];
-		if(from_dealer["phase"] == "b2phase" && !newRound) 
-		{
-			cout<<"new round set"<<endl;
-			newRound = true;
-		}
+		//if (from_dealer["bid"].empty() == false)
+                        //bid = from_dealer["bid"];
+		
 		if(from_dealer["start"].empty()==false && start)
 		{
-		cout<<"STARTTTTT"<<endl;
-			if(newRound)
-			{
+			cout<<"ACCESS START 1"<<endl;
 			win->toGui("startRound",0, 0,0,0);
-			newRound = false;
-			}
+			start = false;
 		}
 		if (from_dealer["size"].empty()==false)
 		{
@@ -138,7 +133,6 @@ typedef std::deque<chat_message> chat_message_queue;
 		{
 				win->toGui("updateReadyBoxes",from_dealer["participant"], 0,0,0);
 		}
-		
 		if (from_dealer["hand["+ to_string(playerNo) +"][0]"].empty() == false)
 			hand[0] = from_dealer["hand["+ to_string(playerNo) +"][0]"];
 		if (from_dealer["hand["+ to_string(playerNo) +"][1]"].empty() == false)
@@ -204,18 +198,22 @@ typedef std::deque<chat_message> chat_message_queue;
 				{
 				win->toGui("updateButton",0, from_dealer["balance"],0,0);
 				}
-				else
+				else if(from_dealer["phase"].empty() == false && from_dealer["phase"] == "b1phase")
 				{
-				win->toGui("updateCallRaiseButtons",0, from_dealer["balance"],0,from_dealer["bid"]);
+				win->toGui("updateCallRaiseButtons",from_dealer["raise_by"], from_dealer["balance"],0,from_dealer["bid"]);
 				}
 			}
 			if(from_dealer["phase"] == "ephase") 
 			{
 				cout<<"\nRequesting cards to exchange..."<<endl;
 				win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
+				if(from_dealer["start"].empty() == false){win->toGui("startRound",0, 0,0,0); cout<<"ACCESS START 2"<<endl;}
 				if(!isFold)win->toGui("activateExchange",0,0,0,turn);
 			}
-			
+			if(from_dealer["phase"] == "b2phase") 
+			{
+				if(from_dealer["start"].empty() == false)win->toGui("startRound",0, 0,0,0);
+			}
 			win->toGui("shift",turn, 0,0,0);
 		}
 		std::cout << "\n";
