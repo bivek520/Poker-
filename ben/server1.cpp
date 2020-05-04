@@ -48,7 +48,7 @@ public:
     //int turn;
     int playerNo;
     bool ready = false;
-    int balance = 195;
+    int balance = 200;
     int put=0;
     int skipStatus = false;
     string actionTaken;
@@ -74,6 +74,7 @@ bool lastPhase = false;
 int proceedPlayer = 0;
 int winner;
 bool gameOver = false;
+int skipPlayers=0;
 string phase = "b1phase";
 class poker_table
 {
@@ -348,7 +349,12 @@ private:
 	     		to_player["participant"]=shared_from_this()->playerNo;
 			to_player["ready"]=true;
 			to_player["pot"]=pot;
+			if(shared_from_this()->balance >= 5)
+			{
+			shared_from_this()->balance-=5;
+			pot+=5;
 			to_player["balance"]=shared_from_this()->balance;
+			}
 			to_player["size"] = totalPlayers;
                         string t=to_player.dump();
                         chat_message sending;
@@ -366,7 +372,8 @@ private:
 			cout<<"cant start game"<<endl;
 			nlohmann::json to_player1;
 			to_player1["start"]=false;
-			pot=(playerNumber) * 5;
+			//shared_from_this()->balance-=5;
+			//pot=playerNumber+=5;
 			to_player1["pot"]=pot;
 			to_player1["balance"]=shared_from_this()->balance;
                         string t=to_player1.dump();
@@ -406,29 +413,29 @@ private:
 		else
 		{
 			nlohmann::json to_player;
-			
-			
-			//if (turn>= (room_.getSize()+1))
-				//turn=1;
 			/*
-			if(turn == playerNumber && phase == "ephase")
+			if(phase == "startround")
 			{
-			cout<<"EPHASE OVER"<<endl;
-			phase = "b2phase";
-			to_player["start"]=true;
-			to_player["phase"]=phase;
-			proceedPlayer = 0;
-			}
-			*/
-			/*
-			if(proceedPlayer == 0 && phase == "ephase")
-			{
-			turn=0;
-	
-	
+				while(turn < playerNumber+1)
+				ship1 = false;
+				ship2 = false;
+				ship3 = false;
+				ship4 = false;
+				ship5 = false;
+				if (shared_from_this()->playerNo==1)
+					
+				if (shared_from_this()->playerNo==2)
+				        
+				if (shared_from_this()->playerNo==3)
+				        
+				if (shared_from_this()->playerNo==4)
+				        
+				if (shared_from_this()->playerNo==5)
+                                
 			}
 			*/
 			turn++;
+			if (turn>=(room_.getSize()+1))turn=1;
 			if (skip1==true && turn==1)
 			       {proceedPlayer+=1;turn++;}
 			if (skip2==true && turn==2)                
@@ -439,32 +446,26 @@ private:
                                {proceedPlayer+=1;turn++;}
 			if (skip5==true && turn==5)                
                                {proceedPlayer+=1;turn++;}
-			
-			if (turn>=(room_.getSize()+1))turn=1;
-	
 /*
-			if(turn == playerNumber && phase == "ephase")
-			{
-				cout<<"EPHASE OVER"<<endl;
-				phase = "b2phase";
-				to_player["start"]=true;
-				to_player["phase"]=phase;
-				proceedPlayer = 0;
-			}
-		*/
-			//to_player["phase"]=phase;
-			/*
-			if(phase=="ephase"){cout<<"IN EPHASE"<<endl;}
-			if(phase=="b1phase"){cout<<"IN B1PHASE"<<endl;}
-			if(phase=="b2phase"){cout<<"IN B2PHASE"<<endl;}
-			//cout << "proceedPlayer: " + proceedPlayer <<endl;
+			if (shared_from_this()->balance==0 && turn==1)
+			       {proceedPlayer+=1;turn++;}
+			if (shared_from_this()->balance==0 && turn==2)                
+                               {proceedPlayer+=1;turn++;}
+			if (shared_from_this()->balance==0 && turn==3)                
+                               {proceedPlayer+=1;turn++;}
+			if (shared_from_this()->balance==0 && turn==4)                
+                               {proceedPlayer+=1;turn++;}
+			if (shared_from_this()->balance==0 && turn==5)                
+                               {proceedPlayer+=1;turn++;}
 			*/
 			
 			
 			//read json from player getting their action
                         nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
+		
 		if(phase != "ephase")
 		{
+			
 			if(from_player["action"].empty()==false)
 				shared_from_this()->actionTaken = from_player["action"];
 		        if (from_player["action"].empty()==false)
@@ -472,7 +473,7 @@ private:
 				action = from_player["action"]; 
 				if(action == "bet")
 				{
-				proceedPlayer=1;
+				proceedPlayer=1+skipPlayers;
 				bid = from_player["bid"];
 				shared_from_this()->put=bid;
 				pot+=shared_from_this()->put;
@@ -481,7 +482,7 @@ private:
 				}
 				if(action == "raised")
 				{
-				proceedPlayer=1;
+				proceedPlayer=1+skipPlayers;
 				raise_by = from_player["raise_by"];
 				cout << "pot = " <<pot<<endl;
 				bid+=raise_by;
@@ -509,7 +510,8 @@ private:
 				}
 				if(action == "allin")
 				{
-					proceedPlayer=1;
+					proceedPlayer=1+skipPlayers;
+					skipPlayers+=1;
 					if(from_player["raise_by"].empty() == false)
 					{
 						raise_by = from_player["raise_by"];
@@ -527,9 +529,11 @@ private:
 						cout << "pot = " <<pot<<endl;
 						shared_from_this()->balance-=shared_from_this()->put;
 					}
+					
 				}
 				if(action == "folded")
 				{
+					skipPlayers+=1;
 					proceedPlayer+=1;
 					if (shared_from_this()->playerNo==1)
 						skip1=true;
@@ -544,7 +548,11 @@ private:
 					shared_from_this()->skipStatus=true;
 				}
 				if(action == "checked") proceedPlayer+=1;
+				if (turn>=(room_.getSize()+1))turn=1;
+				
 			}
+		}
+		else{
 			if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][0]"].empty() == false)
 				hand[shared_from_this()->playerNo][0] = from_player["hand["+ to_string(playerNo) +"][0]"];
 			if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][1]"].empty() == false)
@@ -555,7 +563,7 @@ private:
 			        hand[shared_from_this()->playerNo][3] = from_player["hand["+ to_string(playerNo) +"][3]"];
 			if (from_player["hand["+ to_string(shared_from_this()->playerNo) +"][4]"].empty() == false)
 			        hand[shared_from_this()->playerNo][4] = from_player["hand["+ to_string(playerNo) +"][4]"];
-		 	if (from_player["gimmieCards"].empty() == false)
+			if (from_player["gimmieCards"].empty() == false)
 			{
 				cout<<"Sending cards to player..."<<endl;
 				
@@ -580,14 +588,13 @@ private:
 	                                room_.deliver(sending);
 	                        }
 			}
-		}
-		else{
 		        if (from_player["action"].empty()==false)
 			{
 			
 				to_player["turn"]=turn;
 				to_player["participant"]=shared_from_this()->playerNo;
 				to_player["balance"]=shared_from_this()->balance;
+				shared_from_this()->put=0;
 				action = from_player["action"];
 				cout<<"RECEIVED EXCHANGE: " + action<<endl;
 				if(action == "exchanged")
@@ -598,11 +605,21 @@ private:
 		}
 		nlohmann::json to_player2;
 		
+		cout<<"PROCEED: " + to_string(proceedPlayer)<<endl;
 		//send turn to all players
 		//if(phase=="ephase"){cout<<"IN EPHASE"<<endl;}
-		
-		
-		
+		/*
+		if (shared_from_this()->balance==0 && turn==1)
+		       {proceedPlayer+=1;turn++;}
+		if (shared_from_this()->balance==0 && turn==2)                
+                       {proceedPlayer+=1;turn++;}
+		if (shared_from_this()->balance==0 && turn==3)                
+                       {proceedPlayer+=1;turn++;}
+		if (shared_from_this()->balance==0 && turn==4)                
+                       {proceedPlayer+=1;turn++;}
+		if (shared_from_this()->balance==0 && turn==5)                
+                       {proceedPlayer+=1;turn++;}
+		*/
 		to_player2["action"]=action;
                 to_player2["participant"]=shared_from_this()->playerNo;
 		
@@ -611,32 +628,55 @@ private:
 		to_player2["pot"]=pot;	
 		to_player2["bid"]=bid;
 		to_player2["balance"]=shared_from_this()->balance;
-		if(proceedPlayer == playerNumber && phase == "b2phase")
+		if(proceedPlayer >= playerNumber && phase == "b2phase")
 		{
 		cout<<"B2PHASE OVER"<<endl;
 		int winner = Dealer.compareHands(rankHand[1], rankHand[2], rankHand[3], rankHand[4], rankHand[5]);
 		cout << "WINNER:  Player "+to_string(winner)<<endl;
 		to_player2["winner"]=winner;
+		to_player2["participant"]=winner;
+		to_player2["balance"]=balance+=pot;
+		
 		proceedPlayer = 0;
 		}
-		if(proceedPlayer == playerNumber && phase == "ephase")
+		if(proceedPlayer >= playerNumber && phase == "ephase")
 		{
 		cout<<"EPHASE OVER"<<endl;
 		phase = "b2phase";
 		to_player2["start"]=true;
 		proceedPlayer = 0;
+		if (shared_from_this()->balance==0 && turn==1)
+		       {proceedPlayer+=1;turn++;}
+		if (shared_from_this()->balance==0 && turn==2)                
+                       {proceedPlayer+=1;turn++;}
+		if (shared_from_this()->balance==0 && turn==3)                
+                       {proceedPlayer+=1;turn++;}
+		if (shared_from_this()->balance==0 && turn==4)                
+                       {proceedPlayer+=1;turn++;}
+		if (shared_from_this()->balance==0 && turn==5)                
+                       {proceedPlayer+=1;turn++;}
 		}
-		if(proceedPlayer == playerNumber && phase == "b1phase")
+		if(proceedPlayer >= playerNumber && phase == "b1phase")
 		{	
 		cout<<"POT SETTLED"<<endl;
-		//bid=0;
-		//raise_by=0;
+		bid=0;
+		raise_by=0;
 		
 		lastPhase=true;
 		phase = "ephase";
 		to_player2["start"]=true;
 		proceedPlayer = 0;
 		turn =1;
+		if (skip1==true && turn==1)
+		       {proceedPlayer+=1;turn++;}
+		if (skip2==true && turn==2)                
+                       {proceedPlayer+=1;turn++;}
+		if (skip3==true && turn==3)                
+                       {proceedPlayer+=1;turn++;}
+		if (skip4==true && turn==4)                
+                       {proceedPlayer+=1;turn++;}
+		if (skip5==true && turn==5)                
+                       {proceedPlayer+=1;turn++;}
 		}
 		
 		to_player2["turn"]=turn;

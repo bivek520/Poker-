@@ -155,7 +155,7 @@ int dealer::organizeAndRank(int * hand, int * rankHand)
 	{
 		if(freq1 == 2 || freq2 == 2)//full house
 		{
-			if(valueHand[2] == num1 && valueHand[4] == num1)//check middle (three of a kind) and see if it's at the front. ie check for swap
+			if(valueHand[2] == num2 && valueHand[4] == num2)//check middle (three of a kind) and see if it's at the front. ie check for swap
 			{
 			temp = hand[0];
 			hand[0] = hand[4];

@@ -71,12 +71,6 @@ class Mainwin : public Gtk::Window {
 	friend class chat_client;
 
     private:
-	int bal1=195;
-	int bal2=195;
-	int bal3=195;
-	int bal4=195; 
-	int bal5=195;
-	int potVal = 200;
         Gtk::Label p1,p2,p3,p4,p5;                  // Display player name
         Gtk::Label action1, action2, action3, action4, action5;                   // Action message display
 	Gtk::Label balance1, balance2, balance3, balance4, balance5;		//Player's current balance, Available amount 

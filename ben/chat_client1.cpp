@@ -113,12 +113,13 @@ typedef std::deque<chat_message> chat_message_queue;
                         turn = from_dealer["turn"];
                 if (from_dealer["uuid"].empty() == false)
                         uuid = from_dealer["uuid"];
+		//if (from_dealer["balance"].empty()==false)
+                       // balance = from_dealer["balance"];
 		//if (from_dealer["bid"].empty() == false)
                         //bid = from_dealer["bid"];
 		
 		if(from_dealer["start"].empty()==false && start)
 		{
-			cout<<"ACCESS START 1"<<endl;
 			win->toGui("startRound",0, 0,0,0);
 			start = false;
 		}
@@ -177,9 +178,9 @@ typedef std::deque<chat_message> chat_message_queue;
 			}if(from_dealer["action"]=="allin")
 			{
 				if(from_dealer["raise_by"].empty() == false)
-                                win->toGui("updateAllinAction",from_dealer["participant"], 0, 0, from_dealer["raise_by"]);
+                                win->toGui("updateAllInAction",from_dealer["participant"], 0, 0, from_dealer["raise_by"]);
 				if(from_dealer["bid"].empty() == false)
-				win->toGui("updateAllinAction",from_dealer["participant"], 0, 0, from_dealer["bid"]);
+				win->toGui("updateAllInAction",from_dealer["participant"], 0, 0, from_dealer["bid"]);
 			} 
 		}
 		
@@ -202,16 +203,22 @@ typedef std::deque<chat_message> chat_message_queue;
 				{
 				win->toGui("updateCallRaiseButtons",from_dealer["raise_by"], from_dealer["balance"],0,from_dealer["bid"]);
 				}
+				else if(from_dealer["phase"].empty() == false && from_dealer["phase"] == "b2phase")
+				{
+				win->toGui("updateCallRaiseButtons",from_dealer["raise_by"], from_dealer["balance"],0,from_dealer["bid"]);
+				}
 			}
 			if(from_dealer["phase"] == "ephase") 
 			{
 				cout<<"\nRequesting cards to exchange..."<<endl;
 				win->toGui("grayOutButton",from_dealer["participant"],0,0,0);
-				if(from_dealer["start"].empty() == false){win->toGui("startRound",0, 0,0,0); cout<<"ACCESS START 2"<<endl;}
+				if(from_dealer["start"].empty() == false)win->toGui("startRound",0, 0,0,0);
 				if(!isFold)win->toGui("activateExchange",0,0,0,turn);
 			}
 			if(from_dealer["phase"] == "b2phase") 
 			{
+				win->showCards();
+				
 				if(from_dealer["start"].empty() == false)win->toGui("startRound",0, 0,0,0);
 			}
 			win->toGui("shift",turn, 0,0,0);

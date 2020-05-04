@@ -138,16 +138,11 @@ Mainwin::Mainwin(chat_client *c_)
     m_Grid.attach(action4, 3, 1, 1, 1);
     m_Grid.attach(action5, 4, 1, 1, 1);
     
-    balance1.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(bal1) + "</span>");
-    balance2.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(bal2) + "</span>");
-    balance3.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(bal3) + "</span>");
-    balance4.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(bal4) + "</span>");
-    balance5.set_markup("<span size='14000' color ='black' >$  "
-                        +  std::to_string(bal5) + "</span>");
+    balance1.set_markup("<span size='14000' color ='black' >$195  </span>");
+    balance2.set_markup("<span size='14000' color ='black' >$195  </span>");
+    balance3.set_markup("<span size='14000' color ='black' >$195  </span>");
+    balance4.set_markup("<span size='14000' color ='black' >$195  </span>");
+    balance5.set_markup("<span size='14000' color ='black' >$195  </span>");
     
     balance1.override_background_color(Gdk::RGBA{"white"});
     balance2.override_background_color(Gdk::RGBA{"white"});
@@ -301,8 +296,12 @@ Mainwin::Mainwin(chat_client *c_)
     vbox->pack_start(playHbox);
     playHbox.pack_start(fold ,Gtk::PACK_END, 0);
     playHbox.pack_start(check ,Gtk::PACK_END, 0);
+    playHbox.pack_start(call ,Gtk::PACK_END, 0);
     playHbox.pack_start(bet ,Gtk::PACK_END, 0);
+ 
     
+    playHbox.pack_start(raise ,Gtk::PACK_END, 0);
+   
     fold.set_size_request(30,30);
     fold.show();
     Gtk::Image* folding = Gtk::manage(new Gtk::Image{"Icons/fold.jpg"});
@@ -319,8 +318,23 @@ Mainwin::Mainwin(chat_client *c_)
     bet.set_image(*beting);
     beting->show();
     
+    
+    
+
     call.set_size_request(30,30);
+    Gtk::Image* calling = Gtk::manage(new Gtk::Image{"Icons/call.jpg"});
+    call.set_image(*calling);
+    calling->show();
+    call.signal_clicked().connect([this] {this->on_call_click();});
+    
+    
     raise.set_size_request(30,30);
+    Gtk::Image* raising = Gtk::manage(new Gtk::Image{"Icons/raise.jpg"});
+    raise.set_image(*raising);
+    raising->show();
+    raise.signal_clicked().connect([this] {this->on_raise_click();});
+    
+
 
     fold.signal_clicked().connect([this] {this->on_fold_click();});
     check.signal_clicked().connect([this] {this->on_check_click();});
@@ -346,7 +360,8 @@ Mainwin::Mainwin(chat_client *c_)
     vbox->show_all();
     
     show_all_children();
-    
+raise.hide();
+call.hide();
     set_title(APP_TITLE);    //Application Title
     set_default_size(800, 600);   //default size of application window
     m_Grid.set_column_spacing(20);   
@@ -408,12 +423,12 @@ void Mainwin::on_bet_click() {
     //send dealer player bet, amount bet, player's balance and pot value after betting 
     chat_message msg;
     nlohmann::json to_dealer;
-    if(sp == c->max)
+    if(sp == c->balance)
     {
     to_dealer["action"] = "allin";
     }
     else to_dealer["action"] = "bet";
-    c->balance=c->balance-sp;
+    //c->balance=c->balance-sp;
     c->put=sp;
     to_dealer["bid"] = sp;
     //to_dealer["balance"]=c->balance;
@@ -470,14 +485,13 @@ void Mainwin::on_raise_click() {
     //send dealer player raised, by how much, total amount after raised, player's balance and pot value after raising 
     chat_message msg;
     nlohmann::json to_dealer;
-    
-    if(sp == c->max)
+    if(sp < 5)
     {
     to_dealer["action"] = "allin";
     }
     else to_dealer["action"] = "raised";
     to_dealer["raise_by"] = sp;
-    c->balance=c->balance-sp;
+    //c->balance=c->balance-sp;
     c->put+=sp;
     //to_dealer["balance"] = c->balance;
     //to_dealer["pot"];
@@ -493,7 +507,7 @@ void Mainwin::on_HScale_value_changed() {
     int sp = HScale.get_value();
     std::string to_bet_button = "$" + std::to_string(sp);
     std::string to_raise_button = "$" + std::to_string(sp);
-    if (sp == c->max)
+    if (sp >= c->balance)
     {
         to_bet_button = "ALL IN $" + std::to_string(sp) + "!";
         to_raise_button = "ALL IN $" + std::to_string(sp) + "!";
@@ -549,7 +563,7 @@ void Mainwin::on_exchange_click(){
     assert ( c );
     c->write(msg);
     cout<<"Sending cards back to server..."<<endl;
-	
+    c->put = 0;
     RB1.set_active(false);
     RB2.set_active(false);
     RB3.set_active(false);
@@ -605,11 +619,17 @@ void Mainwin::shiftIndicator(int participant){
 }
 void Mainwin::updateButton(int balance)
 {
-     HScale.set_range(5, balance);
-     c->max=balance;
+     HScale.set_range(5, c->balance);
      fold.set_sensitive(true);
      check.set_sensitive(true);
      bet.set_sensitive(true);
+     check.show();
+     bet.show();
+
+     call.set_sensitive(false);
+     raise.set_sensitive(false);
+     call.hide();
+     raise.hide();
 }
 
 void Mainwin::grayOutButton()
@@ -875,14 +895,14 @@ void Mainwin::startRound()
 {
     ready.hide();
     exchange.show();
-    exchange.set_sensitive(false); cout<<"E1"<<endl;
+    exchange.set_sensitive(false);
     action1.set_markup("<span size='16000' color ='black' >Waiting </span>");
     action2.set_markup("<span size='16000' color ='black' >Waiting </span>");
     action3.set_markup("<span size='16000' color ='black' >Waiting </span>");
     action4.set_markup("<span size='16000' color ='black' >Waiting </span>");
     action5.set_markup("<span size='16000' color ='black' >Waiting </span>");
     
-    action1.override_background_color(Gdk::RGBA{"white"});cout<<"E1"<<endl;
+    action1.override_background_color(Gdk::RGBA{"white"});
     action2.override_background_color(Gdk::RGBA{"white"});
     action3.override_background_color(Gdk::RGBA{"white"});
     action4.override_background_color(Gdk::RGBA{"white"});
@@ -903,7 +923,7 @@ void Mainwin::startRound()
 
                 balance4.set_markup("<span size='14000' color ='black' >N/A </span>");
         }
-        if (c->size==2)cout<<"E2"<<endl;
+        if (c->size==2)
         {
                 action5.set_markup("<span size='16000' color ='black' > N/A </span>");
 
@@ -919,58 +939,42 @@ void Mainwin::startRound()
 	    action1.override_background_color(Gdk::RGBA{"white"});
 	    action2.override_background_color(Gdk::RGBA{"white"});
 	    action3.override_background_color(Gdk::RGBA{"white"});
-	    action4.override_background_color(Gdk::RGBA{"white"});cout<<"E3"<<endl;
+	    action4.override_background_color(Gdk::RGBA{"white"});
 	    action5.override_background_color(Gdk::RGBA{"white"});
-	    showCards();cout<<"E4"<<endl;
+	    showCards();
 }
 
 void Mainwin::updateCallRaiseButtons(int raise_by,int balance, int bid){
-
     check.hide();
     bet.hide();
-    playHbox.pack_start(call ,Gtk::PACK_END, 0);
-    playHbox.pack_start(raise ,Gtk::PACK_END, 0);
+	call.show();
+	raise.show();
+
     HScale.set_value(5);
-	/*
-    if(c->put == 0)
-    {
-    c->put+=bid;
-    c->balance-=bid;
-    }
-    else
-    {
-    c->put+=raise_by;
-    c->balance-=raise_by;
-    }
-	*/
-    if(c->put != 0){call.set_label("$"+to_string(bid-c->put)); cout<<"AGAIN FOUND"<<endl;}
+
+    if(c->put != 0){call.set_label("$"+to_string(bid-c->put));}
     else call.set_label("$"+to_string(bid));
-    HScale.set_range(5, balance-bid);
+    HScale.set_range(5, c->balance-bid);
     int sp = HScale.get_value();
     std::string to_bet_button = "$" + std::to_string(sp);
     std::string to_raise_button = "$" + std::to_string(sp);
-    if (balance-bid <= 0)
+    if (c->balance-bid <= 0)
     {
         to_bet_button = "ALL IN $" + std::to_string(bid) + "!";
         to_raise_button = "ALL IN $" + std::to_string(bid) + "!";
+	raise.set_sensitive(false);
     }
+    else{
+    
+    raise.set_sensitive(true);
     raise.set_label(to_raise_button);
     bet.set_label(to_bet_button);
-
-    Gtk::Image* calling = Gtk::manage(new Gtk::Image{"Icons/call.jpg"});
-    call.set_image(*calling);
-    calling->show();
-    call.signal_clicked().connect([this] {this->on_call_click();});
-    call.show();
+}
     
-    Gtk::Image* raising = Gtk::manage(new Gtk::Image{"Icons/raise.jpg"});
-    raise.set_image(*raising);
-    raising->show();
-    raise.signal_clicked().connect([this] {this->on_raise_click();});
-    raise.show();
-    fold.set_sensitive(true);
+
     call.set_sensitive(true);
-    raise.set_sensitive(true);
+    fold.set_sensitive(true);
+    
 }
 void Mainwin::updateVals(int participant,int balance,int pot)
 {
@@ -1000,6 +1004,7 @@ void Mainwin::updateVals(int participant,int balance,int pot)
 	balance5.set_markup("<span size='14000' color ='black' >$  "
                         +  std::to_string(balance) + "</span>");
 	}
+	if(c->playerNo==participant)c->balance=balance;
 }
 
 void Mainwin::hidePlayers(int size)
