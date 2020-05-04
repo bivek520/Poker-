@@ -186,7 +186,7 @@ typedef std::deque<chat_message> chat_message_queue;
 		
 		if(turn>0 && playerNo>0)
 		{
-			win->showCards();
+			//win->showCards();
 			win->toGui("updateVals",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
 			win->toGui("grayOutButton",0, 0,0,0);
 			if (from_dealer["winner"].empty()==false)

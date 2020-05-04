@@ -180,13 +180,14 @@ typedef std::deque<chat_message> chat_message_queue;
 				if(from_dealer["raise_by"].empty() == false)
                                 win->toGui("updateAllInAction",from_dealer["participant"], 0, 0, from_dealer["raise_by"]);
 				if(from_dealer["bid"].empty() == false)
-				win->toGui("updateAlInAction",from_dealer["participant"], 0, 0, from_dealer["bid"]);
+				win->toGui("updateAllInAction",from_dealer["participant"], 0, 0, from_dealer["bid"]);
 			} 
 		}
 		
 		if(turn>0 && playerNo>0)
 		{
-			win->showCards();
+			//win->showCards();
+			g_source_remove();
 			win->toGui("updateVals",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
 			win->toGui("grayOutButton",0, 0,0,0);
 			if (from_dealer["winner"].empty()==false)

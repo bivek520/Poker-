@@ -339,32 +339,32 @@ Mainwin::Mainwin(chat_client *c_)
     fold.signal_clicked().connect([this] {this->on_fold_click();});
     check.signal_clicked().connect([this] {this->on_check_click();});
     bet.signal_clicked().connect([this] {this->on_bet_click();});
-    
+
     bet.show();
     check.show();
     
     //playHbox.pack_start(sep4);
     playHbox.pack_end(HScale);
-    
+    cout<<"EEEEEEEEEEEEEEE1"<<endl;
     HScale.set_increments(1, 1);
     HScale.signal_value_changed().connect([this] {this->on_HScale_value_changed();});
     //vbox->pack_start(image21);
     image22.set_text(" \n");
-    vbox->pack_start(image22);
+    vbox->pack_start(image22);cout<<"EEEEEEEEEEEEEEE2"<<endl;
     //RB1.set_active();
     //RB2.set_active();
     //nhbox.show_all();
     //hbox.show_all();
-    add(hbox);
-    
+    //add(hbox);cout<<"EEEEEEEEEEEEEEE3"<<endl;
+    cout<<"EEEEEEEEEEEEEEE4"<<endl;
     vbox->show_all();
-    
+
     show_all_children();
 raise.hide();
 call.hide();
     set_title(APP_TITLE);    //Application Title
     set_default_size(800, 600);   //default size of application window
-    m_Grid.set_column_spacing(20);   
+    m_Grid.set_column_spacing(20);  
 }
 
 Mainwin::~Mainwin() { }
@@ -963,6 +963,7 @@ void Mainwin::updateCallRaiseButtons(int raise_by,int balance, int bid){
         to_bet_button = "ALL IN $" + std::to_string(bid) + "!";
         to_raise_button = "ALL IN $" + std::to_string(bid) + "!";
 	raise.set_sensitive(false);
+	call.set_label(to_bet_button);
     }
     else{
     

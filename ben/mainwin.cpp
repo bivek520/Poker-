@@ -339,32 +339,27 @@ Mainwin::Mainwin(chat_client *c_)
     fold.signal_clicked().connect([this] {this->on_fold_click();});
     check.signal_clicked().connect([this] {this->on_check_click();});
     bet.signal_clicked().connect([this] {this->on_bet_click();});
-    
+
     bet.show();
     check.show();
     
     //playHbox.pack_start(sep4);
     playHbox.pack_end(HScale);
-    
+
     HScale.set_increments(1, 1);
     HScale.signal_value_changed().connect([this] {this->on_HScale_value_changed();});
     //vbox->pack_start(image21);
     image22.set_text(" \n");
     vbox->pack_start(image22);
-    //RB1.set_active();
-    //RB2.set_active();
-    //nhbox.show_all();
-    //hbox.show_all();
-    add(hbox);
-    
+
     vbox->show_all();
-    
+
     show_all_children();
 raise.hide();
 call.hide();
     set_title(APP_TITLE);    //Application Title
     set_default_size(800, 600);   //default size of application window
-    m_Grid.set_column_spacing(20);   
+    m_Grid.set_column_spacing(20);  
 }
 
 Mainwin::~Mainwin() { }
