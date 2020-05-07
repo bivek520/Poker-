@@ -70,7 +70,7 @@ bool skip2=false;
 bool skip3=false;
 bool skip4=false;
 bool skip5=false;
-bool lastPhase = false;
+bool winnerFound = false;
 int proceedPlayer = 0;
 int winner;
 bool gameOver = false;
@@ -413,27 +413,12 @@ private:
 		else
 		{
 			nlohmann::json to_player;
-			/*
-			if(phase == "startround")
+			if(winnerFound)
 			{
-				while(turn < playerNumber+1)
-				ship1 = false;
-				ship2 = false;
-				ship3 = false;
-				ship4 = false;
-				ship5 = false;
-				if (shared_from_this()->playerNo==1)
-					
-				if (shared_from_this()->playerNo==2)
-				        
-				if (shared_from_this()->playerNo==3)
-				        
-				if (shared_from_this()->playerNo==4)
-				        
-				if (shared_from_this()->playerNo==5)
-                                
+	
+	
+	
 			}
-			*/
 			turn++;
 			if (turn>=(room_.getSize()+1))turn=1;
 			if (skip1==true && turn==1)
@@ -636,8 +621,8 @@ private:
 		to_player2["winner"]=winner;
 		to_player2["participant"]=winner;
 		to_player2["balance"]=balance+=pot;
-		
 		proceedPlayer = 0;
+		winnerFound = true;
 		}
 		if(proceedPlayer >= playerNumber && phase == "ephase")
 		{
@@ -662,7 +647,6 @@ private:
 		bid=0;
 		raise_by=0;
 		
-		lastPhase=true;
 		phase = "ephase";
 		to_player2["start"]=true;
 		proceedPlayer = 0;

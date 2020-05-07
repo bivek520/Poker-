@@ -345,18 +345,13 @@ Mainwin::Mainwin(chat_client *c_)
     
     //playHbox.pack_start(sep4);
     playHbox.pack_end(HScale);
-    cout<<"EEEEEEEEEEEEEEE1"<<endl;
+
     HScale.set_increments(1, 1);
     HScale.signal_value_changed().connect([this] {this->on_HScale_value_changed();});
     //vbox->pack_start(image21);
     image22.set_text(" \n");
-    vbox->pack_start(image22);cout<<"EEEEEEEEEEEEEEE2"<<endl;
-    //RB1.set_active();
-    //RB2.set_active();
-    //nhbox.show_all();
-    //hbox.show_all();
-    //add(hbox);cout<<"EEEEEEEEEEEEEEE3"<<endl;
-    cout<<"EEEEEEEEEEEEEEE4"<<endl;
+    vbox->pack_start(image22);
+
     vbox->show_all();
 
     show_all_children();
@@ -575,6 +570,7 @@ void Mainwin::on_exchange_click(){
     RB4.set_sensitive(false);
     RB5.set_sensitive(false);
     exchange.set_sensitive(false);
+    c->showCards();
     
 }
 

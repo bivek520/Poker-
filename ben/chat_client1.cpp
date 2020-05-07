@@ -189,10 +189,7 @@ typedef std::deque<chat_message> chat_message_queue;
 			//win->showCards();
 			win->toGui("updateVals",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
 			win->toGui("grayOutButton",0, 0,0,0);
-			if (from_dealer["winner"].empty()==false)
-			{
-				win->displayWinner(from_dealer["winner"]);
-			}
+			
 			if (turn>0 && playerNo>0 && turn==playerNo && from_dealer["bid"].empty() == false)
 			{
 				if(from_dealer["bid"]==0)
@@ -217,9 +214,11 @@ typedef std::deque<chat_message> chat_message_queue;
 			}
 			if(from_dealer["phase"] == "b2phase") 
 			{
-				win->showCards();
-				
 				if(from_dealer["start"].empty() == false)win->toGui("startRound",0, 0,0,0);
+			}
+			if (from_dealer["winner"].empty()==false)
+			{
+				win->displayWinner(from_dealer["winner"]);
 			}
 			win->toGui("shift",turn, 0,0,0);
 		}

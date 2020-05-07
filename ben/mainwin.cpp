@@ -570,6 +570,7 @@ void Mainwin::on_exchange_click(){
     RB4.set_sensitive(false);
     RB5.set_sensitive(false);
     exchange.set_sensitive(false);
+    showCards();
     
 }
 
