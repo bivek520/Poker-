@@ -47,13 +47,15 @@ class Mainwin : public Gtk::Window {
 	void updateExchangeAction(int participant);
 	void showCards();
 	void activateExchange(int);
-	void startRound();
+	void startRound(int);
+	void bustOut(int);
+	void takeAni();
 	void toGui(std::string, int, int, int, int);
 	void updateCallRaiseButtons(int,int, int);
 	void updateVals(int,int,int);
 	void hidePlayers(int);
         bool reset=false;
-	void displayWinner(int);
+	void displayWinner(int, int);
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;
 	Gtk::HBox actionHbox,balanceHbox,publicCardHbox,indicatorHbox, potHbox,privateCardHbox,cardSelectionHbox,exchangeHbox,playHbox;

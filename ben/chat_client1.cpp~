@@ -182,17 +182,19 @@ typedef std::deque<chat_message> chat_message_queue;
 				if(from_dealer["bid"].empty() == false)
 				win->toGui("updateAllInAction",from_dealer["participant"], 0, 0, from_dealer["bid"]);
 			} 
+			if(from_dealer["action"]=="bustedOut")
+			{
+				if(balance <= 0)
+				win->toGui("bustOut",from_dealer["participant"],0,0,0);
+			}
 		}
 		
-		if(turn>0 && playerNo>0)
+		if(turn>0 && playerNo>0 && from_dealer["getAni"].empty())
 		{
 			//win->showCards();
 			win->toGui("updateVals",from_dealer["participant"], from_dealer["balance"],from_dealer["pot"],0);
 			win->toGui("grayOutButton",0, 0,0,0);
-			if (from_dealer["winner"].empty()==false)
-			{
-				win->displayWinner(from_dealer["winner"]);
-			}
+			
 			if (turn>0 && playerNo>0 && turn==playerNo && from_dealer["bid"].empty() == false)
 			{
 				if(from_dealer["bid"]==0)
@@ -219,8 +221,25 @@ typedef std::deque<chat_message> chat_message_queue;
 			{
 				if(from_dealer["start"].empty() == false)win->toGui("startRound",0, 0,0,0);
 			}
+			if (from_dealer["winner"].empty()==false)
+			{
+				
+				//win->toGui("updateVals",from_dealer["participant"], from_dealer["winnerBalance"],from_dealer["pot"],0);
+				win->displayWinner(from_dealer["winner"],from_dealer["pot"]);
+				//int tempPot = from_dealer["pot"];
+				//if(playerNo==from_dealer["winner"])balance+=tempPot;
+				if (from_dealer["getAni"].empty()==false)win->toGui("takeAni",0,0,0,0);
+				/*
+				if(balance < 5)
+				{
+					cout<<to_string(playerNo)+" BUSTED OUT"<<endl;
+					//win->toGui("bustOut",playerNumber,0,0,0);
+				}
+				*/
+			}
 			win->toGui("shift",turn, 0,0,0);
 		}
+		if(from_dealer["getAni"].empty() == false ){win->toGui("takeAni",0,0,0,0);win->toGui("startRound",0, 0,0,1);}
 		std::cout << "\n";
 		do_read_header();
             	}

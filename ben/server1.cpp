@@ -28,7 +28,7 @@ using asio::ip::tcp;
 dealer Dealer;
 //Dealer.createDeck();
 //vector<int>Deck = Dealer.getDeck();
-int card1, card2, card3, card4, card5, card6, card7, card8, card9, card10;;
+//int card1, card2, card3, card4, card5, card6, card7, card8, card9, card10;
 //int hand1[5], hand2[5], hand3[5], hand4[5], hand5[5];
 int hand[6][5];
 int ehand[6][5];
@@ -61,19 +61,21 @@ int turn=0;
 int playerNumber=0;
 int start;
 string action;
+int busted = 0;
 int pot = 0;
 int bid = 0;
 int raise_by = 0;
 int totalPlayers;
+int foldPlayers = 0;
 bool skip1=false;
 bool skip2=false;
 bool skip3=false;
 bool skip4=false;
 bool skip5=false;
-bool winnerFound = false;
+int allIn=0;
+
 int proceedPlayer = 0;
 int winner;
-bool gameOver = false;
 int skipPlayers=0;
 string phase = "b1phase";
 class poker_table
@@ -95,6 +97,7 @@ public:
         playerNum++;*/
 	participant->playerNo = playerNumber;
 	cout<< "***************" << participant->playerNo << "***************" << endl;
+/*
 	    card1 = Deck.back();
             Deck.pop_back();
 	    card2 = Deck.back();
@@ -115,6 +118,8 @@ public:
 	    Deck.pop_back();
             card10 = Deck.back();
 	    Deck.pop_back();
+
+		*/
 	    /*
 		hand1[0] =card1;
 		hand1[1] =card2;
@@ -123,30 +128,34 @@ public:
 		hand1[4] =card5;
 		*/
 		
-		hand[participant->playerNo][0] =card1;
-		hand[participant->playerNo][1] =card2;
-		hand[participant->playerNo][2] =card3;
-		hand[participant->playerNo][3] =card4;
-		hand[participant->playerNo][4] =card5;
 		
-		ehand[participant->playerNo][0] =card6;
-		ehand[participant->playerNo][1] =card7;
-		ehand[participant->playerNo][2] =card8;
-		ehand[participant->playerNo][3] =card9;
-		ehand[participant->playerNo][4] =card10;
 		
 	    boost::uuids::basic_random_generator<boost::mt19937> g;
             boost::uuids::uuid u=g();
 	    //Dealer.organizeAndRank(hand1,rankHand1);
-	    Dealer.organizeAndRank(hand[participant->playerNo],rankHand[participant->playerNo]);
+	    
             string playerID;
             stringstream ss;
             ss<<u;
             playerID=ss.str();
             participant->uuid = playerID;
 //            participant->turn = player_turn;
+		cout << "Player number " << participant->playerNo << "uuid is " << participant->uuid << endl;
+		cout << "cards are ";
+		for(int x = 0; x<5; x++)
+		{
+			hand[participant->playerNo][x] =Deck.back(); cout<<to_string(Deck.back())+" ";
+            Deck.pop_back();
+			ehand[participant->playerNo][x] =Deck.back();
+            Deck.pop_back();
+		}	
+		cout<<endl;
+		
+		Dealer.organizeAndRank(hand[participant->playerNo],rankHand[participant->playerNo]);
+	/*
             cout << "Player number " << participant->playerNo << "uuid is " << participant->uuid << endl;
 	    cout << "cards are "<< card1 <<", " << card2 <<", " << card3 <<", " << card4 << ", "<<card5<<endl;
+	*/
             participants_.insert(participant);
             
 	    //send client their uuid and turn
@@ -180,20 +189,16 @@ public:
         for (auto msg: recent_msgs_)                    //CSE3310 (server)  previous chat messages are sent to a client
         {
             participant->deliver(msg);
-            //cout<<"poker_table join() for loop"<<endl;
         }
-        //cout<<"poker_table join() done printing"<<endl;
     }
     
     void leave(player_ptr participant)
     {
-        //cout<<"poker_table leave()"<<endl;
-        
         participants_.erase(participant);
     }
     
     void deliver(const chat_message& msg)
-    {      //cout<<"poker_table deliver()"<<endl;
+    { 
         
         recent_msgs_.push_back(msg);
         while (recent_msgs_.size() > max_recent_msgs)
@@ -205,12 +210,8 @@ public:
             //cout<<"sending to all the clients"<<endl;
         }
     }
-    
-    
-    
     void deliver_to(const chat_message& msg,int deli_to)
-    {      //cout<<"poker_table deliver()"<<endl;
-        
+    {
         recent_msgs_.push_back(msg);
         while (recent_msgs_.size() > max_recent_msgs)
             recent_msgs_.pop_front();
@@ -220,7 +221,6 @@ public:
 
             if(participant->playerNo==deli_to)
                 participant->deliver(msg);
-            //cout<<"sending to individual clients"<<endl;
         }
     }
     void set_ready(bool status,int deli_to)
@@ -255,6 +255,7 @@ public:
     {
 	    return participants_.size();
     }
+    
 private:
 	vector<int>Deck;
     std::set<player_ptr> participants_;
@@ -413,14 +414,83 @@ private:
 		else
 		{
 			nlohmann::json to_player;
-			if(winnerFound)
+			nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
+			if (from_player["autoTurn"].empty()==false)
 			{
+				proceedPlayer = 0;
+				foldPlayers=0;
+				shared_from_this()->balance+=pot;
+				action="win";
+				pot = 0;
+				bid = 0;
+				raise_by = 0;
+				turn=0;
+				Dealer.createDeck();
+				phase = "b1phase";
+				to_player["getAni"] = " ";
+				vector<int> Deck = Dealer.getDeck();
+				for(int x = 0; x < playerNumber; x++)
+				{
+					for(int y = 0; y<5; y++)
+					{
+						hand[x][y] =Deck.back();
+				    		Deck.pop_back();
+						ehand[x][y] =Deck.back();
+				    		Deck.pop_back();
+					}
+					Dealer.organizeAndRank(hand[x],rankHand[x]);
+				}
+				
+				for(int x = 0; x < playerNumber; x++)
+				{
+					for(int y = 0; y<5; y++)
+					{
+					to_player["hand["+ to_string(x) +"]["+to_string(y)+"]"]=hand[x][y];
+					to_player["ehand["+ to_string(x) +"]["+to_string(y)+"]"]=ehand[x][y];
+					}
+				}
+				string t=to_player.dump();
+		                chat_message sending;
+		                if (t.size() < chat_message::max_body_length)
+		                {
+		                    memcpy( sending.body(), t.c_str(), t.size() );
+		                    sending.body_length(t.size());
+		                    sending.encode_header();
+		                    room_.deliver(sending);
+		                }
+					
+			}
+			if (from_player["ani"].empty()==false)
+			{
+				cout<<"ANI FROM "+ to_string(shared_from_this()->playerNo)<<endl;
+				turn=0;
+				int tempAni=from_player["ani"];
+				if(tempAni <= 0)
+				{
+				busted+=1;
 	
-	
-	
+				}
+				else
+				{
+				shared_from_this()->balance-=tempAni;
+				pot+=tempAni;
+				cout<<"POT: "+ to_string(pot)<<endl;
+				if(shared_from_this()->playerNo==1)
+				{skip1=false;busted-=1;}
+				if(shared_from_this()->playerNo==2)
+				{skip2=false;busted-=1;}
+				if(shared_from_this()->playerNo==3)
+				{skip3=false;busted-=1;}
+				if(shared_from_this()->playerNo==4)
+				{skip4=false;busted-=1;}
+				if(shared_from_this()->playerNo==5)
+				{skip5=false;busted-=1;}
+				}
+				
 			}
 			turn++;
-			if (turn>=(room_.getSize()+1))turn=1;
+			if(busted == playerNumber-1){cout<<"PLAYER "+to_string(winner)+" WINS THE TOURNAMENT."<<endl;}
+			if (turn>=(playerNumber+1))turn=1;
 			if (skip1==true && turn==1)
 			       {proceedPlayer+=1;turn++;}
 			if (skip2==true && turn==2)                
@@ -431,23 +501,10 @@ private:
                                {proceedPlayer+=1;turn++;}
 			if (skip5==true && turn==5)                
                                {proceedPlayer+=1;turn++;}
-/*
-			if (shared_from_this()->balance==0 && turn==1)
-			       {proceedPlayer+=1;turn++;}
-			if (shared_from_this()->balance==0 && turn==2)                
-                               {proceedPlayer+=1;turn++;}
-			if (shared_from_this()->balance==0 && turn==3)                
-                               {proceedPlayer+=1;turn++;}
-			if (shared_from_this()->balance==0 && turn==4)                
-                               {proceedPlayer+=1;turn++;}
-			if (shared_from_this()->balance==0 && turn==5)                
-                               {proceedPlayer+=1;turn++;}
-			*/
+			if (turn>=(playerNumber+1))turn=1;
+                        
 			
 			
-			//read json from player getting their action
-                        nlohmann::json from_player = nlohmann::json::parse(std::string(read_msg_.body()));
-		
 		if(phase != "ephase")
 		{
 			
@@ -477,7 +534,7 @@ private:
 				}
 				if(action == "called")
 				{
-				proceedPlayer+=1;
+					proceedPlayer+=1;
 					if(shared_from_this()->put == 0)
 					{
 					shared_from_this()->put+=bid;
@@ -490,11 +547,13 @@ private:
 					shared_from_this()->balance-=raise_by;
 					pot+=raise_by;
 					}
+					if(shared_from_this()->balance == 0)allIn+=1;
 				cout << "bid = " <<bid<<endl;
 				cout << "pot = " <<pot<<endl;
 				}
 				if(action == "allin")
 				{
+					allIn+=1;
 					proceedPlayer=1+skipPlayers;
 					skipPlayers+=1;
 					if(from_player["raise_by"].empty() == false)
@@ -520,20 +579,21 @@ private:
 				{
 					skipPlayers+=1;
 					proceedPlayer+=1;
+					foldPlayers+=1;
 					if (shared_from_this()->playerNo==1)
-						skip1=true;
+						{rankHand[1][0]=0;skip1=true;}
 					if (shared_from_this()->playerNo==2)
-		                                skip2=true;
+		                                {rankHand[2][0]=0;skip2=true;}
 					if (shared_from_this()->playerNo==3)
-		                                skip3=true;
+		                                {rankHand[3][0]=0;skip3=true;}
 					if (shared_from_this()->playerNo==4)
-		                                skip4=true;
+		                                {rankHand[4][0]=0;skip4=true;}
 					if (shared_from_this()->playerNo==5)
-		                                skip5=true;
+		                                {rankHand[5][0]=0;skip5=true;}
 					shared_from_this()->skipStatus=true;
 				}
 				if(action == "checked") proceedPlayer+=1;
-				if (turn>=(room_.getSize()+1))turn=1;
+				if (turn>=(playerNumber+1))turn=1;
 				
 			}
 		}
@@ -553,7 +613,12 @@ private:
 				cout<<"Sending cards to player..."<<endl;
 				
 				Dealer.organizeAndRank(hand[shared_from_this()->playerNo],rankHand[shared_from_this()->playerNo]);
-			    	
+			    	if(skip1 == true) rankHand[1][0]=0;
+				if(skip2 == true) rankHand[2][0]=0;
+				if(skip3 == true) rankHand[3][0]=0;
+				if(skip4 == true) rankHand[4][0]=0;
+				if(skip5 == true) rankHand[5][0]=0;
+
 				to_player["turn"]=turn;
 				to_player["participant"]=shared_from_this()->playerNo;
 				to_player["balance"]=shared_from_this()->balance;
@@ -596,13 +661,13 @@ private:
 		/*
 		if (shared_from_this()->balance==0 && turn==1)
 		       {proceedPlayer+=1;turn++;}
-		if (shared_from_this()->balance==0 && turn==2)                
+		else if (shared_from_this()->balance==0 && turn==2)                
                        {proceedPlayer+=1;turn++;}
-		if (shared_from_this()->balance==0 && turn==3)                
+		else if (shared_from_this()->balance==0 && turn==3)                
                        {proceedPlayer+=1;turn++;}
-		if (shared_from_this()->balance==0 && turn==4)                
+		else if (shared_from_this()->balance==0 && turn==4)                
                        {proceedPlayer+=1;turn++;}
-		if (shared_from_this()->balance==0 && turn==5)                
+		else if (shared_from_this()->balance==0 && turn==5)                
                        {proceedPlayer+=1;turn++;}
 		*/
 		to_player2["action"]=action;
@@ -613,23 +678,14 @@ private:
 		to_player2["pot"]=pot;	
 		to_player2["bid"]=bid;
 		to_player2["balance"]=shared_from_this()->balance;
-		if(proceedPlayer >= playerNumber && phase == "b2phase")
-		{
-		cout<<"B2PHASE OVER"<<endl;
-		int winner = Dealer.compareHands(rankHand[1], rankHand[2], rankHand[3], rankHand[4], rankHand[5]);
-		cout << "WINNER:  Player "+to_string(winner)<<endl;
-		to_player2["winner"]=winner;
-		to_player2["participant"]=winner;
-		to_player2["balance"]=balance+=pot;
-		proceedPlayer = 0;
-		winnerFound = true;
-		}
+		
 		if(proceedPlayer >= playerNumber && phase == "ephase")
 		{
 		cout<<"EPHASE OVER"<<endl;
 		phase = "b2phase";
 		to_player2["start"]=true;
 		proceedPlayer = 0;
+		/*
 		if (shared_from_this()->balance==0 && turn==1)
 		       {proceedPlayer+=1;turn++;}
 		if (shared_from_this()->balance==0 && turn==2)                
@@ -640,27 +696,37 @@ private:
                        {proceedPlayer+=1;turn++;}
 		if (shared_from_this()->balance==0 && turn==5)                
                        {proceedPlayer+=1;turn++;}
+		*/
+		}
+		if((proceedPlayer >= playerNumber && phase == "b2phase") || foldPlayers >= playerNumber-1 || (allIn >= playerNumber && phase == "b2phase"))
+		{
+			cout<<"B2PHASE OVER"<<endl;
+			cout << "FOLD PLAYERS: "+to_string(foldPlayers)<<endl;
+			int winner = Dealer.compareHands(rankHand[1], rankHand[2], rankHand[3], rankHand[4], rankHand[5]);
+			cout << "WINNER:  Player "+to_string(winner)<<endl;
+			to_player2["winner"]=winner;
+			foldPlayers=0;
+			proceedPlayer=0;
 		}
 		if(proceedPlayer >= playerNumber && phase == "b1phase")
 		{	
-		cout<<"POT SETTLED"<<endl;
-		bid=0;
-		raise_by=0;
-		
-		phase = "ephase";
-		to_player2["start"]=true;
-		proceedPlayer = 0;
-		turn =1;
-		if (skip1==true && turn==1)
-		       {proceedPlayer+=1;turn++;}
-		if (skip2==true && turn==2)                
-                       {proceedPlayer+=1;turn++;}
-		if (skip3==true && turn==3)                
-                       {proceedPlayer+=1;turn++;}
-		if (skip4==true && turn==4)                
-                       {proceedPlayer+=1;turn++;}
-		if (skip5==true && turn==5)                
-                       {proceedPlayer+=1;turn++;}
+			cout<<"POT SETTLED"<<endl;
+			bid=0;
+			raise_by=0;
+			phase = "ephase";
+			to_player2["start"]=true;
+			proceedPlayer = 0;
+			turn =1;
+			if (skip1==true && turn==1)
+			       {proceedPlayer+=1;turn++;}
+			if (skip2==true && turn==2)                
+		               {proceedPlayer+=1;turn++;}
+			if (skip3==true && turn==3)                
+		               {proceedPlayer+=1;turn++;}
+			if (skip4==true && turn==4)                
+		               {proceedPlayer+=1;turn++;}
+			if (skip5==true && turn==5)                
+		               {proceedPlayer+=1;turn++;}
 		}
 		
 		to_player2["turn"]=turn;
