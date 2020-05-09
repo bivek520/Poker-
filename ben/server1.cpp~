@@ -50,6 +50,7 @@ public:
     bool ready = false;
     int balance = 200;
     int put=0;
+    int mod=0;
     int skipStatus = false;
     string actionTaken;
 };
@@ -418,11 +419,13 @@ private:
 			if (from_player["autoTurn"].empty()==false)
 			{
 				proceedPlayer = 0;
+				skipPlayers = 0;
 				foldPlayers=0;
 				shared_from_this()->balance+=pot;
 				action="win";
 				pot = 0;
 				bid = 0;
+				busted=0;
 				raise_by = 0;
 				turn=0;
 				Dealer.createDeck();
@@ -463,11 +466,11 @@ private:
 			if (from_player["ani"].empty()==false)
 			{
 				cout<<"ANI FROM "+ to_string(shared_from_this()->playerNo)<<endl;
-				turn=0;
+				cout<<"PUT FROM "+ to_string(shared_from_this()->playerNo+to_string(shared_from_this()->put)<<endl;
+				shared_from_this()->put=0;
 				int tempAni=from_player["ani"];
 				if(tempAni <= 0)
 				{
-				busted+=1;
 	
 				}
 				else
@@ -476,40 +479,54 @@ private:
 				pot+=tempAni;
 				cout<<"POT: "+ to_string(pot)<<endl;
 				if(shared_from_this()->playerNo==1)
-				{skip1=false;busted-=1;}
+				{skip1=false;}
 				if(shared_from_this()->playerNo==2)
-				{skip2=false;busted-=1;}
+				{skip2=false;}
 				if(shared_from_this()->playerNo==3)
-				{skip3=false;busted-=1;}
+				{skip3=false;}
 				if(shared_from_this()->playerNo==4)
-				{skip4=false;busted-=1;}
+				{skip4=false;}
 				if(shared_from_this()->playerNo==5)
-				{skip5=false;busted-=1;}
+				{skip5=false;}turn = 0;
 				}
-				
+				turn = 0;
+			}
+			if(from_player["action"].empty()==false && from_player["action"]=="bustedOut")
+			{
+			shared_from_this()->put=0;
+			busted+=1;
+			cout<<"BUSTED: "+to_string(busted)<<endl;
+			if(shared_from_this()->playerNo==1)
+				{skip1=true;cout<<"SKIP1 SET"<<endl;}
+			if(shared_from_this()->playerNo==2)
+				{skip2=true;cout<<"SKIP2 SET"<<endl;}
+			if(shared_from_this()->playerNo==3)
+				{skip3=true;cout<<"SKIP3 SET"<<endl;}
+			if(shared_from_this()->playerNo==4)
+				{skip4=true;cout<<"SKIP4 SET"<<endl;}
+			if(shared_from_this()->playerNo==5)
+				{skip5=true;cout<<"SKIP5 SET"<<endl;}
+			turn = 0;
+			skipPlayers = busted;
 			}
 			turn++;
-			if(busted == playerNumber-1){cout<<"PLAYER "+to_string(winner)<<endl;}
 			if (turn>=(playerNumber+1))turn=1;
 			if (skip1==true && turn==1)
-			       {proceedPlayer+=1;turn++;}
+			       {proceedPlayer+=1;turn++;cout<<"SKIP1 USED"<<endl;}
 			if (skip2==true && turn==2)                
-                               {proceedPlayer+=1;turn++;}
+                               {proceedPlayer+=1;turn++;cout<<"SKIP2 USED"<<endl;}
 			if (skip3==true && turn==3)                
-                               {proceedPlayer+=1;turn++;}
+                               {proceedPlayer+=1;turn++;cout<<"SKIP3 USED"<<endl;}
 			if (skip4==true && turn==4)                
-                               {proceedPlayer+=1;turn++;}
+                               {proceedPlayer+=1;turn++;cout<<"SKIP4 USED"<<endl;}
 			if (skip5==true && turn==5)                
-                               {proceedPlayer+=1;turn++;}
+                               {proceedPlayer+=1;turn++;cout<<"SKIP5 USED"<<endl;}
 			if (turn>=(playerNumber+1))turn=1;
-                        
-			
-			
 		if(phase != "ephase")
 		{
 			
-			if(from_player["action"].empty()==false)
-				shared_from_this()->actionTaken = from_player["action"];
+			//if(from_player["action"].empty()==false && from_player["action"] == "win")
+				
 		        if (from_player["action"].empty()==false)
 			{
 				action = from_player["action"]; 
@@ -518,9 +535,11 @@ private:
 				proceedPlayer=1+skipPlayers;
 				bid = from_player["bid"];
 				shared_from_this()->put=bid;
+				shared_from_this()->mod=bid;
 				pot+=shared_from_this()->put;
 				cout << "pot = " <<pot<<endl;
 				shared_from_this()->balance-=shared_from_this()->put;
+				if(shared_from_this()->balance==0)allIn+=1;
 				}
 				if(action == "raised")
 				{
@@ -528,9 +547,20 @@ private:
 				raise_by = from_player["raise_by"];
 				cout << "pot = " <<pot<<endl;
 				bid+=raise_by;
+				if(shared_from_this()->put == 0)
+				{
 				shared_from_this()->put+=bid;
-				pot+=bid;
 				shared_from_this()->balance-=bid;
+				pot+=bid;
+				}
+				else
+				{
+				shared_from_this()->balance-=bid-shared_from_this()->put;
+				pot+=bid-shared_from_this()->put;
+				shared_from_this()->put+=bid-shared_from_this()->put;
+				}
+				if(shared_from_this()->balance==0){allIn+=1;proceedPlayer=1+skipPlayers;
+					skipPlayers+=1;}
 				}
 				if(action == "called")
 				{
@@ -539,15 +569,18 @@ private:
 					{
 					shared_from_this()->put+=bid;
 					shared_from_this()->balance-=bid;
+					shared_from_this()->mod=bid;
 					pot+=bid;
 					}
 					else
 					{
-					shared_from_this()->put+=raise_by;
-					shared_from_this()->balance-=raise_by;
-					pot+=raise_by;
+					shared_from_this()->mod=bid-shared_from_this()->put;
+					shared_from_this()->balance-=bid-shared_from_this()->put;
+					pot+=bid-shared_from_this()->put;
+					shared_from_this()->put+=bid-shared_from_this()->put;
 					}
-					if(shared_from_this()->balance == 0)allIn+=1;
+					if(shared_from_this()->balance == 0){allIn+=1;proceedPlayer=1+skipPlayers;
+					skipPlayers+=1;}
 				cout << "bid = " <<bid<<endl;
 				cout << "pot = " <<pot<<endl;
 				}
@@ -644,6 +677,7 @@ private:
 				to_player["turn"]=turn;
 				to_player["participant"]=shared_from_this()->playerNo;
 				to_player["balance"]=shared_from_this()->balance;
+				
 				shared_from_this()->put=0;
 				action = from_player["action"];
 				cout<<"RECEIVED EXCHANGE: " + action<<endl;
@@ -672,8 +706,6 @@ private:
 		*/
 		to_player2["action"]=action;
                 to_player2["participant"]=shared_from_this()->playerNo;
-		
-		
 		to_player2["raise_by"]=raise_by;
 		to_player2["pot"]=pot;	
 		to_player2["bid"]=bid;
@@ -698,15 +730,22 @@ private:
                        {proceedPlayer+=1;turn++;}
 		*/
 		}
-		if((proceedPlayer >= playerNumber && phase == "b2phase") || foldPlayers >= playerNumber-1 || (allIn >= playerNumber && phase == "b2phase"))
+		if((proceedPlayer >= playerNumber && phase == "b2phase") || foldPlayers >= playerNumber-1 || (allIn >= playerNumber-foldPlayers && phase == "b2phase"))
 		{
 			cout<<"B2PHASE OVER"<<endl;
 			cout << "FOLD PLAYERS: "+to_string(foldPlayers)<<endl;
 			int winner = Dealer.compareHands(rankHand[1], rankHand[2], rankHand[3], rankHand[4], rankHand[5]);
 			cout << "WINNER:  Player "+to_string(winner)<<endl;
+			//busted = playerNumber;
 			to_player2["winner"]=winner;
+			skipPlayers = 0;
 			foldPlayers=0;
 			proceedPlayer=0;
+			skip1 = false;
+			skip2 = false;
+			skip3 = false;
+			skip4 = false;
+			skip5 = false;
 		}
 		if(proceedPlayer >= playerNumber && phase == "b1phase")
 		{	
@@ -728,7 +767,11 @@ private:
 			if (skip5==true && turn==5)                
 		               {proceedPlayer+=1;turn++;}
 		}
-		
+		if(busted>= playerNumber-1)
+		{
+		to_player2["theWinner"]=" ";
+		}
+		to_player2["mod"]=shared_from_this()->mod;
 		to_player2["turn"]=turn;
 		to_player2["phase"]=phase;
 		//if(phase == "ephase") turn=0;

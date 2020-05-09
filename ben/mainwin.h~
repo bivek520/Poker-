@@ -40,10 +40,10 @@ class Mainwin : public Gtk::Window {
         void updateReadyBoxes(int participant);
 	void updateFoldAction(int participant);
 	void updateCheckAction(int participant);
-	void updateCallAction(int participant, int val);
+	void updateCallAction(int, int, int, int);
 	void updateBetAction(int participant, int val);
 	void updateRaiseAction(int participant, int val);
-	void updateAllInAction(int participant, int val);
+	void updateAllInAction(int participant, int put, int val);
 	void updateExchangeAction(int participant);
 	void showCards();
 	void activateExchange(int);
@@ -51,11 +51,12 @@ class Mainwin : public Gtk::Window {
 	void bustOut(int);
 	void takeAni();
 	void toGui(std::string, int, int, int, int);
+	void theWinner(int);
 	void updateCallRaiseButtons(int,int, int);
 	void updateVals(int,int,int);
 	void hidePlayers(int);
         bool reset=false;
-	void displayWinner(int);
+	void displayWinner(int, int);
 	Gtk::VBox cvbox;
 	Gtk::HBox hbox;
 	Gtk::HBox actionHbox,balanceHbox,publicCardHbox,indicatorHbox, potHbox,privateCardHbox,cardSelectionHbox,exchangeHbox,playHbox;
@@ -95,8 +96,8 @@ class Mainwin : public Gtk::Window {
 	Gtk::Button ready{"READY"};  
 	
 	Gtk::Image *bh1, *bh2, *bh3, *bh4, *bh5; //big cards
-	/*Gtk::Image *h1, *h2, *h3, *h4, *h5,	 //sml cards
-		   *h6, *h7, *h8, *h9, *h10,
+	Gtk::Image *h1, *h2, *h3, *h4, *h5;	 //sml cards
+		  /* *h6, *h7, *h8, *h9, *h10,
 		   *h11, *h12, *h13, *h14, *h15,
 		   *h16, *h17, *h18, *h19, *h20,
 		   *h21, *h22, *h23, *h24, *h25;*/
