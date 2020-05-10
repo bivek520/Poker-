@@ -66,9 +66,7 @@ class Mainwin : public Gtk::Window {
     Gtk::Separator sep1, sep2,sep3, sep4;
     Gtk::Scale HScale;
     Gtk::Grid m_grid,small_card_grid1,small_card_grid2,small_card_grid3,small_card_grid4,small_card_grid5;
-/*    void on_new_game_click();*/
-/*        void on_quit_click();              // Exit the application*/
-/*        void on_about_click();              // new window displaying game rules and info*/
+
     void shiftIndicator(int);
     Gtk::Image *indicator =Gtk::manage(new Gtk::Image{"Icons/indicator.png"});
     friend class chat_client;
@@ -97,11 +95,7 @@ class Mainwin : public Gtk::Window {
     
     Gtk::Image *bh1, *bh2, *bh3, *bh4, *bh5; //big cards
     Gtk::Image *h1, *h2, *h3, *h4, *h5;     //sml cards
-          /* *h6, *h7, *h8, *h9, *h10,
-           *h11, *h12, *h13, *h14, *h15,
-           *h16, *h17, *h18, *h19, *h20,
-           *h21, *h22, *h23, *h24, *h25;*/
-
+          
     int TESTVAL;
     int TESTTURN = 0;
     bool readyBool = false;
