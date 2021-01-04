@@ -1,5 +1,5 @@
 # Poker+
-###### A client-server based multiplayer game.
+###### A client-server based multiplayer player game that is based on 5 card poker.
 <p align="center">
   <img src="https://github.com/bivek520/PokerPlus/blob/master/Poker%2B%2B_user_interface.png" width="750" title="hover text">
 </p>
